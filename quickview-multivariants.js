@@ -354,7 +354,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
           ? $(this).find(".variants-item-inventory").text()
           : "0";
         let image = $(this).find(".variants-item-image").attr("src");
-        let sku = $(this).find(".variants-item-sku").text();
+        let code = $(this).find(".variants-item-sku").text();
         let strain = $(this).find(".variants-item-strain").text();
         let size = $(this).find(".variants-item-size").text();
         let flavor = $(this).find(".variants-item-flavor").text();
@@ -372,7 +372,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
           flavor,
           strength,
           type,
-          sku,
+          code,
           image,
           inventory,
           weight,
@@ -391,7 +391,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
               flavor: flavor,
               strength: strength,
               type: type,
-              sku: sku,
+              code: code,
               image: image,
               inventory: inventory,
               weight: weight,
