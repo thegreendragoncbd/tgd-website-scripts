@@ -611,25 +611,23 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
       const hasDragonSlayerSub = FC.custom.hasSubscriptionByCode("dragonslayer");
       const hasDragonMasterSub = FC.custom.hasSubscriptionByCode("dragonmaster");
       const percentFromAmmount = (amount, percent) => (amount * percent) / 100;
+      const handlePriceDiscount = (priceToDiscountFrom, discountPercent, membershipName) => {
+        const ammountToDiscount = percentFromAmmount(priceToDiscountFrom, discountPercent);
+        if (!element.querySelector("#membership-discount-label-applied")) {
+          element
+            .querySelector(".product-price_component")
+            .insertAdjacentHTML(
+              "afterend",
+              `<div class="margin-top-1-5" id="membership-discount-label-applied"><strong>${membershipName} membership discount applied.</strong></div>`
+            );
+        }
+        return (priceToDiscountFrom - ammountToDiscount).toFixed(2);
+      };
       if (hasDragonSlayerSub) {
-        const threePercent = percentFromAmmount(priceToDiscountFrom, 3);
-        element
-          .querySelector(".product-price_component")
-          .insertAdjacentHTML(
-            "afterend",
-            '<div class="margin-top-1-5"><strong>Membership discount applied.</strong></div>'
-          );
-        return priceToDiscountFrom - threePercent;
+        return handlePriceDiscount(priceToDiscountFrom, 3, "DragonSlayer");
       }
       if (hasDragonMasterSub) {
-        const fivePercent = percentFromAmmount(priceToDiscountFrom, 5);
-        element
-          .querySelector(".product-price_component")
-          .insertAdjacentHTML(
-            "afterend",
-            '<div class="margin-top-1-5"><strong>Membership discount applied.</strong></div>'
-          );
-        return priceToDiscountFrom - fivePercent;
+        return handlePriceDiscount(priceToDiscountFrom, 5, "DragonMaster");
       }
       return priceToDiscountFrom;
     }
