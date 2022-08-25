@@ -1,8 +1,11 @@
 const URL_PATH = window.location.pathname;
-const isAllowedURL = () =>
-  URL_PATH.includes("/product-categories/") ||
-  URL_PATH.includes("/brands/") ||
-  URL_PATH.includes("/shop-all-products");
+function isAllowedURL() {
+  return (
+    URL_PATH.includes("/product-categories/") ||
+    URL_PATH.includes("/brands/") ||
+    URL_PATH.includes("/shop-all-products")
+  );
+}
 if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
   (function () {
     // Constants and variables
@@ -34,10 +37,6 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
       "beforeend",
       "<style>.radio-group .w-radio.radio-disabled{border: 1px dashed #ccc !important;background-color: white !important;border-radius: 5px !important;} </style>"
     );
-    const isAllowedURL = () =>
-      URL_PATH.includes("/product-categories/") ||
-      URL_PATH.includes("/brands/") ||
-      URL_PATH.includes("/shop-all-products");
 
     // Init product detail page
     if (/\/(products).*/.test(URL_PATH)) {
@@ -190,13 +189,13 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
         // Product has salesPrice or not
         if (productItemObject.salePrice) {
           beforeSalePriceElement.textContent = productItemObject.price;
-          activePriceElement.textContent = productItemObject.salePrice;
+          activePriceElement.textContent = getMembershipSpecialPrice(productItemObject.salePrice);
           priceAddToCart.value = productItemObject.salePrice;
 
           beforeSalePriceElement.parentElement.style.display = "inline-block";
           activePriceElement.parentElement.style.display = "inline-block";
         } else {
-          activePriceElement.textContent = productItemObject.price;
+          activePriceElement.textContent = getMembershipSpecialPrice(productItemObject.price);
           activePriceElement.classList.remove("w-dyn-bind-empty");
           activePriceElement.parentElement.style.display = "inline-block";
           beforeSalePriceElement.parentElement.style.display = "none";
@@ -216,14 +215,16 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
           .sort((a, b) => a - b);
 
         if (sortedPrices[0] !== sortedPrices[sortedPrices.length - 1]) {
-          priceLowElement.textContent = sortedPrices[0];
-          priceHighElement.textContent = sortedPrices[sortedPrices.length - 1];
+          priceLowElement.textContent = getMembershipSpecialPrice(sortedPrices[0]);
+          priceHighElement.textContent = getMembershipSpecialPrice(
+            sortedPrices[sortedPrices.length - 1]
+          );
           element.querySelector(".product-price_low-to-high-wrapper").style.display = "block";
           beforeSalePriceElement.parentElement.style.display = "none";
           activePriceElement.parentElement.style.display = "none";
         } else {
           // Variants that don't affect price
-          activePriceElement.textContent = sortedPrices[0];
+          activePriceElement.textContent = getMembershipSpecialPrice(sortedPrices[0]);
           priceAddToCart.value = sortedPrices[0];
           activePriceElement.classList.remove("w-dyn-bind-empty");
           activePriceElement.parentElement.style.display = "inline-block";
@@ -538,8 +539,11 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
           switch (key) {
             case "price":
               if (selectedProductVariantInfo["salePrice"]) {
-                activePriceElement.textContent = selectedProductVariantInfo["salePrice"];
                 priceAddToCart.value = selectedProductVariantInfo["salePrice"];
+
+                activePriceElement.textContent = getMembershipSpecialPrice(
+                  selectedProductVariantInfo["salePrice"]
+                );
                 beforeSalePriceElement.textContent = selectedProductVariantInfo[key];
 
                 activePriceElement.classList.remove("w-dyn-bind-empty");
@@ -549,7 +553,9 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
                 break;
               }
               beforeSalePriceElement.parentElement.style.display = "none";
-              activePriceElement.textContent = selectedProductVariantInfo[key];
+              activePriceElement.textContent = getMembershipSpecialPrice(
+                selectedProductVariantInfo[key]
+              );
               activePriceElement.parentElement.style.display = "inline-block";
               activePriceElement.classList.remove("w-dyn-bind-empty");
               break;
@@ -598,6 +604,34 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
         return true;
       }
       return false;
+    }
+
+    function getMembershipSpecialPrice(priceToDiscountFrom) {
+      // If it has subscription then return the discounted rate add discount text, else return the same rate
+      const hasDragonSlayerSub = FC.custom.hasSubscriptionByCode("dragonslayer");
+      const hasDragonMasterSub = FC.custom.hasSubscriptionByCode("dragonmaster");
+      const percentFromAmmount = (amount, percent) => (amount * percent) / 100;
+      if (hasDragonSlayerSub) {
+        const threePercent = percentFromAmmount(priceToDiscountFrom, 3);
+        element
+          .querySelector(".product-price_component")
+          .insertAdjacentHTML(
+            "afterend",
+            '<div class="margin-top-1-5"><strong>Membership discount applied.</strong></div>'
+          );
+        return priceToDiscountFrom - threePercent;
+      }
+      if (hasDragonMasterSub) {
+        const fivePercent = percentFromAmmount(priceToDiscountFrom, 5);
+        element
+          .querySelector(".product-price_component")
+          .insertAdjacentHTML(
+            "afterend",
+            '<div class="margin-top-1-5"><strong>Membership discount applied.</strong></div>'
+          );
+        return priceToDiscountFrom - fivePercent;
+      }
+      return priceToDiscountFrom;
     }
   })();
 }
