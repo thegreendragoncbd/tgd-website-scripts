@@ -1,3 +1,4 @@
+var FC = FC || {};
 const URL_PATH = window.location.pathname;
 function isAllowedURL() {
   return (
@@ -7,7 +8,7 @@ function isAllowedURL() {
   );
 }
 if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
-  (function () {
+  (function (FC) {
     // Constants and variables
     const STRAIN_DIV_ID = "#variants-strain";
     const SIZE_DIV_ID = "#variants-size";
