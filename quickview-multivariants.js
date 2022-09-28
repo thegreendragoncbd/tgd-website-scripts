@@ -1,6 +1,7 @@
 const URL_PATH = window.location.pathname;
 function isAllowedURL() {
   return (
+    URL_PATH.includes("/product-parent-categories/") ||
     URL_PATH.includes("/product-categories/") ||
     URL_PATH.includes("/brands/") ||
     URL_PATH.includes("/shop-all-products")
@@ -47,8 +48,10 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
     // Init for quickviews
     if (isAllowedURL()) {
       $(document).ready(() => {
+        setPricesForProductListings();
         handleQuickViewSetUp();
-        const quickViewIcons = document.querySelectorAll(".product__quickview-icon");
+
+        const quickViewIcons = document.querySelectorAll(".foxy_product_modal-icon-open");
         quickViewIcons.forEach(icon =>
           icon.addEventListener("click", e => {
             init(e);
@@ -58,13 +61,31 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
     }
 
     function handleQuickViewSetUp() {
-      const allGridItems = document.querySelectorAll(".product-grid_collection-item.w-dyn-item");
+      const allGridItems = document.querySelectorAll(".foxy_product_collection-item");
 
       allGridItems.forEach((item, index) => {
         const itemName = item
           .querySelector(".foxy_product_item_info .foxy_product_item_name")
           .innerText.split(" ")[0];
         item.setAttribute("id", `${itemName}-${index}`);
+      });
+    }
+
+    function setPricesForProductListings() {
+      const allGridItems = document.querySelectorAll(".foxy_product_collection-item");
+
+      allGridItems.forEach(item => {
+        priceLowElement = item.querySelector(".product-grid-price_low-to-high-wrapper").firstChild
+          .nextSibling;
+        priceHighElement = item.querySelector(".product-grid-price_low-to-high-wrapper").lastChild;
+        beforeSalePriceElement = item.querySelector(
+          ".product-grid-price_before-sale-wrapper"
+        ).lastChild;
+        activePriceElement = item.querySelector(".product-grid-price_active-wrapper").lastChild;
+
+        buildProductItemList(item.id);
+        buildVariantItemsList(item.id);
+        addPrice();
       });
     }
 
@@ -221,7 +242,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
           priceHighElement.textContent = getMembershipSpecialPrice(
             sortedPrices[sortedPrices.length - 1]
           );
-          element.querySelector(".product-price_low-to-high-wrapper").style.display = "block";
+          priceLowElement.style.display = "block";
           beforeSalePriceElement.parentElement.style.display = "none";
           activePriceElement.parentElement.style.display = "none";
         } else {
