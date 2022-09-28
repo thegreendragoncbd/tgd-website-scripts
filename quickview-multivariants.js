@@ -98,6 +98,12 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
           if (!renderedItems.length) return;
           handleQuickViewSetUp();
           setPricesForProductListings();
+          const quickViewIcons = document.querySelectorAll(".foxy_product_modal-icon-open");
+          quickViewIcons.forEach(icon =>
+            icon.addEventListener("click", e => {
+              init(e);
+            })
+          );
         })
       );
     }
@@ -255,7 +261,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
           priceHighElement.textContent = getMembershipSpecialPrice(
             sortedPrices[sortedPrices.length - 1]
           );
-          priceLowElement.style.display = "block";
+          element.querySelector(".product-price_low-to-high-wrapper").style.display = "block";
           beforeSalePriceElement.parentElement.style.display = "none";
           activePriceElement.parentElement.style.display = "none";
         } else {
