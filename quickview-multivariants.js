@@ -61,7 +61,9 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
       const allGridItems = document.querySelectorAll(".product-grid_collection-item.w-dyn-item");
 
       allGridItems.forEach((item, index) => {
-        const itemName = item.querySelector(".item-info .item-name").innerText.split(" ")[0];
+        const itemName = item
+          .querySelector(".foxy_product_item_info .foxy_product_item_name")
+          .innerText.split(" ")[0];
         item.setAttribute("id", `${itemName}-${index}`);
       });
     }
@@ -109,25 +111,25 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
 
     function buildVariantItemsList(elementID) {
       variantItems = [];
-      let variants_item = ".variants-item";
-      if (isAllowedURL()) variants_item = `#${elementID} .variants-item`;
+      let variants_item = ".foxy_variant_item";
+      if (isAllowedURL()) variants_item = `#${elementID} .foxy_variant_item`;
       $(variants_item).each(function () {
-        const price = $(this).find(".variants-item-price").text();
-        const salePrice = $(this).find(".variants-item-sale-price").text();
-        const weight = $(this).find(".variants-item-weight").text();
-        const inventory = $(this).find(".variants-item-inventory").text()
-          ? $(this).find(".variants-item-inventory").text()
+        const price = $(this).find(".foxy_variants_item-price").text();
+        const salePrice = $(this).find(".foxy_variants_item-sale-price").text();
+        const weight = $(this).find(".foxy_variants_item-weight").text();
+        const inventory = $(this).find(".foxy_variants_item-inventory").text()
+          ? $(this).find(".foxy_variants_item-inventory").text()
           : "0";
-        const image = $(this).find(".variants-item-image").attr("src");
-        const code = $(this).find(".variants-item-sku").text();
-        const strain = $(this).find(".variants-item-strain").text();
-        const size = $(this).find(".variants-item-size").text();
-        const flavor = $(this).find(".variants-item-flavor").text();
-        const strength = $(this).find(".variants-item-strength").text();
-        const type = $(this).find(".variants-item-type").text();
-        const allowBackorders = $(this).find(".variants-item-allow-backorders").text();
-        const restrictedShipping = $(this).find(".variants-item-restricted-shipping").text();
-        const itemCertification = $(this).find(".variants-item-certification-link").text();
+        const image = $(this).find(".foxy_variants_item-image").attr("src");
+        const code = $(this).find(".foxy_variants_item-sku").text();
+        const strain = $(this).find(".foxy_variants_item-strain").text();
+        const size = $(this).find(".foxy_variants_item-size").text();
+        const flavor = $(this).find(".foxy_variants_item-flavor").text();
+        const strength = $(this).find(".foxy_variants_item-strength").text();
+        const type = $(this).find(".foxy_variants_item-type").text();
+        const allowBackorders = $(this).find(".foxy_variants_item-allow-backorders").text();
+        const restrictedShipping = $(this).find(".foxy_variants_item-restricted-shipping").text();
+        const itemCertification = $(this).find(".foxy_variants_item-certification-link").text();
 
         variantItems.push(
           filterEmpty({
@@ -152,21 +154,21 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
 
     function buildProductItemList(elementID) {
       productItemObject = {};
-      let item_info = ".item-info";
-      if (isAllowedURL()) item_info = `#${elementID} .item-info`;
+      let item_info = ".foxy_product_item_info";
+      if (isAllowedURL()) item_info = `#${elementID} .foxy_product_item_info`;
       $(item_info).each(function () {
-        let name = $(this).find(".item-name").text();
-        let price = $(this).find(".item-price").text();
-        let salePrice = $(this).find(".item-sale-price").text();
-        let weight = $(this).find(".item-weight").text();
-        let inventory = $(this).find(".item-inventory").text()
-          ? $(this).find(".item-inventory").text()
+        let name = $(this).find(".foxy_product_item_name").text();
+        let price = $(this).find(".foxy_product_item_price").text();
+        let salePrice = $(this).find(".foxy_product_item_sale-price").text();
+        let weight = $(this).find(".foxy_product_item_weight").text();
+        let inventory = $(this).find(".foxy_product_item_inventory").text()
+          ? $(this).find(".foxy_product_item_inventory").text()
           : "0";
-        let sku = $(this).find(".item-sku").text();
-        let allowBackorders = $(this).find(".item-allow-backorders").text();
-        const restrictedShipping = $(this).find(".variants-item-restricted-shipping").text();
-        const itemCertification = $(this).find(".variants-item-certification-link").text()
-          ? $(this).find(".variants-item-certification-link").text()
+        let sku = $(this).find(".foxy_product_item_sku").text();
+        let allowBackorders = $(this).find(".foxy_product_item_allow-backorders").text();
+        const restrictedShipping = $(this).find(".foxy_variants_item-restricted-shipping").text();
+        const itemCertification = $(this).find(".foxy_variants_item-certification-link").text()
+          ? $(this).find(".foxy_variants_item-certification-link").text()
           : "none";
 
         productItemObject = filterEmpty({
@@ -276,14 +278,14 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
     }
 
     function buildVariants(elementID) {
-      let variants_item = ".variants-item";
-      if (isAllowedURL()) variants_item = `#${elementID} .variants-item`;
+      let variants_item = ".foxy_variant_item";
+      if (isAllowedURL()) variants_item = `#${elementID} .foxy_variant_item`;
       $(variants_item).each(function (index) {
-        let strain = $(this).find(".variants-item-strain").text();
-        let size = $(this).find(".variants-item-size").text();
-        let flavor = $(this).find(".variants-item-flavor").text();
-        let strength = $(this).find(".variants-item-strength").text();
-        let type = $(this).find(".variants-item-type").text();
+        let strain = $(this).find(".foxy_variants_item-strain").text();
+        let size = $(this).find(".foxy_variants_item-size").text();
+        let flavor = $(this).find(".foxy_variants_item-flavor").text();
+        let strength = $(this).find(".foxy_variants_item-strength").text();
+        let type = $(this).find(".foxy_variants_item-type").text();
 
         addVariantGroup(strain, STRAIN_DIV_ID, index);
         addVariantGroup(size, SIZE_DIV_ID, index);
@@ -328,8 +330,8 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
     }
 
     function handleVariantSelection(e) {
-      let variants_item = ".variants-item";
-      if (isAllowedURL()) variants_item = `#${element.id} .variants-item`;
+      let variants_item = ".foxy_variant_item";
+      if (isAllowedURL()) variants_item = `#${element.id} .foxy_variant_item`;
       const variantSelection = e.target.value;
       const variantSelectionGroup = e.target.name;
       if (!variantSelectionGroup) return;
@@ -348,23 +350,23 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
       let availableProductsPerVariant = [];
 
       $(variants_item).each(function () {
-        let price = $(this).find(".variants-item-price").text();
-        let salePrice = $(this).find(".variants-item-sale-price").text();
-        let weight = $(this).find(".variants-item-weight").text();
-        let inventory = $(this).find(".variants-item-inventory").text()
-          ? $(this).find(".variants-item-inventory").text()
+        let price = $(this).find(".foxy_variants_item-price").text();
+        let salePrice = $(this).find(".foxy_variants_item-sale-price").text();
+        let weight = $(this).find(".foxy_variants_item-weight").text();
+        let inventory = $(this).find(".foxy_variants_item-inventory").text()
+          ? $(this).find(".foxy_variants_item-inventory").text()
           : "0";
-        let image = $(this).find(".variants-item-image").attr("src");
-        let code = $(this).find(".variants-item-sku").text();
-        let strain = $(this).find(".variants-item-strain").text();
-        let size = $(this).find(".variants-item-size").text();
-        let flavor = $(this).find(".variants-item-flavor").text();
-        let strength = $(this).find(".variants-item-strength").text();
-        let type = $(this).find(".variants-item-type").text();
-        let allowBackorders = $(this).find(".variants-item-allow-backorders").text();
-        const restrictedShipping = $(this).find(".variants-item-restricted-shipping").text();
-        const itemCertification = $(this).find(".variants-item-certification-link").text()
-          ? $(this).find(".variants-item-certification-link").text()
+        let image = $(this).find(".foxy_variants_item-image").attr("src");
+        let code = $(this).find(".foxy_variants_item-sku").text();
+        let strain = $(this).find(".foxy_variants_item-strain").text();
+        let size = $(this).find(".foxy_variants_item-size").text();
+        let flavor = $(this).find(".foxy_variants_item-flavor").text();
+        let strength = $(this).find(".foxy_variants_item-strength").text();
+        let type = $(this).find(".foxy_variants_item-type").text();
+        let allowBackorders = $(this).find(".foxy_variants_item-allow-backorders").text();
+        const restrictedShipping = $(this).find(".foxy_variants_item-restricted-shipping").text();
+        const itemCertification = $(this).find(".foxy_variants_item-certification-link").text()
+          ? $(this).find(".foxy_variants_item-certification-link").text()
           : "none";
 
         let currentProduct = [
@@ -567,7 +569,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
                 selectedProductVariantInfo[key];
               break;
             case "itemCertification":
-              const certification = element.querySelector(".certification-link");
+              const certification = element.querySelector(".product_quickview_certification-link");
               if (selectedProductVariantInfo[key] === "none") {
                 certification.style.display = "none";
               }
@@ -581,7 +583,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
 
       addPrice();
       setInventory();
-      const certification = element.querySelector(".certification-link");
+      const certification = element.querySelector(".product_quickview_certification-link");
       if (productItemObject["itemCertification"] === "none") {
         certification.style.display = "none";
         return;
