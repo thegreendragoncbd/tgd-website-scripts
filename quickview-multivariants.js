@@ -48,8 +48,8 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
     // Init for quickviews
     if (isAllowedURL()) {
       $(document).ready(() => {
-        setPricesForProductListings();
         handleQuickViewSetUp();
+        setPricesForProductListings();
 
         const quickViewIcons = document.querySelectorAll(".foxy_product_modal-icon-open");
         quickViewIcons.forEach(icon =>
