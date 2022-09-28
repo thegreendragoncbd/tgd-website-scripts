@@ -262,6 +262,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
             sortedPrices[sortedPrices.length - 1]
           );
           element.querySelector(".product-price_low-to-high-wrapper").style.display = "block";
+          element.querySelector(".product-grid-price_low-to-high-wrapper").style.display = "block";
           beforeSalePriceElement.parentElement.style.display = "none";
           activePriceElement.parentElement.style.display = "none";
         } else {
