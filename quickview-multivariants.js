@@ -51,6 +51,8 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
         handleQuickViewSetUp();
         setPricesForProductListings();
 
+        handleCmsFilterEvent();
+
         const quickViewIcons = document.querySelectorAll(".foxy_product_modal-icon-open");
         quickViewIcons.forEach(icon =>
           icon.addEventListener("click", e => {
@@ -87,6 +89,26 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
         buildVariantItemsList(item.id);
         addPrice();
       });
+    }
+
+    function handleCmsFilterEvent() {
+      window.fsAttributes = window.fsAttributes || [];
+      window.fsAttributes.push([
+        "cmsfilter",
+        filterInstances => {
+          console.log("cmsfilter Successfully loaded!");
+
+          // The callback passes a `filterInstances` array with all the `CMSFilters` instances on the page.
+          const [filterInstance] = filterInstances;
+
+          // The `renderitems` event runs whenever the list renders items after filtering.
+          filterInstance.listInstance.on("renderitems", renderedItems => {
+            console.log(renderedItems);
+            handleQuickViewSetUp();
+            setPricesForProductListings();
+          });
+        },
+      ]);
     }
 
     function init(e) {
