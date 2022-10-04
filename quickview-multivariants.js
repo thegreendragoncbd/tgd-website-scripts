@@ -36,7 +36,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
 
     document.head.insertAdjacentHTML(
       "beforeend",
-      "<style>.radio-group .w-radio.radio-disabled{border: 1px dashed #ccc !important;background-color: white !important;border-radius: 5px !important;} </style>"
+      "<style>.radio-group .w-radio.radio-disabled{border: 1px dashed #ccc !important;background-color: white !important;border-radius: 5px !important;} .show-quickview{display: flex !important; opacity: 1!important; transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg) !important;    transform-style: preserve-3d!important;} </style>"
     );
 
     // Init product detail page
@@ -66,9 +66,9 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
       const allGridItems = document.querySelectorAll(".foxy_product_collection-item");
 
       allGridItems.forEach((item, index) => {
-        const itemName = item
-          .querySelector(".foxy_product_item_info .foxy_product_item_name")
-          .innerText.split(" ")[0];
+        const itemName = item.querySelector(
+          ".foxy_product_item_info .foxy_product_item_name"
+        ).innerText;
         item.setAttribute("id", `${itemName}-${index}`);
       });
     }
@@ -101,11 +101,22 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
           const quickViewIcons = document.querySelectorAll(".foxy_product_modal-icon-open");
           quickViewIcons.forEach(icon =>
             icon.addEventListener("click", e => {
+              quickViewShowHide(e.target);
               init(e);
             })
           );
         })
       );
+    }
+
+    function quickViewShowHide(target) {
+      if (target.classList.contains("product_quickview_closer")) {
+        target.parentElement.classList.toggle("show-quickview");
+        return;
+      }
+
+      const quickView = target.parentElement.querySelector(".product_quickview_wrapper");
+      quickView.classList.toggle("show-quickview");
     }
 
     function init(e) {
