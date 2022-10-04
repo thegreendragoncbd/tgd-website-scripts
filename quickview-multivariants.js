@@ -93,7 +93,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
 
     function handleCmsFilterEvent() {
       window.fsAttributes = window.fsAttributes || [];
-      window.fsAttributes.cms.listInstances.forEach(instance =>
+      window.fsAttributes.cms.listInstances.forEach(instance => {
         instance.on("renderitems", renderedItems => {
           if (!renderedItems.length) return;
           handleQuickViewSetUp();
@@ -111,8 +111,8 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
               quickViewShowHide(e.target);
             })
           );
-        })
-      );
+        });
+      });
     }
 
     function quickViewShowHide(target) {
