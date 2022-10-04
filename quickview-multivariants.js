@@ -101,8 +101,14 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
           const quickViewIcons = document.querySelectorAll(".foxy_product_modal-icon-open");
           quickViewIcons.forEach(icon =>
             icon.addEventListener("click", e => {
-              quickViewShowHide(e.target);
               init(e);
+              quickViewShowHide(e.target);
+            })
+          );
+          const quickViewCloser = document.querySelectorAll(".product_quickview_closer");
+          quickViewCloser.forEach(closer =>
+            closer.addEventListener("click", e => {
+              quickViewShowHide(e.target);
             })
           );
         })
