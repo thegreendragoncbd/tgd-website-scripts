@@ -683,10 +683,10 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
         return (priceToDiscountFrom - ammountToDiscount).toFixed(2);
       };
       if (hasDragonSlayerSub) {
-        return handlePriceDiscount(priceToDiscountFrom, 3, "DragonSlayer");
+        return handlePriceDiscount(priceToDiscountFrom, 5, "DragonSlayer");
       }
       if (hasDragonMasterSub) {
-        return handlePriceDiscount(priceToDiscountFrom, 5, "DragonMaster");
+        return handlePriceDiscount(priceToDiscountFrom, 10, "DragonMaster");
       }
       return priceToDiscountFrom;
     }
