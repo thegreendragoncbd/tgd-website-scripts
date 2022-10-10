@@ -66,9 +66,9 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
       const allGridItems = document.querySelectorAll(".foxy_product_collection-item");
 
       allGridItems.forEach((item, index) => {
-        const itemName = item.querySelector(
-          ".foxy_product_item_info .foxy_product_item_name"
-        ).innerText;
+        const itemName = item
+          .querySelector(".foxy_product_item_info .foxy_product_item_name")
+          .innerText.split(" ")[0];
         item.setAttribute("id", `${itemName}-${index}`);
       });
     }
