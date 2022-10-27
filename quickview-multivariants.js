@@ -155,11 +155,9 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
       const params = new URLSearchParams(window.location.search);
 
       for (const [key, value] of params) {
-        console.log([key, value]);
         const variantToSelect = document.querySelector(`#variants-${key} input[value="${value}"]`);
 
         if (variantToSelect) {
-          console.log(variantToSelect);
           variantToSelect.click();
         }
       }
@@ -386,7 +384,6 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
     }
 
     function handleVariantSelection(e) {
-      console.log(e);
       let variants_item = ".foxy_variant_item";
       if (isAllowedURL()) variants_item = `#${element.id} .foxy_variant_item`;
       const variantSelection = e.target.value;
