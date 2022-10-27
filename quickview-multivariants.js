@@ -108,22 +108,6 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
       });
     }
 
-    // const quickViewCloser = document.querySelectorAll(".product_quickview_closer");
-    // quickViewCloser.forEach(closer =>
-    //   closer.addEventListener("click", e => {
-    //     quickViewShowHide(e.target);
-    //   })
-    // );
-    // function quickViewShowHide(target) {
-    //   if (target.classList.contains("product_quickview_closer")) {
-    //     target.parentElement.classList.toggle("show-quickview");
-    //     return;
-    //   }
-
-    //   const quickView = target.parentElement.querySelector(".product_quickview_wrapper");
-    //   quickView.classList.toggle("show-quickview");
-    // }
-
     function init(e) {
       // quickview Ways
       if (isAllowedURL()) {
@@ -163,6 +147,22 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
 
       // Handle selected variants
       element.querySelector("#foxy-form").addEventListener("change", handleVariantSelection);
+      handleOnPageLoadVariantSelection();
+    }
+
+    function handleOnPageLoadVariantSelection() {
+      if (element !== document) return;
+      const params = new URLSearchParams(window.location.search);
+
+      for (const [key, value] of params) {
+        console.log([key, value]);
+        const variantToSelect = document.querySelector(`#variants-${key} input[value="${value}"]`);
+
+        if (variantToSelect) {
+          console.log(variantToSelect);
+          variantToSelect.click();
+        }
+      }
     }
 
     function buildVariantItemsList(elementID) {
@@ -386,6 +386,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
     }
 
     function handleVariantSelection(e) {
+      console.log(e);
       let variants_item = ".foxy_variant_item";
       if (isAllowedURL()) variants_item = `#${element.id} .foxy_variant_item`;
       const variantSelection = e.target.value;
