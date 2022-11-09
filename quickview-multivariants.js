@@ -92,35 +92,54 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
     }
 
     function handleCmsFilterEvent() {
-      let interval = 0;
-      function check() {
-        console.log(
-          "window.fsAttributes ",
-          window.fsAttributes,
-          window.fsAttributes.cms.listInstances
+      window.fsAttributes = window.fsAttributes || [];
+
+      const handleRenderedItems = renderedItems => {
+        console.log("renderedItems", renderedItems);
+        if (!renderedItems.length) return;
+        handleQuickViewSetUp();
+        setPricesForProductListings();
+        const quickViewIcons = document.querySelectorAll(".foxy_product_modal-icon-open");
+        quickViewIcons.forEach(icon =>
+          icon.addEventListener("click", e => {
+            init(e);
+          })
         );
-        if (window.fsAttributes.cms.listInstances) {
-          window.fsAttributes.cms.listInstances.forEach(instance => {
-            instance.on("renderitems", renderedItems => {
-              if (!renderedItems.length) return;
-              handleQuickViewSetUp();
-              setPricesForProductListings();
-              const quickViewIcons = document.querySelectorAll(".foxy_product_modal-icon-open");
-              quickViewIcons.forEach(icon =>
-                icon.addEventListener("click", e => {
-                  init(e);
-                })
-              );
+      };
+      console.log("window.fsAttributes ", window.fsAttributes);
+
+      window.fsAttributes.push(
+        [
+          "cmsfilter",
+          filterInstances => {
+            console.log("cmsfilter Successfully loaded!");
+
+            // The callback passes a `filterInstances` array with all the `CMSFilters` instances on the page.
+            const [filterInstance] = filterInstances;
+
+            // The `renderitems` event runs whenever the list renders items after filtering.
+            filterInstance.listInstance.on("renderitems", renderedItems => {
+              console.log("renderedItems cmsfilter", renderedItems);
+              handleRenderedItems(renderedItems);
             });
-          });
-        } else {
-          interval + 1;
-          if (interval <= 10) {
-            setTimeout(check, 200);
-          }
-        }
-      }
-      check();
+          },
+        ],
+        [
+          "cmsload",
+          listInstances => {
+            console.log("cmsload Successfully loaded!");
+
+            // The callback passes a `listInstances` array with all the `CMSList` instances on the page.
+            const [listInstance] = listInstances;
+
+            // The `renderitems` event runs whenever the list renders items after switching pages.
+            listInstance.on("renderitems", renderedItems => {
+              console.log("renderedItems cmsload", renderedItems);
+              handleRenderedItems(renderedItems);
+            });
+          },
+        ]
+      );
     }
 
     function init(e) {
