@@ -711,7 +711,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
       if (hasDragonMasterSub) {
         return handlePriceDiscount(priceToDiscountFrom, 10, "DragonMaster");
       }
-      return priceToDiscountFrom;
+      return Number(priceToDiscountFrom).toFixed(2);
     }
   })();
 }
