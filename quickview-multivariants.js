@@ -92,20 +92,31 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
     }
 
     function handleCmsFilterEvent() {
-      window.fsAttributes = window.fsAttributes || [];
-      window.fsAttributes.cms.listInstances.forEach(instance => {
-        instance.on("renderitems", renderedItems => {
-          if (!renderedItems.length) return;
-          handleQuickViewSetUp();
-          setPricesForProductListings();
-          const quickViewIcons = document.querySelectorAll(".foxy_product_modal-icon-open");
-          quickViewIcons.forEach(icon =>
-            icon.addEventListener("click", e => {
-              init(e);
-            })
-          );
-        });
-      });
+      let interval = 0;
+      function check() {
+        window.fsAttributes = window.fsAttributes || [];
+        if (window.fsAttributes.cms.listInstances) {
+          window.fsAttributes.cms.listInstances.forEach(instance => {
+            instance.on("renderitems", renderedItems => {
+              if (!renderedItems.length) return;
+              handleQuickViewSetUp();
+              setPricesForProductListings();
+              const quickViewIcons = document.querySelectorAll(".foxy_product_modal-icon-open");
+              quickViewIcons.forEach(icon =>
+                icon.addEventListener("click", e => {
+                  init(e);
+                })
+              );
+            });
+          });
+        } else {
+          interval + 1;
+          if (interval <= 10) {
+            setTimeout(check, 200);
+          }
+        }
+      }
+      check();
     }
 
     function init(e) {
