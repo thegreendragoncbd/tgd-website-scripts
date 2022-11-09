@@ -94,7 +94,11 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
     function handleCmsFilterEvent() {
       let interval = 0;
       function check() {
-        window.fsAttributes = window.fsAttributes || [];
+        console.log(
+          "window.fsAttributes ",
+          window.fsAttributes,
+          window.fsAttributes.cms.listInstances
+        );
         if (window.fsAttributes.cms.listInstances) {
           window.fsAttributes.cms.listInstances.forEach(instance => {
             instance.on("renderitems", renderedItems => {
