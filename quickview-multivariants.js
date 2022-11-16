@@ -289,11 +289,9 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
       if (variantItems.length > 0) {
         // Variants that affect price
         const sortedPrices = variantItems
-          .map(variant => [
-            Number(variant.price),
-            Number(variant.salePrice) ? Number(variant.salePrice) : Number(variant.price),
-          ])
-          .flat()
+          .map(variant =>
+            Number(variant.salePrice) ? Number(variant.salePrice) : Number(variant.price)
+          )
           .sort((a, b) => a - b);
 
         if (sortedPrices[0] !== sortedPrices[sortedPrices.length - 1]) {
