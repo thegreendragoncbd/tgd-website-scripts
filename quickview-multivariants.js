@@ -301,7 +301,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
             } else {
               allProductVariantsHaveSalePrices.push({
                 salePrice: variant.salePrice,
-                hasSalePrice: true,
+                hasSalePrice: false,
                 price: variant.price,
               });
               return Number(variant.price);
@@ -332,6 +332,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
             beforeSalePriceElement.classList.remove("w-dyn-bind-empty");
             beforeSalePriceElement.parentElement.style.display = "inline-block";
             activePriceElement.parentElement.style.display = "inline-block";
+            return;
           }
           activePriceElement.textContent = getMembershipSpecialPrice(sortedPrices[0]);
           priceAddToCart.value = sortedPrices[0];
