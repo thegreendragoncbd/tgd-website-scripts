@@ -288,10 +288,25 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
       //--- Product has variants---
       if (variantItems.length > 0) {
         // Variants that affect price
+        let allProductVariantsHaveSalePrices = [];
         const sortedPrices = variantItems
-          .map(variant =>
-            Number(variant.salePrice) ? Number(variant.salePrice) : Number(variant.price)
-          )
+          .map(variant => {
+            if (Number(variant.salePrice)) {
+              allProductVariantsHaveSalePrices.push({
+                salePrice: variant.salePrice,
+                hasSalePrice: true,
+                price: variant.price,
+              });
+              return Number(variant.salePrice);
+            } else {
+              allProductVariantsHaveSalePrices.push({
+                salePrice: variant.salePrice,
+                hasSalePrice: true,
+                price: variant.price,
+              });
+              return Number(variant.price);
+            }
+          })
           .sort((a, b) => a - b);
 
         if (sortedPrices[0] !== sortedPrices[sortedPrices.length - 1]) {
@@ -303,7 +318,21 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
           beforeSalePriceElement.parentElement.style.display = "none";
           activePriceElement.parentElement.style.display = "none";
         } else {
-          // Variants that don't affect price
+          // Variants that don't affect price with salePrice and without
+          if (
+            allProductVariantsHaveSalePrices.every(
+              productCheck => productCheck.hasSalePrice === true
+            )
+          ) {
+            beforeSalePriceElement.textContent = allProductVariantsHaveSalePrices[0].price;
+            activePriceElement.textContent = getMembershipSpecialPrice(
+              allProductVariantsHaveSalePrices[0].salePrice
+            );
+            priceAddToCart.value = allProductVariantsHaveSalePrices[0].salePrice;
+
+            beforeSalePriceElement.parentElement.style.display = "inline-block";
+            activePriceElement.parentElement.style.display = "inline-block";
+          }
           activePriceElement.textContent = getMembershipSpecialPrice(sortedPrices[0]);
           priceAddToCart.value = sortedPrices[0];
           activePriceElement.classList.remove("w-dyn-bind-empty");
