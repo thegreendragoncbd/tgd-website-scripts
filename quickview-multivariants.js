@@ -330,6 +330,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
             );
             priceAddToCart.value = allProductVariantsHaveSalePrices[0].salePrice;
             beforeSalePriceElement.classList.remove("w-dyn-bind-empty");
+            activePriceElement.classList.remove("w-dyn-bind-empty");
             beforeSalePriceElement.parentElement.style.display = "inline-block";
             activePriceElement.parentElement.style.display = "inline-block";
             return;
