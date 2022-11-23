@@ -90,6 +90,17 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
         addPrice();
       });
     }
+    function updateCategoryCodeValue(renderedItems) {
+      const pattern = /(?!and\b)\b\w+/g;
+      renderedItems.forEach(item => {
+        const categoryInput = item.querySelector("input[name=category]");
+        if (categoryInput.value) {
+          const substrings = categoryInput.value.toLowerCase().match(pattern);
+          const categoryCode = substrings.join("-");
+          categoryInput.value = categoryCode;
+        }
+      });
+    }
 
     function handleCmsFilterEvent() {
       window.fsAttributes = window.fsAttributes || [];
@@ -98,6 +109,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
         if (!renderedItems.length) return;
         handleQuickViewSetUp();
         setPricesForProductListings();
+        updateCategoryCodeValue(renderedItems);
         const quickViewIcons = document.querySelectorAll(".foxy_product_modal-icon-open");
         quickViewIcons.forEach(icon =>
           icon.addEventListener("click", e => {
