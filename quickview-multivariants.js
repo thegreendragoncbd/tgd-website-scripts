@@ -730,8 +730,10 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
     // Utilities / helper functions --
 
     function hasMembership() {
-      FC.custom.hasSubscriptionByCode("dragonslayer") ||
-        FC.custom.hasSubscriptionByCode("dragonmaster");
+      return (
+        FC.custom.hasSubscriptionByCode("dragonslayer") ||
+        FC.custom.hasSubscriptionByCode("dragonmaster")
+      );
     }
 
     function filterEmpty(obj) {
