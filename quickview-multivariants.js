@@ -357,6 +357,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
           activePriceElement.textContent = getMembershipSpecialPrice(sortedPrices[0]);
           priceAddToCart.value = sortedPrices[0];
           activePriceElement.classList.remove("w-dyn-bind-empty");
+          beforeSalePriceElement.classList.remove("w-dyn-bind-empty");
           activePriceElement.parentElement.style.display = "inline-block";
           beforeSalePriceElement.parentElement.style.display = hasMembership()
             ? "inline-block"
