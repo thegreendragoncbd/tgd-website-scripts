@@ -282,7 +282,9 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
       if (!variantItems.length) {
         // Product has salesPrice or not
         if (productItemObject.salePrice) {
-          beforeSalePriceElement.textContent = productItemObject.price;
+          beforeSalePriceElement.textContent = hasMembership()
+            ? productItemObject.salePrice
+            : productItemObject.price;
           activePriceElement.textContent = getMembershipSpecialPrice(productItemObject.salePrice);
           priceAddToCart.value = productItemObject.salePrice;
 
@@ -292,7 +294,10 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
           activePriceElement.textContent = getMembershipSpecialPrice(productItemObject.price);
           activePriceElement.classList.remove("w-dyn-bind-empty");
           activePriceElement.parentElement.style.display = "inline-block";
-          beforeSalePriceElement.parentElement.style.display = "none";
+          beforeSalePriceElement.parentElement.style.display = hasMembership()
+            ? "inline-block"
+            : "none";
+          beforeSalePriceElement.textContent = productItemObject.price;
           priceAddToCart.value = productItemObject.price;
         }
       }
@@ -336,7 +341,9 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
               productCheck => productCheck.hasSalePrice === true
             )
           ) {
-            beforeSalePriceElement.textContent = allProductVariantsHaveSalePrices[0].price;
+            beforeSalePriceElement.textContent = hasMembership()
+              ? allProductVariantsHaveSalePrices[0].salePrice
+              : allProductVariantsHaveSalePrices[0].price;
             activePriceElement.textContent = getMembershipSpecialPrice(
               allProductVariantsHaveSalePrices[0].salePrice
             );
@@ -351,6 +358,10 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
           priceAddToCart.value = sortedPrices[0];
           activePriceElement.classList.remove("w-dyn-bind-empty");
           activePriceElement.parentElement.style.display = "inline-block";
+          beforeSalePriceElement.parentElement.style.display = hasMembership()
+            ? "inline-block"
+            : "none";
+          beforeSalePriceElement.textContent = sortedPrices[0];
         }
       }
     }
@@ -667,7 +678,9 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
                 activePriceElement.textContent = getMembershipSpecialPrice(
                   selectedProductVariantInfo["salePrice"]
                 );
-                beforeSalePriceElement.textContent = selectedProductVariantInfo[key];
+                beforeSalePriceElement.textContent = hasMembership()
+                  ? selectedProductVariantInfo["salePrice"]
+                  : selectedProductVariantInfo[key];
 
                 activePriceElement.classList.remove("w-dyn-bind-empty");
                 beforeSalePriceElement.classList.remove("w-dyn-bind-empty");
@@ -675,7 +688,9 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
                 beforeSalePriceElement.parentElement.style.display = "inline-block";
                 break;
               }
-              beforeSalePriceElement.parentElement.style.display = "none";
+              beforeSalePriceElement.parentElement.style.display = hasMembership()
+                ? "inline-block"
+                : "none";
               activePriceElement.textContent = getMembershipSpecialPrice(
                 selectedProductVariantInfo[key]
               );
@@ -713,6 +728,11 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
       certification.style.display = "block";
     }
     // Utilities / helper functions --
+
+    function hasMembership() {
+      FC.custom.hasSubscriptionByCode("dragonslayer") ||
+        FC.custom.hasSubscriptionByCode("dragonmaster");
+    }
 
     function filterEmpty(obj) {
       return Object.entries(obj).reduce((a, [k, v]) => (v ? ((a[k] = v), a) : a), {});
