@@ -732,8 +732,8 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
 
     function hasMembership() {
       return (
-        FC.custom.hasSubscriptionByCode("dragonslayer") ||
-        FC.custom.hasSubscriptionByCode("dragonmaster")
+        FC.custom.hasSubscriptionByCode("dragon-slayer") ||
+        FC.custom.hasSubscriptionByCode("dragon-master")
       );
     }
 
@@ -754,8 +754,8 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
 
     function getMembershipSpecialPrice(priceToDiscountFrom) {
       // If it has subscription then return the discounted rate add discount text, else return the same rate
-      const hasDragonSlayerSub = FC.custom.hasSubscriptionByCode("dragonslayer");
-      const hasDragonMasterSub = FC.custom.hasSubscriptionByCode("dragonmaster");
+      const hasDragonSlayerSub = FC.custom.hasSubscriptionByCode("dragon-slayer");
+      const hasDragonMasterSub = FC.custom.hasSubscriptionByCode("dragon-master");
       const percentFromAmmount = (amount, percent) => (amount * percent) / 100;
       const handlePriceDiscount = (priceToDiscountFrom, discountPercent, membershipName) => {
         const ammountToDiscount = percentFromAmmount(priceToDiscountFrom, discountPercent);
