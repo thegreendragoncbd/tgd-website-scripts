@@ -194,7 +194,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
       if (element !== document) return;
 
       const galleryImages = element.querySelectorAll(
-        ".product_images-wrapper .multi_list .multi-item"
+        ".product_images-wrapper .multi_list .multi_item"
       );
 
       const updateMainImageHandler = evt => {
