@@ -4,7 +4,8 @@ function isAllowedURL() {
     URL_PATH.includes("/product-parent-categories/") ||
     URL_PATH.includes("/product-categories/") ||
     URL_PATH.includes("/brands/") ||
-    URL_PATH.includes("/shop-all-products")
+    URL_PATH.includes("/shop-all-products") ||
+    URL_PATH.includes("/brand/")
   );
 }
 if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
