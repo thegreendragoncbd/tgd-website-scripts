@@ -187,6 +187,25 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
       // Handle selected variants
       element.querySelector("#foxy-form").addEventListener("change", handleVariantSelection);
       handleOnPageLoadVariantSelection();
+      addImageChangeFunctionality();
+    }
+
+    function addImageChangeFunctionality() {
+      if (element !== document) return;
+
+      const galleryImages = element.querySelectorAll(
+        ".product_images-wrapper .multi_list .multi-item"
+      );
+
+      const updateMainImageHandler = evt => {
+        const imageClicked = evt.target.src;
+
+        document.querySelector("#foxy-image").src = imageClicked;
+      };
+
+      galleryImages.forEach(image => {
+        image.addEventListener("click", updateMainImageHandler);
+      });
     }
 
     function handleOnPageLoadVariantSelection() {
