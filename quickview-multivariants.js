@@ -392,6 +392,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
         inventoryElement.textContent = "Please choose options.";
         inventoryElement.classList.remove("w-dyn-bind-empty");
         inventoryElement.nextElementSibling.style.display = "none";
+        return;
       }
 
       if (!variantItems.length) {
