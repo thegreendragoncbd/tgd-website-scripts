@@ -691,7 +691,12 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
           const inputToUpdate = element.querySelector(`input[name="${key}"]`);
           if (inputToUpdate) inputToUpdate.value = selectedProductVariantInfo[key];
 
-          if (key === "inventory") handleQuantityChange();
+          if (key === "inventory") {
+            handleQuantityChange();
+            // Update max quantity
+            element.querySelector(`input[name="quantity_max"]`).value =
+              selectedProductVariantInfo["inventory"];
+          }
           switch (key) {
             case "price":
               if (selectedProductVariantInfo["salePrice"]) {
