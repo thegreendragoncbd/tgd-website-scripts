@@ -586,12 +586,13 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
       }
 
       if (
-        Number(quantity) > Number(inventory) ||
+        Number(quantity) > Number(inventory && allowBackorders === "true") ||
         (Number(inventory) === 0 && allowBackorders === "true")
       ) {
         inventoryElement.textContent = "This item will ship separately at a later time.";
         inventoryElement.classList.remove("margin-top-1-5");
         inventoryElement.nextElementSibling.style.display = "none";
+        element.querySelector(`input[name="quantity_max"]`).value = "";
         element
           .querySelector("#foxy-form .w-embed")
           .insertAdjacentHTML(
@@ -691,13 +692,14 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
           const inputToUpdate = element.querySelector(`input[name="${key}"]`);
           if (inputToUpdate) inputToUpdate.value = selectedProductVariantInfo[key];
 
-          if (key === "inventory") {
-            handleQuantityChange();
-            // Update max quantity
-            element.querySelector(`input[name="quantity_max"]`).value =
-              selectedProductVariantInfo["inventory"];
-          }
           switch (key) {
+            case "inventory":
+              // Update max quantity
+              element.querySelector(`input[name="quantity_max"]`).value =
+                selectedProductVariantInfo["inventory"];
+
+              handleQuantityChange();
+              break;
             case "price":
               if (selectedProductVariantInfo["salePrice"]) {
                 priceAddToCart.value = selectedProductVariantInfo["salePrice"];
