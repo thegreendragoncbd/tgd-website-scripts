@@ -414,7 +414,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
         }
 
         if (
-          Number(quantity) > Number(inventory) ||
+          (Number(quantity) > Number(inventory) && allowBackorders === "true") ||
           (Number(inventory) === 0 && allowBackorders === "true")
         ) {
           inventoryElement.textContent = "This item will ship separately at a later time.";
