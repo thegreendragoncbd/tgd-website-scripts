@@ -417,14 +417,14 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
           (Number(quantity) > Number(inventory) && allowBackorders === "true") ||
           (Number(inventory) === 0 && allowBackorders === "true")
         ) {
-          inventoryElement.textContent = "This item will ship separately at a later time.";
+          inventoryElement.textContent = "Item Available for Backorder.";
           inventoryElement.classList.remove("margin-top-1-5");
           inventoryElement.nextElementSibling.style.display = "none";
           element
             .querySelector("#foxy-form .w-embed")
             .insertAdjacentHTML(
               "beforeend",
-              `<input type="hidden" name="Delayed_shipping" value="This item will ship separately at a later time.">`
+              `<input type="hidden" name="Delayed_shipping" value="Item Available for Backorder.">`
             );
           return;
         }
@@ -589,7 +589,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
         (Number(quantity) > Number(inventory) && allowBackorders === "true") ||
         (Number(inventory) === 0 && allowBackorders === "true")
       ) {
-        inventoryElement.textContent = "This item will ship separately at a later time.";
+        inventoryElement.textContent = "Item Available for Backorder.";
         inventoryElement.classList.remove("margin-top-1-5");
         inventoryElement.nextElementSibling.style.display = "none";
         element.querySelector(`input[name="quantity_max"]`).value = "";
@@ -597,7 +597,7 @@ if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
           .querySelector("#foxy-form .w-embed")
           .insertAdjacentHTML(
             "beforeend",
-            `<input type="hidden" name="Delayed_shipping" value="This item will ship separately at a later time.">`
+            `<input type="hidden" name="Delayed_shipping" value="Item Available for Backorder.">`
           );
         submitButton.disabled = false;
         submitButton.style.backgroundColor = "#37b772";
