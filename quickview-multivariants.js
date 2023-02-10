@@ -41,7 +41,7 @@ if (/\/(product).*/.test(URL_PATH) || isAllowedURL()) {
     );
 
     // Init product detail page
-    if (/\/(products).*/.test(URL_PATH)) {
+    if (/\/(product).*/.test(URL_PATH)) {
       $(document).ready(() => {
         init();
       });
