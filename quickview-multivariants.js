@@ -8,7 +8,7 @@ function isAllowedURL() {
     URL_PATH.includes("/brand/")
   );
 }
-if (/\/(products).*/.test(URL_PATH) || isAllowedURL()) {
+if (/\/(product).*/.test(URL_PATH) || isAllowedURL()) {
   (function () {
     // Constants and variables
     const STRAIN_DIV_ID = "#variants-strain";
