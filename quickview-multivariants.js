@@ -401,7 +401,7 @@ if (/\/(product).*/.test(URL_PATH) || isAllowedURL()) {
         const submitButton = element.querySelector("#foxy-form input[type=submit]");
         if (Number(inventory) > 0) {
           inventoryElement.textContent = inventory;
-          inventoryElement.nextSibling.style.display = "inline-block";
+          inventoryElement.nextSibling.style.display = "inline";
           return;
         }
 
@@ -605,7 +605,7 @@ if (/\/(product).*/.test(URL_PATH) || isAllowedURL()) {
       }
       if (Number(quantity) <= Number(inventory)) {
         inventoryElement.textContent = inventory;
-        inventoryElement.nextSibling.style.display = "inline-block";
+        inventoryElement.nextSibling.style.display = "inline";
         if (element.querySelector("input[name=Delayed_shipping]"))
           element.querySelector("input[name=Delayed_shipping]").remove();
         submitButton.disabled = false;
