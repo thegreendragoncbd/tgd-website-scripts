@@ -1,5 +1,5 @@
 const URL_PATH = window.location.pathname;
-function isAllowedURL() {
+function isAllowedURLQuickViews() {
   return (
     URL_PATH.includes("/product-parent-categories/") ||
     URL_PATH.includes("/product-categories/") ||
@@ -8,7 +8,10 @@ function isAllowedURL() {
     URL_PATH.includes("/brand/")
   );
 }
-if (/\/(product).*/.test(URL_PATH) || isAllowedURL()) {
+function isProductCMSPage() {
+  return /\/(product)\/.*/.test(URL_PATH);
+}
+if (isProductCMSPage() || isAllowedURLQuickViews()) {
   (function () {
     // Constants and variables
     const STRAIN_DIV_ID = "#variants-strain";
@@ -41,13 +44,13 @@ if (/\/(product).*/.test(URL_PATH) || isAllowedURL()) {
     );
 
     // Init product detail page
-    if (/\/(product).*/.test(URL_PATH)) {
+    if (isProductCMSPage()) {
       $(document).ready(() => {
         init();
       });
     }
     // Init for quickviews
-    if (isAllowedURL()) {
+    if (isAllowedURLQuickViews()) {
       $(document).ready(() => {
         handleQuickViewSetUp();
         setPricesForProductListings();
@@ -149,7 +152,7 @@ if (/\/(product).*/.test(URL_PATH) || isAllowedURL()) {
 
     function init(e) {
       // quickview Ways
-      if (isAllowedURL()) {
+      if (isAllowedURLQuickViews()) {
         element = e.target.parentElement;
         variantGroups = [];
 
@@ -224,7 +227,7 @@ if (/\/(product).*/.test(URL_PATH) || isAllowedURL()) {
     function buildVariantItemsList(elementID) {
       variantItems = [];
       let variants_item = ".foxy_variant_item";
-      if (isAllowedURL()) variants_item = `#${elementID} .foxy_variant_item`;
+      if (isAllowedURLQuickViews()) variants_item = `#${elementID} .foxy_variant_item`;
       $(variants_item).each(function () {
         const price = $(this).find(".foxy_variants_item-price").text();
         const salePrice = $(this).find(".foxy_variants_item-sale-price").text();
@@ -267,7 +270,7 @@ if (/\/(product).*/.test(URL_PATH) || isAllowedURL()) {
     function buildProductItemList(elementID) {
       productItemObject = {};
       let item_info = ".foxy_product_item_info";
-      if (isAllowedURL()) item_info = `#${elementID} .foxy_product_item_info`;
+      if (isAllowedURLQuickViews()) item_info = `#${elementID} .foxy_product_item_info`;
       $(item_info).each(function () {
         let name = $(this).find(".foxy_product_item_name").text();
         let price = $(this).find(".foxy_product_item_price").text();
@@ -433,7 +436,7 @@ if (/\/(product).*/.test(URL_PATH) || isAllowedURL()) {
 
     function buildVariants(elementID) {
       let variants_item = ".foxy_variant_item";
-      if (isAllowedURL()) variants_item = `#${elementID} .foxy_variant_item`;
+      if (isAllowedURLQuickViews()) variants_item = `#${elementID} .foxy_variant_item`;
       $(variants_item).each(function (index) {
         let strain = $(this).find(".foxy_variants_item-strain").text();
         let size = $(this).find(".foxy_variants_item-size").text();
@@ -453,7 +456,7 @@ if (/\/(product).*/.test(URL_PATH) || isAllowedURL()) {
       const variantGroupName = capitalizeFirstLetter(VariantContainer.split("-")[1]);
       if (variantGroupName) variantGroups.push(variantGroupName);
       let variant_container = VariantContainer;
-      if (isAllowedURL()) variant_container = `#${element.id} ${VariantContainer}`;
+      if (isAllowedURLQuickViews()) variant_container = `#${element.id} ${VariantContainer}`;
 
       if (variantInfo != "") {
         // Show variant container
@@ -485,7 +488,7 @@ if (/\/(product).*/.test(URL_PATH) || isAllowedURL()) {
 
     function handleVariantSelection(e) {
       let variants_item = ".foxy_variant_item";
-      if (isAllowedURL()) variants_item = `#${element.id} .foxy_variant_item`;
+      if (isAllowedURLQuickViews()) variants_item = `#${element.id} .foxy_variant_item`;
       const variantSelection = e.target.value;
       const variantSelectionGroup = e.target.name;
       if (!variantSelectionGroup) return;
