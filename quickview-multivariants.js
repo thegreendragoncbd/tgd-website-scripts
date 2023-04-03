@@ -440,7 +440,7 @@ if (isProductCMSPage() || isAllowedURLQuickViews()) {
     }
 
     function buildVariants() {
-      console.log(variant);
+      console.log(variantItems);
       variantItems.forEach((variant, index) => {
         console.log(variant);
         addVariantGroup(variant.strain, STRAIN_DIV_ID, index);
