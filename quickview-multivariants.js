@@ -114,12 +114,12 @@ if (isProductCMSPage() || isAllowedURLQuickViews()) {
         setPricesForProductListings();
         updateCategoryCodeValue(renderedItems);
         const quickViewIcons = document.querySelectorAll(".foxy_product_modal-icon-open");
-        if()
-        quickViewIcons.forEach(icon =>
-          icon.addEventListener("click", e => {
-            init(e);
-          })
-        );
+        if (quickViewIcons.length)
+          quickViewIcons.forEach(icon =>
+            icon.addEventListener("click", e => {
+              init(e);
+            })
+          );
       };
 
       window.fsAttributes.push(
