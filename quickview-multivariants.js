@@ -440,6 +440,7 @@ if (isProductCMSPage() || isAllowedURLQuickViews()) {
     }
 
     function buildVariants() {
+      console.log(variant);
       variantItems.forEach((variant, index) => {
         console.log(variant);
         addVariantGroup(variant.strain, STRAIN_DIV_ID, index);
@@ -503,6 +504,7 @@ if (isProductCMSPage() || isAllowedURLQuickViews()) {
 
       // Possible product and variant combinations and their product info
       const availableProductsPerVariant = [];
+      console.log("handleVariantSelection", variantItems);
       variantItems.forEach((variant, index) => {
         const currentProductValues = Object.values(variant);
 
