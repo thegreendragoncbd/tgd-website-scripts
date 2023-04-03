@@ -8,7 +8,7 @@ function isAllowedURLQuickViews() {
     URL_PATH.includes("/brand/")
   );
 }
-function isProductCMSPage() {
+function isProductCMSPage(URL_PATH) {
   return /\/(product)\/.*/.test(URL_PATH);
 }
 if (isProductCMSPage() || isAllowedURLQuickViews()) {
@@ -19,7 +19,6 @@ if (isProductCMSPage() || isAllowedURLQuickViews()) {
     const FLAVOR_DIV_ID = "#variants-flavor";
     const STRENGTH_DIV_ID = "#variants-strength";
     const TYPE_DIV_ID = "#variants-type";
-    const URL_PATH = window.location.pathname;
     const RADIO_DISABLED = "radio-disabled";
 
     let variantGroups = [];
@@ -115,11 +114,12 @@ if (isProductCMSPage() || isAllowedURLQuickViews()) {
         setPricesForProductListings();
         updateCategoryCodeValue(renderedItems);
         const quickViewIcons = document.querySelectorAll(".foxy_product_modal-icon-open");
-        quickViewIcons.forEach(icon =>
-          icon.addEventListener("click", e => {
-            init(e);
-          })
-        );
+        if (quickViewIcons.length)
+          quickViewIcons.forEach(icon =>
+            icon.addEventListener("click", e => {
+              init(e);
+            })
+          );
       };
 
       window.fsAttributes.push(
@@ -179,7 +179,7 @@ if (isProductCMSPage() || isAllowedURLQuickViews()) {
       element.querySelector("#foxy-image").setAttribute("srcset", "");
 
       // Build variant/radio options
-      buildVariants(element.id);
+      buildVariants();
 
       //Add Price according to product
       addPrice();
@@ -226,9 +226,11 @@ if (isProductCMSPage() || isAllowedURLQuickViews()) {
 
     function buildVariantItemsList(elementID) {
       variantItems = [];
-      let variants_item = ".foxy_variant_item";
-      if (isAllowedURLQuickViews()) variants_item = `#${elementID} .foxy_variant_item`;
+      const variants_item = isAllowedURLQuickViews()
+        ? `#${elementID} .foxy_variant_item`
+        : ".foxy_variant_item";
       $(variants_item).each(function () {
+        const name = $(this).find(".foxy_variants_item-name").text();
         const price = $(this).find(".foxy_variants_item-price").text();
         const salePrice = $(this).find(".foxy_variants_item-sale-price").text();
         const weight = $(this).find(".foxy_variants_item-weight").text();
@@ -244,10 +246,13 @@ if (isProductCMSPage() || isAllowedURLQuickViews()) {
         const type = $(this).find(".foxy_variants_item-type").text();
         const allowBackorders = $(this).find(".foxy_variants_item-allow-backorders").text();
         const restrictedShipping = $(this).find(".foxy_variants_item-restricted-shipping").text();
-        const itemCertification = $(this).find(".foxy_variants_item-certification-link").text();
+        const itemCertification = $(this).find(".foxy_variants_item-certification-link").text()
+          ? $(this).find(".foxy_variants_item-certification-link").text()
+          : "none";
 
         variantItems.push(
           filterEmpty({
+            name,
             strain,
             size,
             flavor,
@@ -434,21 +439,13 @@ if (isProductCMSPage() || isAllowedURLQuickViews()) {
       }
     }
 
-    function buildVariants(elementID) {
-      let variants_item = ".foxy_variant_item";
-      if (isAllowedURLQuickViews()) variants_item = `#${elementID} .foxy_variant_item`;
-      $(variants_item).each(function (index) {
-        let strain = $(this).find(".foxy_variants_item-strain").text();
-        let size = $(this).find(".foxy_variants_item-size").text();
-        let flavor = $(this).find(".foxy_variants_item-flavor").text();
-        let strength = $(this).find(".foxy_variants_item-strength").text();
-        let type = $(this).find(".foxy_variants_item-type").text();
-
-        addVariantGroup(strain, STRAIN_DIV_ID, index);
-        addVariantGroup(size, SIZE_DIV_ID, index);
-        addVariantGroup(flavor, FLAVOR_DIV_ID, index);
-        addVariantGroup(strength, STRENGTH_DIV_ID, index);
-        addVariantGroup(type, TYPE_DIV_ID, index);
+    function buildVariants() {
+      variantItems.forEach((variant, index) => {
+        addVariantGroup(variant.strain, STRAIN_DIV_ID, index);
+        addVariantGroup(variant.size, SIZE_DIV_ID, index);
+        addVariantGroup(variant.flavor, FLAVOR_DIV_ID, index);
+        addVariantGroup(variant.strength, STRENGTH_DIV_ID, index);
+        addVariantGroup(variant.type, TYPE_DIV_ID, index);
       });
     }
 
@@ -504,64 +501,12 @@ if (isProductCMSPage() || isAllowedURLQuickViews()) {
         .classList.add("option-selected");
 
       // Possible product and variant combinations and their product info
-      let availableProductsPerVariant = [];
+      const availableProductsPerVariant = [];
+      variantItems.forEach((variant, index) => {
+        const currentProductValues = Object.values(variant);
 
-      $(variants_item).each(function () {
-        let price = $(this).find(".foxy_variants_item-price").text();
-        let salePrice = $(this).find(".foxy_variants_item-sale-price").text();
-        let weight = $(this).find(".foxy_variants_item-weight").text();
-        let inventory = $(this).find(".foxy_variants_item-inventory").text()
-          ? $(this).find(".foxy_variants_item-inventory").text()
-          : "0";
-        let image = $(this).find(".foxy_variants_item-image").attr("src");
-        let code = $(this).find(".foxy_variants_item-sku").text();
-        let strain = $(this).find(".foxy_variants_item-strain").text();
-        let size = $(this).find(".foxy_variants_item-size").text();
-        let flavor = $(this).find(".foxy_variants_item-flavor").text();
-        let strength = $(this).find(".foxy_variants_item-strength").text();
-        let type = $(this).find(".foxy_variants_item-type").text();
-        let allowBackorders = $(this).find(".foxy_variants_item-allow-backorders").text();
-        const restrictedShipping = $(this).find(".foxy_variants_item-restricted-shipping").text();
-        const itemCertification = $(this).find(".foxy_variants_item-certification-link").text()
-          ? $(this).find(".foxy_variants_item-certification-link").text()
-          : "none";
-
-        let currentProduct = [
-          strain,
-          size,
-          flavor,
-          strength,
-          type,
-          code,
-          image,
-          inventory,
-          weight,
-          salePrice,
-          price,
-          allowBackorders,
-          restrictedShipping,
-          itemCertification,
-        ];
-
-        if (currentProduct.includes(variantSelection)) {
-          availableProductsPerVariant.push(
-            filterEmpty({
-              strain: strain,
-              size: size,
-              flavor: flavor,
-              strength: strength,
-              type: type,
-              code: code,
-              image: image,
-              inventory: inventory,
-              weight: weight,
-              salePrice: salePrice,
-              price: price,
-              allowBackorders: allowBackorders,
-              restrictedShipping: restrictedShipping,
-              itemCertification: itemCertification,
-            })
-          );
+        if (currentProductValues.includes(variantSelection)) {
+          availableProductsPerVariant.push(filterEmpty(variant));
         }
       });
       updateVariantOptions(availableProductsPerVariant, variantSelectionGroup);
