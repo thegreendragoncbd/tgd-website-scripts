@@ -441,6 +441,7 @@ if (isProductCMSPage() || isAllowedURLQuickViews()) {
 
     function buildVariants() {
       variantItems.forEach((variant, index) => {
+        console.log(variant);
         addVariantGroup(variant.strain, STRAIN_DIV_ID, index);
         addVariantGroup(variant.size, SIZE_DIV_ID, index);
         addVariantGroup(variant.flavor, FLAVOR_DIV_ID, index);
@@ -455,7 +456,7 @@ if (isProductCMSPage() || isAllowedURLQuickViews()) {
       let variant_container = VariantContainer;
       if (isAllowedURLQuickViews()) variant_container = `#${element.id} ${VariantContainer}`;
 
-      if (variantInfo != "") {
+      if (variantInfo) {
         // Show variant container
         element.querySelector(VariantContainer).parentElement.style.display = "block";
         let variantListed = 0;
