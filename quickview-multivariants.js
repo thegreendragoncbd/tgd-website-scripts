@@ -11,7 +11,7 @@ function isAllowedURLQuickViews() {
 function isProductCMSPage(URL_PATH) {
   return /\/(product)\/.*/.test(URL_PATH);
 }
-if (isProductCMSPage() || isAllowedURLQuickViews()) {
+if (isProductCMSPage(URL_PATH) || isAllowedURLQuickViews()) {
   (function () {
     // Constants and variables
     const STRAIN_DIV_ID = "#variants-strain";
@@ -43,7 +43,7 @@ if (isProductCMSPage() || isAllowedURLQuickViews()) {
     );
 
     // Init product detail page
-    if (isProductCMSPage()) {
+    if (isProductCMSPage(URL_PATH)) {
       $(document).ready(() => {
         init();
       });
