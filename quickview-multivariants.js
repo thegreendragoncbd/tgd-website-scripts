@@ -86,17 +86,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         addPrice();
       });
     }
-    function updateCategoryCodeValue(renderedItems) {
-      const pattern = /(?!and\b)\b\w+/g;
-      renderedItems.forEach(item => {
-        const categoryInput = item.element.querySelector("input[name=category]");
-        if (categoryInput.value) {
-          const substrings = categoryInput.value.toLowerCase().match(pattern);
-          const categoryCode = substrings.join("-");
-          categoryInput.value = categoryCode;
-        }
-      });
-    }
 
     function handleCmsFilterEvent() {
       window.fsAttributes = window.fsAttributes || [];
@@ -105,7 +94,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         if (!renderedItems.length) return;
         handleQuickViewSetUp();
         setPricesForProductListings();
-        updateCategoryCodeValue(renderedItems);
       };
 
       window.fsAttributes.push(
