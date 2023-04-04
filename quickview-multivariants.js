@@ -34,7 +34,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       ".product-price_before-sale-wrapper"
     )?.lastChild;
     let activePriceElement = document.querySelector(".product-price_active-wrapper")?.lastChild;
-    let inventoryElement = document.querySelector("#foxy-inventory");
+    const inventoryElement = document.querySelector("#foxy-inventory");
     let priceAddToCart = document.querySelector("input[name=price]");
 
     document.head.insertAdjacentHTML(
@@ -79,6 +79,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           ".product-grid-price_before-sale-wrapper"
         ).lastChild;
         activePriceElement = item.querySelector(".product-grid-price_active-wrapper").lastChild;
+        priceAddToCart = document.querySelector("input[name=price]");
 
         buildProductItemList(item.id);
         buildVariantItemsList(item.id);
