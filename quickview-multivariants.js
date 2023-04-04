@@ -79,7 +79,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           ".product-grid-price_before-sale-wrapper"
         ).lastChild;
         activePriceElement = item.querySelector(".product-grid-price_active-wrapper").lastChild;
-        priceAddToCart = document.querySelector("input[name=price]");
+        priceAddToCart = item.querySelector("input[name=price]");
 
         buildProductItemList(item.id);
         buildVariantItemsList(item.id);
