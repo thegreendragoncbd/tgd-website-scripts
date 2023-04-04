@@ -27,36 +27,33 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
     let selectedProductVariantInfo;
     const element = document;
 
-    // Radio group styles
+    let priceLowElement = document.querySelector(".product-price_low-to-high-wrapper")?.firstChild
+      ?.nextSibling;
+    let priceHighElement = document.querySelector(".product-price_low-to-high-wrapper")?.lastChild;
+    let beforeSalePriceElement = document.querySelector(
+      ".product-price_before-sale-wrapper"
+    )?.lastChild;
+    let activePriceElement = document.querySelector(".product-price_active-wrapper")?.lastChild;
+    let inventoryElement = document.querySelector("#foxy-inventory");
+    let priceAddToCart = document.querySelector("input[name=price]");
+
     document.head.insertAdjacentHTML(
       "beforeend",
       "<style>.radio-group .w-radio.radio-disabled{border: 1px dashed #ccc !important;background-color: white !important;border-radius: 5px !important;} .show-quickview{display: flex !important; opacity: 1!important; transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg) !important;    transform-style: preserve-3d!important;} </style>"
     );
 
-    // Pages with Product Lists early return
+    // Init product detail page
+    if (isProductCMSPage(URL_PATH)) {
+      $(document).ready(() => {
+        init();
+      });
+    }
+    // Pages with Product Lists
     if (isProductListPage()) {
       $(document).ready(() => {
         handleQuickViewSetUp();
         setPricesForProductListings();
         handleCmsFilterEvent();
-      });
-      return;
-    }
-
-    let priceLowElement = document.querySelector(".product-price_low-to-high-wrapper").firstChild
-      .nextSibling;
-    let priceHighElement = document.querySelector(".product-price_low-to-high-wrapper").lastChild;
-    let beforeSalePriceElement = document.querySelector(
-      ".product-price_before-sale-wrapper"
-    ).lastChild;
-    let activePriceElement = document.querySelector(".product-price_active-wrapper").lastChild;
-    let inventoryElement = document.querySelector("#foxy-inventory");
-    let priceAddToCart = document.querySelector("input[name=price]");
-
-    // Init product detail page
-    if (isProductCMSPage(URL_PATH)) {
-      $(document).ready(() => {
-        init();
       });
     }
 
