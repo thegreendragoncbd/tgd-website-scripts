@@ -283,7 +283,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
             ? productItemObject.salePrice
             : productItemObject.price;
           activePriceElement.textContent = getMembershipSpecialPrice(productItemObject.salePrice);
-          priceAddToCart.value = productItemObject.salePrice;
+          if (!isProductListPage()) priceAddToCart.value = productItemObject.salePrice;
 
           beforeSalePriceElement.parentElement.style.display = "inline-block";
           activePriceElement.parentElement.style.display = "inline-block";
@@ -295,7 +295,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
             ? "inline-block"
             : "none";
           beforeSalePriceElement.textContent = productItemObject.price;
-          priceAddToCart.value = productItemObject.price;
+          if (!isProductListPage()) priceAddToCart.value = productItemObject.price;
         }
       }
 
@@ -344,7 +344,8 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
             activePriceElement.textContent = getMembershipSpecialPrice(
               allProductVariantsHaveSalePrices[0].salePrice
             );
-            priceAddToCart.value = allProductVariantsHaveSalePrices[0].salePrice;
+            if (!isProductListPage())
+              priceAddToCart.value = allProductVariantsHaveSalePrices[0].salePrice;
             beforeSalePriceElement.classList.remove("w-dyn-bind-empty");
             activePriceElement.classList.remove("w-dyn-bind-empty");
             beforeSalePriceElement.parentElement.style.display = "inline-block";
@@ -352,7 +353,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
             return;
           }
           activePriceElement.textContent = getMembershipSpecialPrice(sortedPrices[0]);
-          priceAddToCart.value = sortedPrices[0];
+          if (!isProductListPage()) priceAddToCart.value = sortedPrices[0];
           activePriceElement.classList.remove("w-dyn-bind-empty");
           beforeSalePriceElement.classList.remove("w-dyn-bind-empty");
           activePriceElement.parentElement.style.display = "inline-block";
