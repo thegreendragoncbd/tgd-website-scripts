@@ -1,5 +1,5 @@
 const URL_PATH = window.location.pathname;
-function isAllowedURLQuickViews() {
+function isProductListPage() {
   return (
     URL_PATH.includes("/product-parent-categories/") ||
     URL_PATH.includes("/product-categories/") ||
@@ -11,7 +11,7 @@ function isAllowedURLQuickViews() {
 function isProductCMSPage(URL_PATH) {
   return /\/(product)\/.*/.test(URL_PATH);
 }
-if (isProductCMSPage(URL_PATH) || isAllowedURLQuickViews()) {
+if (isProductCMSPage(URL_PATH) || isProductListPage()) {
   (function () {
     // Constants and variables
     const STRAIN_DIV_ID = "#variants-strain";
@@ -21,11 +21,11 @@ if (isProductCMSPage(URL_PATH) || isAllowedURLQuickViews()) {
     const TYPE_DIV_ID = "#variants-type";
     const RADIO_DISABLED = "radio-disabled";
 
-    let variantGroups = [];
+    const variantGroups = [];
     let variantItems = [];
     let productItemObject = {};
     let selectedProductVariantInfo;
-    let element = document;
+    const element = document;
 
     let priceLowElement = document.querySelector(".product-price_low-to-high-wrapper").firstChild
       .nextSibling;
@@ -48,20 +48,12 @@ if (isProductCMSPage(URL_PATH) || isAllowedURLQuickViews()) {
         init();
       });
     }
-    // Init for quickviews
-    if (isAllowedURLQuickViews()) {
+    // Pages with Product Lists
+    if (isProductListPage()) {
       $(document).ready(() => {
         handleQuickViewSetUp();
         setPricesForProductListings();
-
         handleCmsFilterEvent();
-
-        const quickViewIcons = document.querySelectorAll(".foxy_product_modal-icon-open");
-        quickViewIcons.forEach(icon =>
-          icon.addEventListener("click", e => {
-            init(e);
-          })
-        );
       });
     }
 
@@ -113,13 +105,6 @@ if (isProductCMSPage(URL_PATH) || isAllowedURLQuickViews()) {
         handleQuickViewSetUp();
         setPricesForProductListings();
         updateCategoryCodeValue(renderedItems);
-        const quickViewIcons = document.querySelectorAll(".foxy_product_modal-icon-open");
-        if (quickViewIcons.length)
-          quickViewIcons.forEach(icon =>
-            icon.addEventListener("click", e => {
-              init(e);
-            })
-          );
       };
 
       window.fsAttributes.push(
@@ -150,25 +135,10 @@ if (isProductCMSPage(URL_PATH) || isAllowedURLQuickViews()) {
       );
     }
 
-    function init(e) {
-      // quickview Ways
-      if (isAllowedURLQuickViews()) {
-        element = e.target.parentElement;
-        variantGroups = [];
-
-        priceLowElement = element.querySelector(".product-price_low-to-high-wrapper").firstChild
-          .nextSibling;
-        priceHighElement = element.querySelector(".product-price_low-to-high-wrapper").lastChild;
-        beforeSalePriceElement = element.querySelector(
-          ".product-price_before-sale-wrapper"
-        ).lastChild;
-        activePriceElement = element.querySelector(".product-price_active-wrapper").lastChild;
-        inventoryElement = element.querySelector("#foxy-inventory");
-        priceAddToCart = element.querySelector("input[name=price]");
-      }
+    function init() {
       // Create Product and VariantItemsList
-      buildProductItemList(element.id);
-      buildVariantItemsList(element.id);
+      buildProductItemList();
+      buildVariantItemsList();
 
       // Set quantity input defaults
       const quantityInput = element.querySelector('input[name="quantity"]');
@@ -179,7 +149,7 @@ if (isProductCMSPage(URL_PATH) || isAllowedURLQuickViews()) {
       element.querySelector("#foxy-image").setAttribute("srcset", "");
 
       // Build variant/radio options
-      buildVariants(element.id);
+      buildVariants();
 
       //Add Price according to product
       addPrice();
@@ -226,7 +196,7 @@ if (isProductCMSPage(URL_PATH) || isAllowedURLQuickViews()) {
 
     function buildVariantItemsList(elementID) {
       variantItems = [];
-      let variants_item = isAllowedURLQuickViews()
+      let variants_item = isProductListPage()
         ? `#${elementID} .foxy_variant_item`
         : ".foxy_variant_item";
       $(variants_item).each(function () {
@@ -273,7 +243,7 @@ if (isProductCMSPage(URL_PATH) || isAllowedURLQuickViews()) {
     function buildProductItemList(elementID) {
       productItemObject = {};
       let item_info = ".foxy_product_item_info";
-      if (isAllowedURLQuickViews()) item_info = `#${elementID} .foxy_product_item_info`;
+      if (isProductListPage()) item_info = `#${elementID} .foxy_product_item_info`;
       $(item_info).each(function () {
         let name = $(this).find(".foxy_product_item_name").text();
         let price = $(this).find(".foxy_product_item_price").text();
@@ -438,7 +408,7 @@ if (isProductCMSPage(URL_PATH) || isAllowedURLQuickViews()) {
     }
 
     function buildVariants(elementID) {
-      let variants_item = isAllowedURLQuickViews()
+      let variants_item = isProductListPage()
         ? `#${elementID} .foxy_variant_item`
         : ".foxy_variant_item";
       $(variants_item).each(function (index) {
@@ -459,8 +429,7 @@ if (isProductCMSPage(URL_PATH) || isAllowedURLQuickViews()) {
     function addVariantGroup(variantInfo, VariantContainer, index) {
       const variantGroupName = capitalizeFirstLetter(VariantContainer.split("-")[1]);
       if (variantGroupName) variantGroups.push(variantGroupName);
-      let variant_container = VariantContainer;
-      if (isAllowedURLQuickViews()) variant_container = `#${element.id} ${VariantContainer}`;
+      const variant_container = VariantContainer;
 
       if (variantInfo != "") {
         // Show variant container
@@ -491,8 +460,7 @@ if (isProductCMSPage(URL_PATH) || isAllowedURLQuickViews()) {
     }
 
     function handleVariantSelection(e) {
-      let variants_item = ".foxy_variant_item";
-      if (isAllowedURLQuickViews()) variants_item = `#${element.id} .foxy_variant_item`;
+      const variants_item = ".foxy_variant_item";
       const variantSelection = e.target.value;
       const variantSelectionGroup = e.target.name;
       if (!variantSelectionGroup) return;
@@ -508,7 +476,7 @@ if (isProductCMSPage(URL_PATH) || isAllowedURLQuickViews()) {
         .classList.add("option-selected");
 
       // Possible product and variant combinations and their product info
-      let availableProductsPerVariant = [];
+      const availableProductsPerVariant = [];
       // TODO refactor this to only do this once check this variable variantItems
       $(variants_item).each(function () {
         const name = $(this).find(".foxy_variants_item-name").text();
