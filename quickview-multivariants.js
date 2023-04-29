@@ -639,7 +639,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
 
         // Save the selected product variant
         let selectedProductVariant = {};
-        element.querySelectorAll("input:checked").forEach(variant => {
+        element.querySelectorAll("#foxy-form input:checked").forEach(variant => {
           selectedProductVariant[variant.name] = variant.value;
         });
 
