@@ -5,8 +5,7 @@ function isProductListPage() {
     URL_PATH.includes("/product-categories/") ||
     URL_PATH.includes("/brands/") ||
     URL_PATH.includes("/shop-all-products") ||
-    URL_PATH.includes("/brand/") ||
-    
+    URL_PATH.includes("/brand/")
   );
 }
 function isProductCMSPage(URL_PATH) {
