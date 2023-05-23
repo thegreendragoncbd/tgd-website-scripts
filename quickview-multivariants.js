@@ -6,11 +6,11 @@ function isProductListPage() {
     URL_PATH.includes("/brands/") ||
     URL_PATH.includes("/shop-all-products") ||
     URL_PATH.includes("/brand/") ||
-    URL_PATH.includes("/products-wholesale/")
+    
   );
 }
 function isProductCMSPage(URL_PATH) {
-  return /\/(product)\/.*/.test(URL_PATH);
+  return /\/(product)\/.*/.test(URL_PATH) || URL_PATH.includes("/products-wholesale/");
 }
 if (isProductCMSPage(URL_PATH) || isProductListPage()) {
   (function () {
