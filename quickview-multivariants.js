@@ -5,7 +5,8 @@ function isProductListPage() {
     URL_PATH.includes("/product-categories/") ||
     URL_PATH.includes("/brands/") ||
     URL_PATH.includes("/shop-all-products") ||
-    URL_PATH.includes("/brand/")
+    URL_PATH.includes("/brand/") ||
+    URL_PATH.includes("/products-wholesale/")
   );
 }
 function isProductCMSPage(URL_PATH) {
@@ -206,7 +207,10 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const allowBackorders = $(this).find(".foxy_variants_item-allow-backorders").text();
         const restrictedShipping = $(this).find(".foxy_variants_item-restricted-shipping").text();
         const itemCertification = $(this).find(".foxy_variants_item-certification-link").text();
-
+        // TODO: create an object with all the wholesale tiers as [prices]
+        // const wholesalePrices = {tier1,tier2,tier3} then find right price according to custoemr attribute.
+        // FC.custom.hasAttributeByName(name, value) - returns true if attribute exists with the specified name, if value also passed, will only return true if the attribute of that name also has that value
+        // FC.custom.getAttributeByName(name) - returns the value of the attribute of the specified name, false if it doesn't exist
         variantItems.push(
           filterEmpty({
             name,
@@ -709,6 +713,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
               certification.href = selectedProductVariantInfo[key];
               certification.style.display = "block";
               break;
+            case "wholesale":
           }
         });
         return;
