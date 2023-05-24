@@ -141,7 +141,12 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       buildVariants();
 
       //Add Price according to product
-      addPrice();
+      const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
+      if (isWholesale) {
+        addPriceWholesale(isWholesale);
+      } else {
+        addPrice();
+      }
 
       // Set Inventory according to product
       setInventory();
@@ -206,10 +211,13 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const allowBackorders = $(this).find(".foxy_variants_item-allow-backorders").text();
         const restrictedShipping = $(this).find(".foxy_variants_item-restricted-shipping").text();
         const itemCertification = $(this).find(".foxy_variants_item-certification-link").text();
-        // TODO: create an object with all the wholesale tiers as [prices]
-        // const wholesalePrices = {tier1,tier2,tier3} then find right price according to custoemr attribute.
-        // FC.custom.hasAttributeByName(name, value) - returns true if attribute exists with the specified name, if value also passed, will only return true if the attribute of that name also has that value
-        // FC.custom.getAttributeByName(name) - returns the value of the attribute of the specified name, false if it doesn't exist
+        const wholesalePrices = {
+          available: $(this).find(".foxy_variants_item-wholesale-availability").text(),
+          tier1: $(this).find(".foxy_variants_item-wholesale-tier1").text(),
+          tier2: $(this).find(".foxy_variants_item-wholesale-tier2").text(),
+          tier3: $(this).find(".foxy_variants_item-wholesale-tier3").text(),
+        };
+
         variantItems.push(
           filterEmpty({
             name,
@@ -227,6 +235,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
             allowBackorders,
             restrictedShipping,
             itemCertification,
+            wholesalePrices,
           })
         );
       });
@@ -250,6 +259,12 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const itemCertification = $(this).find(".foxy_variants_item-certification-link").text()
           ? $(this).find(".foxy_variants_item-certification-link").text()
           : "none";
+        const wholesalePrices = {
+          available: $(this).find(".foxy_product_item_wholesale-availability").text(),
+          tier1: $(this).find(".foxy_product_item_wholesale-tier1").text(),
+          tier2: $(this).find(".foxy_product_item_wholesale-tier2").text(),
+          tier3: $(this).find(".foxy_product_item_wholesale-tier3").text(),
+        };
 
         productItemObject = filterEmpty({
           name: name,
@@ -261,6 +276,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           allowBackorders: allowBackorders,
           restrictedShipping,
           itemCertification,
+          wholesalePrices,
         });
       });
     }
@@ -356,6 +372,47 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       }
     }
 
+    function addPriceWholesale(wholesaleTier) {
+      if (!variantItems.length) {
+        const wholesalePrice = productItemObject.wholesalePrices[wholesaleTier.toLowerCase()];
+        activePriceElement.textContent = wholesalePrice;
+        activePriceElement.classList.remove("w-dyn-bind-empty");
+        activePriceElement.parentElement.style.display = "inline-block";
+        beforeSalePriceElement.parentElement.style.display = "none";
+        beforeSalePriceElement.textContent = productItemObject.price;
+        if (!isProductListPage()) priceAddToCart.value = wholesalePrice;
+      }
+
+      //--- Product has variants---
+      if (variantItems.length > 0) {
+        // Variants that affect price
+        const sortedPrices = variantItems
+          .map(variant => {
+            const wholesalePrice = variant.wholesalePrices[wholesaleTier.toLowerCase()];
+            return Number(wholesalePrice);
+          })
+          .sort((a, b) => a - b);
+
+        if (sortedPrices[0] === sortedPrices[sortedPrices.length - 1]) {
+          // Variants that don't affect price
+          activePriceElement.textContent = sortedPrices[0];
+          if (!isProductListPage()) priceAddToCart.value = sortedPrices[0];
+          activePriceElement.classList.remove("w-dyn-bind-empty");
+          beforeSalePriceElement.classList.remove("w-dyn-bind-empty");
+          activePriceElement.parentElement.style.display = "inline-block";
+          beforeSalePriceElement.parentElement.style.display = "none";
+          beforeSalePriceElement.textContent = sortedPrices[0];
+        } else {
+          // Variants that affect price
+          priceLowElement.textContent = sortedPrices[0];
+          priceHighElement.textContent = sortedPrices[sortedPrices.length - 1];
+          priceLowElement.parentElement.style.display = "block";
+          beforeSalePriceElement.parentElement.style.display = "none";
+          activePriceElement.parentElement.style.display = "none";
+        }
+      }
+    }
+
     function setInventory() {
       if (variantItems.length > 0) {
         inventoryElement.textContent = "Please choose options.";
@@ -365,9 +422,24 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       }
 
       if (!variantItems.length) {
-        const { inventory, allowBackorders } = productItemObject;
+        const { inventory, allowBackorders, wholesalePrices } = productItemObject;
         const quantity = element.querySelector("input[name=quantity]").value;
         const submitButton = element.querySelector("#foxy-form input[type=submit]");
+
+        const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
+        if (isWholesale && wholesalePrices.available) {
+          inventoryElement.textContent = "Available";
+          inventoryElement.nextSibling.style.display = "none";
+          return;
+        }
+
+        if (!isWholesale && !wholesalePrices.available) {
+          inventoryElement.textContent = "Unavailable";
+          inventoryElement.nextSibling.style.display = "none";
+          submitButton.disabled = true;
+          return;
+        }
+
         if (Number(inventory) > 0) {
           inventoryElement.textContent = inventory;
           inventoryElement.nextSibling.style.display = "inline";
@@ -491,7 +563,12 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const itemCertification = $(this).find(".foxy_variants_item-certification-link").text()
           ? $(this).find(".foxy_variants_item-certification-link").text()
           : "none";
-
+        const wholesalePrices = {
+          available: $(this).find(".foxy_variants_item-wholesale-availability").text(),
+          tier1: $(this).find(".foxy_variants_item-wholesale-tier1").text(),
+          tier2: $(this).find(".foxy_variants_item-wholesale-tier2").text(),
+          tier3: $(this).find(".foxy_variants_item-wholesale-tier3").text(),
+        };
         let currentProduct = [
           name,
           strain,
@@ -508,6 +585,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           allowBackorders,
           restrictedShipping,
           itemCertification,
+          wholesalePrices,
         ];
 
         if (currentProduct.includes(variantSelection)) {
@@ -528,6 +606,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
               allowBackorders: allowBackorders,
               restrictedShipping: restrictedShipping,
               itemCertification: itemCertification,
+              wholesalePrices,
             })
           );
         }
@@ -542,6 +621,20 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         : selectedProductVariantInfo;
       const quantity = element.querySelector("input[name=quantity]").value;
       const submitButton = element.querySelector("#foxy-form input[type=submit]");
+
+      const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
+      if (isWholesale && wholesalePrices.available) {
+        inventoryElement.textContent = "Available";
+        inventoryElement.nextSibling.style.display = "none";
+        return;
+      }
+
+      if (!isWholesale && !wholesalePrices.available) {
+        inventoryElement.textContent = "Unavailable";
+        inventoryElement.nextSibling.style.display = "none";
+        submitButton.disabled = true;
+        return;
+      }
 
       if (
         (Number(inventory) === 0 && allowBackorders === "false") ||
@@ -668,10 +761,18 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
               // Update max quantity
               element.querySelector(`input[name="quantity_max"]`).value =
                 selectedProductVariantInfo["inventory"];
-
               handleQuantityChange();
               break;
             case "price":
+              const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
+              if (isWholesale) {
+                const wholesalePrice =
+                  selectedProductVariantInfo.wholesalePrices[isWholesaler().toLowerCase()];
+                activePriceElement.textContent = wholesalePrice;
+                activePriceElement.parentElement.style.display = "inline-block";
+                activePriceElement.classList.remove("w-dyn-bind-empty");
+                break;
+              }
               if (selectedProductVariantInfo["salePrice"]) {
                 priceAddToCart.value = selectedProductVariantInfo["salePrice"];
 
@@ -718,7 +819,13 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         return;
       }
 
-      addPrice();
+      const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
+      if (isWholesale) {
+        addPriceWholesale(isWholesale);
+      } else {
+        addPrice();
+      }
+
       setInventory();
       const certification = element.querySelector(".product_quickview_certification-link");
       if (productItemObject["itemCertification"] === "none") {
@@ -729,6 +836,14 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       certification.style.display = "block";
     }
     // Utilities / helper functions --
+
+    /* @return {boolean || string} 
+      returns the value of the attribute of the specified name, false if it doesn't exist
+    */
+    function isWholesaler() {
+      const wholesale = "wholesale_tier";
+      return FC.custom.getAttributeByName(wholesale);
+    }
 
     function hasMembership() {
       return (
