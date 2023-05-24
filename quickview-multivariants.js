@@ -616,7 +616,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
     }
 
     function handleQuantityChange() {
-      const { inventory, allowBackorders } = !variantItems.length
+      const { inventory, allowBackorders, wholesalePrices } = !variantItems.length
         ? productItemObject
         : selectedProductVariantInfo;
       const quantity = element.querySelector("input[name=quantity]").value;
