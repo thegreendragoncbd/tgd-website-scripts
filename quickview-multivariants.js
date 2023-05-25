@@ -628,7 +628,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         return;
       }
 
-      if (!isWholesale && !wholesalePrices.available) {
+      if (!isWholesale || !wholesalePrices.available) {
         inventoryElement.textContent = "Unavailable";
         inventoryElement.nextSibling.style.display = "none";
         submitButton.disabled = true;
