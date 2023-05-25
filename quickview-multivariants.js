@@ -143,7 +143,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       //Add Price according to product
       const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
       if (isWholesale) {
-        addPriceWholesale(isWholesale);
+        addPriceWholesale(isWholesaler());
       } else {
         addPrice();
       }
@@ -385,7 +385,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
 
       //--- Product has variants---
       if (variantItems.length > 0) {
-        // Variants that affect price
         const sortedPrices = variantItems
           .map(variant => {
             const wholesalePrice = variant.wholesalePrices[wholesaleTier];
@@ -821,7 +820,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
 
       const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
       if (isWholesale) {
-        addPriceWholesale(isWholesale);
+        addPriceWholesale(isWholesaler());
       } else {
         addPrice();
       }
