@@ -374,7 +374,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
 
     function addPriceWholesale(wholesaleTier) {
       if (!variantItems.length) {
-        const wholesalePrice = productItemObject.wholesalePrices[wholesaleTier.toLowerCase()];
+        const wholesalePrice = productItemObject.wholesalePrices[wholesaleTier];
         activePriceElement.textContent = wholesalePrice;
         activePriceElement.classList.remove("w-dyn-bind-empty");
         activePriceElement.parentElement.style.display = "inline-block";
@@ -388,7 +388,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         // Variants that affect price
         const sortedPrices = variantItems
           .map(variant => {
-            const wholesalePrice = variant.wholesalePrices[wholesaleTier.toLowerCase()];
+            const wholesalePrice = variant.wholesalePrices[wholesaleTier];
             return Number(wholesalePrice);
           })
           .sort((a, b) => a - b);
