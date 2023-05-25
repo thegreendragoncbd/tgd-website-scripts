@@ -426,16 +426,15 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const submitButton = element.querySelector("#foxy-form input[type=submit]");
 
         const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
-        if (isWholesale && wholesalePrices.available) {
-          inventoryElement.textContent = "Available";
-          inventoryElement.nextSibling.style.display = "none";
-          return;
-        }
-
-        if (!isWholesale && !wholesalePrices.available) {
+        if (!wholesalePrices.available) {
           inventoryElement.textContent = "Unavailable";
           inventoryElement.nextSibling.style.display = "none";
           submitButton.disabled = true;
+          return;
+        }
+        if (isWholesale && wholesalePrices.available) {
+          inventoryElement.textContent = "Available";
+          inventoryElement.nextSibling.style.display = "none";
           return;
         }
 
@@ -622,16 +621,15 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       const submitButton = element.querySelector("#foxy-form input[type=submit]");
 
       const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
-      if (isWholesale && wholesalePrices.available) {
-        inventoryElement.textContent = "Available";
-        inventoryElement.nextSibling.style.display = "none";
-        return;
-      }
-
-      if (!isWholesale || !wholesalePrices.available) {
+      if (!wholesalePrices.available) {
         inventoryElement.textContent = "Unavailable";
         inventoryElement.nextSibling.style.display = "none";
         submitButton.disabled = true;
+        return;
+      }
+      if (isWholesale && wholesalePrices.available) {
+        inventoryElement.textContent = "Available";
+        inventoryElement.nextSibling.style.display = "none";
         return;
       }
 
@@ -765,8 +763,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
             case "price":
               const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
               if (isWholesale) {
-                const wholesalePrice =
-                  selectedProductVariantInfo.wholesalePrices[isWholesaler().toLowerCase()];
+                const wholesalePrice = selectedProductVariantInfo.wholesalePrices[isWholesaler()];
                 activePriceElement.textContent = wholesalePrice;
                 activePriceElement.parentElement.style.display = "inline-block";
                 activePriceElement.classList.remove("w-dyn-bind-empty");
