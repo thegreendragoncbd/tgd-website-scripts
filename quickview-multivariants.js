@@ -426,13 +426,13 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const submitButton = element.querySelector("#foxy-form input[type=submit]");
 
         const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
-        if (!wholesalePrices.available) {
+        if (wholesalePrices.available === "false") {
           inventoryElement.textContent = "Unavailable";
           inventoryElement.nextSibling.style.display = "none";
           submitButton.disabled = true;
           return;
         }
-        if (isWholesale && wholesalePrices.available) {
+        if (isWholesale && wholesalePrices.available === "true") {
           inventoryElement.textContent = "Available";
           inventoryElement.nextSibling.style.display = "none";
           return;
@@ -621,13 +621,13 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       const submitButton = element.querySelector("#foxy-form input[type=submit]");
 
       const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
-      if (!wholesalePrices.available) {
+      if (wholesalePrices.available === "false") {
         inventoryElement.textContent = "Unavailable";
         inventoryElement.nextSibling.style.display = "none";
         submitButton.disabled = true;
         return;
       }
-      if (isWholesale && wholesalePrices.available) {
+      if (isWholesale && wholesalePrices.available === "true") {
         inventoryElement.textContent = "Available";
         inventoryElement.nextSibling.style.display = "none";
         return;
