@@ -430,6 +430,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           inventoryElement.textContent = "Unavailable";
           inventoryElement.nextSibling.style.display = "none";
           submitButton.disabled = true;
+          submitButton.style.backgroundColor = "#37b7728c";
           return;
         }
         if (isWholesale && wholesalePrices.available === "true") {
@@ -625,12 +626,14 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         inventoryElement.textContent = "Unavailable";
         inventoryElement.nextSibling.style.display = "none";
         submitButton.disabled = true;
+        submitButton.style.backgroundColor = "#37b7728c";
         return;
       }
       if (isWholesale && wholesalePrices.available === "true") {
         inventoryElement.textContent = "Available";
         inventoryElement.nextSibling.style.display = "none";
         submitButton.disabled = false;
+        submitButton.style.backgroundColor = "#37b772";
         return;
       }
 
