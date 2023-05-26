@@ -619,7 +619,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         : selectedProductVariantInfo;
       const quantity = element.querySelector("input[name=quantity]").value;
       const submitButton = element.querySelector("#foxy-form input[type=submit]");
-      console.log("handleQuantityChange. selectedProductVariantInfo", selectedProductVariantInfo);
       // TODO This is stil not working
       const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
       if (wholesalePrices.available === "false") {
@@ -631,6 +630,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       if (isWholesale && wholesalePrices.available === "true") {
         inventoryElement.textContent = "Available";
         inventoryElement.nextSibling.style.display = "none";
+        submitButton.disabled = false;
         return;
       }
 
