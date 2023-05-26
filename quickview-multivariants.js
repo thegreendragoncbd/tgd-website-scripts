@@ -426,7 +426,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const submitButton = element.querySelector("#foxy-form input[type=submit]");
 
         const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
-        if (wholesalePrices.available === "false") {
+        if (isWholesale && wholesalePrices.available === "false") {
           inventoryElement.textContent = "Unavailable";
           inventoryElement.nextSibling.style.display = "none";
           submitButton.disabled = true;
@@ -621,7 +621,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       const submitButton = element.querySelector("#foxy-form input[type=submit]");
       // TODO This is stil not working
       const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
-      if (wholesalePrices.available === "false") {
+      if (isWholesale && wholesalePrices.available === "false") {
         inventoryElement.textContent = "Unavailable";
         inventoryElement.nextSibling.style.display = "none";
         submitButton.disabled = true;
