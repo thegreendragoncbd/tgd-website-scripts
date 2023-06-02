@@ -813,7 +813,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
               certification.href = selectedProductVariantInfo[key];
               certification.style.display = "block";
               break;
-            case "wholesale":
           }
         });
         return;
