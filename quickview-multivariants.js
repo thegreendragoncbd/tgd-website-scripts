@@ -264,6 +264,9 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           tier1: $(this).find(".foxy_product_item_wholesale-tier1").text(),
           tier2: $(this).find(".foxy_product_item_wholesale-tier2").text(),
           tier3: $(this).find(".foxy_product_item_wholesale-tier3").text(),
+          tier1_baseunit: $(this).find(".foxy_product_item_wholesale-tier1_base-unit-cost").text(),
+          tier2_baseunit: $(this).find(".foxy_product_item_wholesale-tier2_base-unit-cost").text(),
+          tier3_baseunit: $(this).find(".foxy_product_item_wholesale-tier3_base-unit-cost").text(),
         };
 
         productItemObject = filterEmpty({
