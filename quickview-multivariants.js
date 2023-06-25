@@ -36,6 +36,8 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
     let activePriceElement = document.querySelector(".product-price_active-wrapper")?.lastChild;
     const inventoryElement = document.querySelector("#foxy-inventory");
     let priceAddToCart = document.querySelector("input[name=price]");
+    let wholesaleDollarPerUnit = document.querySelector(".wholesale-dollar-per-unit");
+    let wholesaleDollarPerCase = document.querySelector(".wholesale-dollar-per-case");
 
     document.head.insertAdjacentHTML(
       "beforeend",
@@ -384,6 +386,8 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         beforeSalePriceElement.parentElement.style.display = "none";
         beforeSalePriceElement.textContent = productItemObject.price;
         if (!isProductListPage()) priceAddToCart.value = wholesalePrice;
+        wholesaleDollarPerUnit.textContent = productItemObject.wholesalePrices[wholesaleTier]_baseunit;
+        wholesaleDollarPerCase.textContent = productItemObject.wholesalePrices[wholesaleTier]_baseunit;
       }
 
       //--- Product has variants---
