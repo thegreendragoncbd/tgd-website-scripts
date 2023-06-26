@@ -386,8 +386,9 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         beforeSalePriceElement.parentElement.style.display = "none";
         beforeSalePriceElement.textContent = productItemObject.price;
         if (!isProductListPage()) priceAddToCart.value = wholesalePrice;
-        wholesaleDollarPerUnit.textContent = productItemObject.wholesalePrices[wholesaleTier]_baseunit;
-        wholesaleDollarPerCase.textContent = productItemObject.wholesalePrices[wholesaleTier]_baseunit;
+        wholesaleDollarPerUnit.textContent = productItemObject.wholesalePrices[wholesaleTier + "_baseunit"];
+        // wholesaleDollarPerUnit.textContent = productItemObject.wholesalePrices[wholesaleTier + "_baseunit"];
+        // wholesaleDollarPerCase.textContent = productItemObject.wholesalePrices[wholesaleTier]_baseunit;
       }
 
       //--- Product has variants---
