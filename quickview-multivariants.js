@@ -770,16 +770,17 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         Object.keys(selectedProductVariantInfo).forEach(key => {
           const inputToUpdate = element.querySelector(`input[name="${key}"]`);
           if (inputToUpdate) inputToUpdate.value = selectedProductVariantInfo[key];
-
+          const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
           switch (key) {
             case "inventory":
               // Update max quantity
-              element.querySelector(`input[name="quantity_max"]`).value =
-                selectedProductVariantInfo["inventory"];
+              if (!isWholesale) {
+                element.querySelector(`input[name="quantity_max"]`).value =
+                  selectedProductVariantInfo["inventory"];
+              }
               handleQuantityChange();
               break;
             case "price":
-              const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
               if (isWholesale) {
                 const wholesalePrice = selectedProductVariantInfo.wholesalePrices[isWholesaler()];
                 activePriceElement.textContent = wholesalePrice;
