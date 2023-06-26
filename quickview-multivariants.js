@@ -269,6 +269,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           tier1_baseunit: $(this).find(".foxy_product_item_wholesale-tier1_base-unit-cost").text(),
           tier2_baseunit: $(this).find(".foxy_product_item_wholesale-tier2_base-unit-cost").text(),
           tier3_baseunit: $(this).find(".foxy_product_item_wholesale-tier3_base-unit-cost").text(),
+          units_per_case: $(this).find(".foxy_product_item_wholesale-units-per-case").text(),
         };
 
         productItemObject = filterEmpty({
@@ -387,7 +388,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         beforeSalePriceElement.textContent = productItemObject.price;
         if (!isProductListPage()) priceAddToCart.value = wholesalePrice;
         wholesaleDollarPerUnit.textContent = productItemObject.wholesalePrices[wholesaleTier + "_baseunit"];
-        // wholesaleDollarPerUnit.textContent = productItemObject.wholesalePrices[wholesaleTier + "_baseunit"];
+        wholesaleDollarPerCase.textContent = productItemObject.wholesalePrices['units_per_case'];
         // wholesaleDollarPerCase.textContent = productItemObject.wholesalePrices[wholesaleTier]_baseunit;
       }
 
