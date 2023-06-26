@@ -405,7 +405,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
             return Number(wholesalePrice);
           })
           .sort((a, b) => a - b);
-
+        console.log("sortedPrices", sortedPrices);
         if (sortedPrices[0] === sortedPrices[sortedPrices.length - 1]) {
           // Variants that don't affect price
           activePriceElement.textContent = sortedPrices[0];
