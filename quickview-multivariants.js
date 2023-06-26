@@ -638,7 +638,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
       if (isWholesale && wholesalePrices.available === "false") {
         inventoryElement.textContent = "Unavailable";
-        inventoryElement?.nextSibling.style.setProperty("display", "none");
+        inventoryElement?.nextSibling?.style.setProperty("display", "none");
         submitButton.disabled = true;
         submitButton.style.backgroundColor = "#37b7728c";
         return;
