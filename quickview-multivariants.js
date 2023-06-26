@@ -387,8 +387,11 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         beforeSalePriceElement.parentElement.style.display = "none";
         beforeSalePriceElement.textContent = productItemObject.price;
         if (!isProductListPage()) priceAddToCart.value = wholesalePrice;
-        wholesaleDollarPerUnit.textContent = productItemObject.wholesalePrices[wholesaleTier + "_baseunit"];
-        var casePrice = parseFloat(productItemObject.wholesalePrices['units_per_case']) * parseFloat(wholesaleDollarPerUnit.textContent);
+        wholesaleDollarPerUnit.textContent =
+          productItemObject.wholesalePrices[wholesaleTier + "_baseunit"];
+        var casePrice =
+          parseFloat(productItemObject.wholesalePrices["units_per_case"]) *
+          parseFloat(wholesaleDollarPerUnit.textContent);
         wholesaleDollarPerCase.textContent = casePrice.toFixed(2);
         // wholesaleDollarPerCase.textContent = productItemObject.wholesalePrices['units_per_case'];
         // wholesaleDollarPerCase.textContent = productItemObject.wholesalePrices[wholesaleTier]_baseunit;
@@ -427,7 +430,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       if (variantItems.length > 0) {
         inventoryElement.textContent = "Please choose options.";
         inventoryElement.classList.remove("w-dyn-bind-empty");
-        inventoryElement.nextElementSibling.style.display = "none";
+        inventoryElement.nextElementSibling?.style.setProperty("display", "none");
         return;
       }
 
@@ -439,26 +442,26 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
         if (isWholesale && wholesalePrices.available === "false") {
           inventoryElement.textContent = "Unavailable";
-          inventoryElement.nextSibling.style.display = "none";
+          inventoryElement.nextElementSibling?.style.setProperty("display", "none");
           submitButton.disabled = true;
           submitButton.style.backgroundColor = "#37b7728c";
           return;
         }
         if (isWholesale && wholesalePrices.available === "true") {
           inventoryElement.textContent = "Available";
-          inventoryElement.nextSibling.style.display = "none";
+          inventoryElement.nextElementSibling?.style.setProperty("display", "none");
           return;
         }
 
         if (Number(inventory) > 0) {
           inventoryElement.textContent = inventory;
-          inventoryElement.nextSibling.style.display = "inline";
+          inventoryElement.nextElementSibling?.style.setProperty("display", "inline");
           return;
         }
 
         if (Number(inventory) === 0 && allowBackorders === "false") {
           inventoryElement.textContent = "Out of stock.";
-          inventoryElement.nextElementSibling.style.display = "none";
+          inventoryElement.nextElementSibling?.style.setProperty("display", "none");
           submitButton.disabled = true;
           submitButton.style.backgroundColor = "#37b7728c";
           return;
@@ -470,7 +473,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         ) {
           inventoryElement.textContent = "Item Available for Backorder.";
           inventoryElement.classList.remove("margin-top-1-5");
-          inventoryElement.nextElementSibling.style.display = "none";
+          inventoryElement.nextElementSibling?.style.setProperty("display", "none");
           element
             .querySelector("#foxy-form .w-embed")
             .insertAdjacentHTML(
