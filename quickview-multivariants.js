@@ -393,15 +393,15 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           parseFloat(productItemObject.wholesalePrices["units_per_case"]) *
           parseFloat(wholesaleDollarPerUnit.textContent);
         wholesaleDollarPerCase.textContent = casePrice.toFixed(2);
-        // wholesaleDollarPerCase.textContent = productItemObject.wholesalePrices['units_per_case'];
-        // wholesaleDollarPerCase.textContent = productItemObject.wholesalePrices[wholesaleTier]_baseunit;
       }
 
       //--- Product has variants---
       if (variantItems.length > 0) {
+        console.log("variantItems", variantItems);
         const sortedPrices = variantItems
           .map(variant => {
             const wholesalePrice = variant.wholesalePrices[wholesaleTier];
+            console.log("wholesalePrice", wholesalePrice);
             return Number(wholesalePrice);
           })
           .sort((a, b) => a - b);
