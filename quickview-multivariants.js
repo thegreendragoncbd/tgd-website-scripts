@@ -397,15 +397,13 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
 
       //--- Product has variants---
       if (variantItems.length > 0) {
-        console.log("variantItems", variantItems);
         const sortedPrices = variantItems
           .map(variant => {
             const wholesalePrice = variant.wholesalePrices[wholesaleTier];
-            console.log("wholesalePrice", wholesalePrice);
-            return Number(wholesalePrice);
+            return Number(wholesalePrice).toFixed(2);
           })
           .sort((a, b) => a - b);
-        console.log("sortedPrices", sortedPrices);
+
         if (sortedPrices[0] === sortedPrices[sortedPrices.length - 1]) {
           // Variants that don't affect price
           activePriceElement.textContent = sortedPrices[0];
