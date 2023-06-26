@@ -388,7 +388,9 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         beforeSalePriceElement.textContent = productItemObject.price;
         if (!isProductListPage()) priceAddToCart.value = wholesalePrice;
         wholesaleDollarPerUnit.textContent = productItemObject.wholesalePrices[wholesaleTier + "_baseunit"];
-        wholesaleDollarPerCase.textContent = productItemObject.wholesalePrices['units_per_case'];
+        var casePrice = parseFloat(productItemObject.wholesalePrices['units_per_case']) * parseFloat(wholesaleDollarPerUnit.textContent);
+        wholesaleDollarPerCase.textContent = casePrice.toFixed(2);
+        // wholesaleDollarPerCase.textContent = productItemObject.wholesalePrices['units_per_case'];
         // wholesaleDollarPerCase.textContent = productItemObject.wholesalePrices[wholesaleTier]_baseunit;
       }
 
