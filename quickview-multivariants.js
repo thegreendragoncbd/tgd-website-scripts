@@ -38,6 +38,8 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
     let priceAddToCart = document.querySelector("input[name=price]");
     let wholesaleDollarPerUnit = document.querySelector(".wholesale-dollar-per-unit");
     let wholesaleDollarPerCase = document.querySelector(".wholesale-dollar-per-case");
+    let wholesaleUnitsPerCase = document.querySelector(".wholesale-number-per-case");
+    let wholesaleMSRP = document.querySelector(".wholesale-msrp");
 
     document.head.insertAdjacentHTML(
       "beforeend",
@@ -213,11 +215,16 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const allowBackorders = $(this).find(".foxy_variants_item-allow-backorders").text();
         const restrictedShipping = $(this).find(".foxy_variants_item-restricted-shipping").text();
         const itemCertification = $(this).find(".foxy_variants_item-certification-link").text();
-        const wholesalePrices = {
+        const wholesale = {
           available: $(this).find(".foxy_variants_item-wholesale-availability").text(),
           tier1: $(this).find(".foxy_variants_item-wholesale-tier1").text(),
           tier2: $(this).find(".foxy_variants_item-wholesale-tier2").text(),
           tier3: $(this).find(".foxy_variants_item-wholesale-tier3").text(),
+          msrp: $(this).find(".foxy_variants_item_msrp").text(),
+          tier1_baseunit: $(this).find(".foxy_variants_item-wholesale-tier1_base-unit-cost").text(),
+          tier2_baseunit: $(this).find(".foxy_variants_item-wholesale-tier2_base-unit-cost").text(),
+          tier3_baseunit: $(this).find(".foxy_variants_item-wholesale-tier3_base-unit-cost").text(),
+          units_per_case: $(this).find(".foxy_variants_item-wholesale-units-per-case").text(),
         };
 
         variantItems.push(
@@ -237,7 +244,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
             allowBackorders,
             restrictedShipping,
             itemCertification,
-            wholesalePrices,
+            wholesale,
           })
         );
       });
@@ -261,11 +268,12 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const itemCertification = $(this).find(".foxy_variants_item-certification-link").text()
           ? $(this).find(".foxy_variants_item-certification-link").text()
           : "none";
-        const wholesalePrices = {
+        const wholesale = {
           available: $(this).find(".foxy_product_item_wholesale-availability").text(),
           tier1: $(this).find(".foxy_product_item_wholesale-tier1").text(),
           tier2: $(this).find(".foxy_product_item_wholesale-tier2").text(),
           tier3: $(this).find(".foxy_product_item_wholesale-tier3").text(),
+          msrp: $(this).find(".foxy_product_item_msrp").text(),
           tier1_baseunit: $(this).find(".foxy_product_item_wholesale-tier1_base-unit-cost").text(),
           tier2_baseunit: $(this).find(".foxy_product_item_wholesale-tier2_base-unit-cost").text(),
           tier3_baseunit: $(this).find(".foxy_product_item_wholesale-tier3_base-unit-cost").text(),
@@ -282,7 +290,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           allowBackorders: allowBackorders,
           restrictedShipping,
           itemCertification,
-          wholesalePrices,
+          wholesale,
         });
       });
     }
@@ -380,7 +388,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
 
     function addPriceWholesale(wholesaleTier) {
       if (!variantItems.length) {
-        const wholesalePrice = productItemObject.wholesalePrices[wholesaleTier];
+        const wholesalePrice = productItemObject.wholesale[wholesaleTier];
         activePriceElement.textContent = wholesalePrice;
         activePriceElement.classList.remove("w-dyn-bind-empty");
         activePriceElement.parentElement.style.display = "inline-block";
@@ -388,18 +396,24 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         beforeSalePriceElement.textContent = productItemObject.price;
         if (!isProductListPage()) priceAddToCart.value = wholesalePrice;
         wholesaleDollarPerUnit.textContent =
-          productItemObject.wholesalePrices[wholesaleTier + "_baseunit"];
-        var casePrice =
-          parseFloat(productItemObject.wholesalePrices["units_per_case"]) *
+          productItemObject.wholesale[wholesaleTier + "_baseunit"];
+        const casePrice =
+          parseFloat(productItemObject.wholesale["units_per_case"]) *
           parseFloat(wholesaleDollarPerUnit.textContent);
         wholesaleDollarPerCase.textContent = casePrice.toFixed(2);
       }
 
       //--- Product has variants---
       if (variantItems.length > 0) {
+        const selectVariantText = "Please choose options.";
+        wholesaleDollarPerUnit.textContent = selectVariantText;
+        wholesaleDollarPerCase.textContent = selectVariantText;
+        wholesaleMSRP.textContent = selectVariantText;
+        wholesaleUnitsPerCase.textContent = selectVariantText;
+
         const sortedPrices = variantItems
           .map(variant => {
-            const wholesalePrice = variant.wholesalePrices[wholesaleTier];
+            const wholesalePrice = variant.wholesale[wholesaleTier];
             return Number(wholesalePrice).toFixed(2);
           })
           .sort((a, b) => a - b);
@@ -433,19 +447,19 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       }
 
       if (!variantItems.length) {
-        const { inventory, allowBackorders, wholesalePrices } = productItemObject;
+        const { inventory, allowBackorders, wholesale } = productItemObject;
         const quantity = element.querySelector("input[name=quantity]").value;
         const submitButton = element.querySelector("#foxy-form input[type=submit]");
 
         const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
-        if (isWholesale && wholesalePrices.available === "false") {
+        if (isWholesale && wholesale.available === "false") {
           inventoryElement.textContent = "Unavailable";
           inventoryElement.nextElementSibling?.style.setProperty("display", "none");
           submitButton.disabled = true;
           submitButton.style.backgroundColor = "#37b7728c";
           return;
         }
-        if (isWholesale && wholesalePrices.available === "true") {
+        if (isWholesale && wholesale.available === "true") {
           inventoryElement.textContent = "Available";
           inventoryElement.nextElementSibling?.style.setProperty("display", "none");
           return;
@@ -574,11 +588,16 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const itemCertification = $(this).find(".foxy_variants_item-certification-link").text()
           ? $(this).find(".foxy_variants_item-certification-link").text()
           : "none";
-        const wholesalePrices = {
+        const wholesale = {
           available: $(this).find(".foxy_variants_item-wholesale-availability").text(),
           tier1: $(this).find(".foxy_variants_item-wholesale-tier1").text(),
           tier2: $(this).find(".foxy_variants_item-wholesale-tier2").text(),
           tier3: $(this).find(".foxy_variants_item-wholesale-tier3").text(),
+          msrp: $(this).find(".foxy_variants_item_msrp").text(),
+          tier1_baseunit: $(this).find(".foxy_variants_item-wholesale-tier1_base-unit-cost").text(),
+          tier2_baseunit: $(this).find(".foxy_variants_item-wholesale-tier2_base-unit-cost").text(),
+          tier3_baseunit: $(this).find(".foxy_variants_item-wholesale-tier3_base-unit-cost").text(),
+          units_per_case: $(this).find(".foxy_variants_item-wholesale-units-per-case").text(),
         };
         let currentProduct = [
           name,
@@ -596,7 +615,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           allowBackorders,
           restrictedShipping,
           itemCertification,
-          wholesalePrices,
+          wholesale,
         ];
 
         if (currentProduct.includes(variantSelection)) {
@@ -617,7 +636,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
               allowBackorders: allowBackorders,
               restrictedShipping: restrictedShipping,
               itemCertification: itemCertification,
-              wholesalePrices,
+              wholesale,
             })
           );
         }
@@ -627,21 +646,21 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
     }
 
     function handleQuantityChange() {
-      const { inventory, allowBackorders, wholesalePrices } = !variantItems.length
+      const { inventory, allowBackorders, wholesale } = !variantItems.length
         ? productItemObject
         : selectedProductVariantInfo;
       const quantity = element.querySelector("input[name=quantity]").value;
       const submitButton = element.querySelector("#foxy-form input[type=submit]");
       // TODO This is stil not working
       const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
-      if (isWholesale && wholesalePrices.available === "false") {
+      if (isWholesale && wholesale.available === "false") {
         inventoryElement.textContent = "Unavailable";
         inventoryElement?.nextSibling?.style.setProperty("display", "none");
         submitButton.disabled = true;
         submitButton.style.backgroundColor = "#37b7728c";
         return;
       }
-      if (isWholesale && wholesalePrices.available === "true") {
+      if (isWholesale && wholesale.available === "true") {
         inventoryElement.textContent = "Available";
         inventoryElement?.nextSibling?.style.setProperty("display", "none");
         submitButton.disabled = false;
@@ -780,7 +799,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
               break;
             case "price":
               if (isWholesale) {
-                const wholesalePrice = selectedProductVariantInfo.wholesalePrices[isWholesaler()];
+                const wholesalePrice = selectedProductVariantInfo.wholesale[isWholesaler()];
                 activePriceElement.textContent = wholesalePrice;
                 activePriceElement.parentElement.style.display = "inline-block";
                 activePriceElement.classList.remove("w-dyn-bind-empty");
@@ -825,6 +844,19 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
               }
               certification.href = selectedProductVariantInfo[key];
               certification.style.display = "block";
+              break;
+            case "wholesale":
+              const wholesaleTier = isWholesaler();
+              wholesaleDollarPerUnit.textContent =
+                selectedProductVariantInfo.wholesale[wholesaleTier + "_baseunit"];
+              const casePrice =
+                parseFloat(selectedProductVariantInfo.wholesale["units_per_case"]) *
+                parseFloat(wholesaleDollarPerUnit.textContent);
+              wholesaleDollarPerCase.textContent = casePrice.toFixed(2);
+
+              wholesaleMSRP.textContent = selectedProductVariantInfo.wholesale.msrp;
+              wholesaleUnitsPerCase.textContent =
+                selectedProductVariantInfo.wholesale.units_per_case;
               break;
           }
         });
