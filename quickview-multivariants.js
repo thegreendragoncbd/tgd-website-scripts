@@ -846,17 +846,21 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
               certification.style.display = "block";
               break;
             case "wholesale":
-              const wholesaleTier = isWholesaler();
-              wholesaleDollarPerUnit.textContent =
-                selectedProductVariantInfo.wholesale[wholesaleTier + "_baseunit"];
-              const casePrice =
-                parseFloat(selectedProductVariantInfo.wholesale["units_per_case"]) *
-                parseFloat(wholesaleDollarPerUnit.textContent);
-              wholesaleDollarPerCase.textContent = casePrice.toFixed(2);
+              if (isWholesale) {
+                const wholesaleTier = isWholesaler();
+                const baseUnitForTier =
+                  selectedProductVariantInfo.wholesale[`${wholesaleTier}_baseunit`];
+                wholesaleDollarPerUnit.textContent = baseUnitForTier;
 
-              wholesaleMSRP.textContent = selectedProductVariantInfo.wholesale.msrp;
-              wholesaleUnitsPerCase.textContent =
-                selectedProductVariantInfo.wholesale.units_per_case;
+                const casePrice =
+                  Number(selectedProductVariantInfo.wholesale["units_per_case"]) *
+                  Number(baseUnitForTier);
+                wholesaleDollarPerCase.textContent = casePrice.toFixed(2);
+
+                wholesaleMSRP.textContent = selectedProductVariantInfo.wholesale.msrp;
+                wholesaleUnitsPerCase.textContent =
+                  selectedProductVariantInfo.wholesale.units_per_case;
+              }
               break;
           }
         });
