@@ -410,7 +410,10 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         wholesaleDollarPerCase.textContent = selectVariantText;
         wholesaleMSRP.textContent = selectVariantText;
         wholesaleUnitsPerCase.textContent = selectVariantText;
-
+        // hide dollar sign
+        wholesaleMSRP.previousElementSibling.style.display = "none";
+        wholesaleDollarPerUnit.previousElementSibling.style.display = "none";
+        wholesaleDollarPerCase.previousElementSibling.style.display = "none";
         const sortedPrices = variantItems
           .map(variant => {
             const wholesalePrice = variant.wholesale[wholesaleTier];
@@ -860,6 +863,11 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
                 wholesaleMSRP.textContent = selectedProductVariantInfo.wholesale.msrp;
                 wholesaleUnitsPerCase.textContent =
                   selectedProductVariantInfo.wholesale.units_per_case;
+
+                // show dollar sign
+                wholesaleMSRP.previousElementSibling.style.display = "inline-block";
+                wholesaleDollarPerUnit.previousElementSibling.style.display = "inline-block";
+                wholesaleDollarPerCase.previousElementSibling.style.display = "inline-block";
               }
               break;
           }
