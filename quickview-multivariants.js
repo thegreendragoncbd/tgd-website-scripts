@@ -221,9 +221,9 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           tier2: $(this).find(".foxy_variants_item-wholesale-tier2").text(),
           tier3: $(this).find(".foxy_variants_item-wholesale-tier3").text(),
           msrp: $(this).find(".foxy_variants_item_msrp").text(),
-          tier1_baseunit: $(this).find(".foxy_variants_item-wholesale-tier1_base-unit-cost").text(),
-          tier2_baseunit: $(this).find(".foxy_variants_item-wholesale-tier2_base-unit-cost").text(),
-          tier3_baseunit: $(this).find(".foxy_variants_item-wholesale-tier3_base-unit-cost").text(),
+          tier1_baseunit: $(this).find(".foxy_variants_item-base-unit-cost_tier1").text(),
+          tier2_baseunit: $(this).find(".foxy_variants_item-base-unit-cost_tier2").text(),
+          tier3_baseunit: $(this).find(".foxy_variants_item-base-unit-cost_tier3").text(),
           units_per_case: $(this).find(".foxy_variants_item-wholesale-units-per-case").text(),
         };
 
@@ -594,9 +594,9 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           tier2: $(this).find(".foxy_variants_item-wholesale-tier2").text(),
           tier3: $(this).find(".foxy_variants_item-wholesale-tier3").text(),
           msrp: $(this).find(".foxy_variants_item_msrp").text(),
-          tier1_baseunit: $(this).find(".foxy_variants_item-wholesale-tier1_base-unit-cost").text(),
-          tier2_baseunit: $(this).find(".foxy_variants_item-wholesale-tier2_base-unit-cost").text(),
-          tier3_baseunit: $(this).find(".foxy_variants_item-wholesale-tier3_base-unit-cost").text(),
+          tier1_baseunit: $(this).find(".foxy_variants_item-base-unit-cost_tier1").text(),
+          tier2_baseunit: $(this).find(".foxy_variants_item-base-unit-cost_tier2").text(),
+          tier3_baseunit: $(this).find(".foxy_variants_item-base-unit-cost_tier3").text(),
           units_per_case: $(this).find(".foxy_variants_item-wholesale-units-per-case").text(),
         };
         let currentProduct = [
