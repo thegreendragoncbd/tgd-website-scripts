@@ -803,6 +803,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
             case "price":
               if (isWholesale) {
                 const wholesalePrice = selectedProductVariantInfo.wholesale[isWholesaler()];
+                priceAddToCart.value = wholesalePrice;
                 activePriceElement.textContent = wholesalePrice;
                 activePriceElement.parentElement.style.display = "inline-block";
                 activePriceElement.classList.remove("w-dyn-bind-empty");
