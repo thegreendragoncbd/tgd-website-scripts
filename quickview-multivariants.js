@@ -40,7 +40,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
     let wholesaleDollarPerCase = document.querySelector(".wholesale-dollar-per-case");
     let wholesaleUnitsPerCase = document.querySelector(".wholesale-number-per-case");
     let wholesaleMSRP = document.querySelector(".wholesale-msrp");
-    const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
+    let isWholesale = "";
     const isWholesalePage = URL_PATH.includes("/products-wholesale/");
 
     document.head.insertAdjacentHTML(
@@ -147,6 +147,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       buildVariants();
 
       //Add Price according to product
+      isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
       if (isWholesale && isWholesalePage) {
         addPriceWholesale(isWholesaler());
       } else {
