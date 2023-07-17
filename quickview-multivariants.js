@@ -794,7 +794,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           switch (key) {
             case "inventory":
               // Update max quantity
-              if (!isWholesale && !isWholesalePage) {
+              if (!isWholesale || !isWholesalePage) {
                 element.querySelector(`input[name="quantity_max"]`).value =
                   selectedProductVariantInfo["inventory"];
               }
