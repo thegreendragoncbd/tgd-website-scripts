@@ -794,14 +794,14 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           switch (key) {
             case "inventory":
               // Update max quantity
-              if (!isWholesale) {
+              if (!isWholesale && !isWholesalePage) {
                 element.querySelector(`input[name="quantity_max"]`).value =
                   selectedProductVariantInfo["inventory"];
               }
               handleQuantityChange();
               break;
             case "price":
-              if (isWholesale) {
+              if (isWholesale && isWholesalePage) {
                 const wholesalePrice = selectedProductVariantInfo.wholesale[isWholesaler()];
                 priceAddToCart.value = wholesalePrice;
                 activePriceElement.textContent = wholesalePrice;
