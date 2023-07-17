@@ -40,6 +40,8 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
     let wholesaleDollarPerCase = document.querySelector(".wholesale-dollar-per-case");
     let wholesaleUnitsPerCase = document.querySelector(".wholesale-number-per-case");
     let wholesaleMSRP = document.querySelector(".wholesale-msrp");
+    const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
+    const isWholesalePage = URL_PATH.includes("/products-wholesale/");
 
     document.head.insertAdjacentHTML(
       "beforeend",
@@ -145,8 +147,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       buildVariants();
 
       //Add Price according to product
-      const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
-      if (isWholesale) {
+      if (isWholesale && isWholesalePage) {
         addPriceWholesale(isWholesaler());
       } else {
         addPrice();
@@ -454,15 +455,14 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const quantity = element.querySelector("input[name=quantity]").value;
         const submitButton = element.querySelector("#foxy-form input[type=submit]");
 
-        const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
-        if (isWholesale && wholesale.available === "false") {
+        if (isWholesale && isWholesalePage && wholesale.available === "false") {
           inventoryElement.textContent = "Unavailable";
           inventoryElement.nextElementSibling?.style.setProperty("display", "none");
           submitButton.disabled = true;
           submitButton.style.backgroundColor = "#37b7728c";
           return;
         }
-        if (isWholesale && wholesale.available === "true") {
+        if (isWholesale && isWholesalePage && wholesale.available === "true") {
           inventoryElement.textContent = "Available";
           inventoryElement.nextElementSibling?.style.setProperty("display", "none");
           return;
@@ -654,16 +654,15 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         : selectedProductVariantInfo;
       const quantity = element.querySelector("input[name=quantity]").value;
       const submitButton = element.querySelector("#foxy-form input[type=submit]");
-      // TODO This is stil not working
-      const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
-      if (isWholesale && wholesale.available === "false") {
+
+      if (isWholesale && isWholesalePage && wholesale.available === "false") {
         inventoryElement.textContent = "Unavailable";
         inventoryElement?.nextSibling?.style.setProperty("display", "none");
         submitButton.disabled = true;
         submitButton.style.backgroundColor = "#37b7728c";
         return;
       }
-      if (isWholesale && wholesale.available === "true") {
+      if (isWholesale && isWholesalePage && wholesale.available === "true") {
         inventoryElement.textContent = "Available";
         inventoryElement?.nextSibling?.style.setProperty("display", "none");
         submitButton.disabled = false;
@@ -790,7 +789,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         Object.keys(selectedProductVariantInfo).forEach(key => {
           const inputToUpdate = element.querySelector(`input[name="${key}"]`);
           if (inputToUpdate) inputToUpdate.value = selectedProductVariantInfo[key];
-          const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
+
           switch (key) {
             case "inventory":
               // Update max quantity
@@ -850,7 +849,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
               certification.style.display = "block";
               break;
             case "wholesale":
-              if (isWholesale) {
+              if (isWholesale && isWholesalePage) {
                 const wholesaleTier = isWholesaler();
                 const baseUnitForTier =
                   selectedProductVariantInfo.wholesale[`${wholesaleTier}_baseunit`];
@@ -876,8 +875,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         return;
       }
 
-      const isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
-      if (isWholesale) {
+      if (isWholesale && isWholesalePage) {
         addPriceWholesale(isWholesaler());
       } else {
         addPrice();
