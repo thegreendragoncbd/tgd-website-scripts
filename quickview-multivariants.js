@@ -60,6 +60,12 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         handleQuickViewSetUp();
         setPricesForProductListings();
         handleCmsFilterEvent();
+
+        const params = new URLSearchParams(window.location.search);
+        const filterParams = params.get("*");
+        if (window.fsAttributes.cmsfilter && filterParams) {
+          window.fsAttributes.cmsfilter.init();
+        }
       });
     }
 
@@ -559,7 +565,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       const variantSelectionGroup = e.target.name;
       if (!variantSelectionGroup) return;
 
-      // Handle quantity change to update availability when variant is chossen.
+      // Handle quantity change to update availability when variant is chosen.
       if (variantSelectionGroup === "quantity" && isVariantsSelectionComplete())
         return handleQuantityChange();
 
