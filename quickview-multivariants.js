@@ -65,7 +65,8 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const filterParams = params.get("*");
         if (window.fsAttributes.cmsfilter && filterParams) {
           console.log(window.fsAttributes.cmsfilter, "window.fsAttributes.cmsfilter");
-          await window.fsAttributes.cmsfilter.init();
+          await window.fsAttributes.cmsfilter.loading;
+          window.fsAttributes.cmsfilter.init();
         }
       });
     }
@@ -117,6 +118,8 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
             // The callback passes a `filterInstances` array with all the `CMSFilters` instances on the page.
             const [filterInstance] = filterInstances;
 
+            console.log(filterInstance, "filterInstance");
+            console.log(filterInstances, "filterInstancessssss");
             // The `renderitems` event runs whenever the list renders items after filtering.
             filterInstance.listInstance.on("renderitems", renderedItems => {
               handleRenderedItems(renderedItems);
