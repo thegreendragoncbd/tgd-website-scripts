@@ -64,6 +64,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const params = new URLSearchParams(window.location.search);
         const filterParams = params.get("*");
         if (window.fsAttributes.cmsfilter && filterParams) {
+          console.log(window.fsAttributes.cmsfilter, "window.fsAttributes.cmsfilter");
           window.fsAttributes.cmsfilter.init();
         }
       });
