@@ -56,7 +56,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
     }
     // Pages with Product Lists
     if (isProductListPage()) {
-      $(document).ready(() => {
+      $(document).ready(async () => {
         handleQuickViewSetUp();
         setPricesForProductListings();
         handleCmsFilterEvent();
@@ -65,7 +65,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const filterParams = params.get("*");
         if (window.fsAttributes.cmsfilter && filterParams) {
           console.log(window.fsAttributes.cmsfilter, "window.fsAttributes.cmsfilter");
-          window.fsAttributes.cmsfilter.init();
+          await window.fsAttributes.cmsfilter.init();
         }
       });
     }
@@ -104,6 +104,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       window.fsAttributes = window.fsAttributes || [];
 
       const handleRenderedItems = renderedItems => {
+        console.log(renderedItems, "renderedItems");
         if (!renderedItems.length) return;
         handleQuickViewSetUp();
         setPricesForProductListings();
@@ -117,7 +118,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
             const [filterInstance] = filterInstances;
 
             // The `renderitems` event runs whenever the list renders items after filtering.
-            filterInstance.on("renderitems", renderedItems => {
+            filterInstance.listInstance.on("renderitems", renderedItems => {
               handleRenderedItems(renderedItems);
             });
           },
