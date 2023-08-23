@@ -117,7 +117,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
             const [filterInstance] = filterInstances;
 
             // The `renderitems` event runs whenever the list renders items after filtering.
-            filterInstance.listInstance.on("renderitems", renderedItems => {
+            filterInstance.on("renderitems", renderedItems => {
               handleRenderedItems(renderedItems);
             });
           },
