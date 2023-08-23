@@ -97,7 +97,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       window.fsAttributes = window.fsAttributes || [];
 
       const handleRenderedItems = renderedItems => {
-        console.log(renderedItems, "renderedItems");
         if (!renderedItems.length) return;
         handleQuickViewSetUp();
         setPricesForProductListings();
