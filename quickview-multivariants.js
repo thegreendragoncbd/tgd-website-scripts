@@ -855,20 +855,23 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
                 const baseUnitForTier =
                   selectedProductVariantInfo.wholesale[`${wholesaleTier}_baseunit`];
                 wholesaleDollarPerUnit.textContent = baseUnitForTier;
+                const unitsPerCase = selectedProductVariantInfo.wholesale["units_per_case"];
 
-                const casePrice =
-                  Number(selectedProductVariantInfo.wholesale["units_per_case"]) *
-                  Number(baseUnitForTier);
+                const casePrice = Number(unitsPerCase) * Number(baseUnitForTier);
                 wholesaleDollarPerCase.textContent = casePrice.toFixed(2);
 
                 wholesaleMSRP.textContent = selectedProductVariantInfo.wholesale.msrp;
-                wholesaleUnitsPerCase.textContent =
-                  selectedProductVariantInfo.wholesale.units_per_case;
+                wholesaleUnitsPerCase.textContent = unitsPerCase;
 
                 // show dollar sign
                 wholesaleMSRP.previousElementSibling.style.display = "inline-block";
                 wholesaleDollarPerUnit.previousElementSibling.style.display = "inline-block";
                 wholesaleDollarPerCase.previousElementSibling.style.display = "inline-block";
+
+                // Update wholesale-unit-case
+                if (unitsPerCase)
+                  element.querySelector(`input[type="hidden"][name="wholesale-case-count"]`).value =
+                    unitsPerCase;
               }
               break;
           }
