@@ -6,12 +6,12 @@ function isProductListPage() {
     URL_PATH.includes("/brands/") ||
     URL_PATH.includes("/shop-all-products") ||
     URL_PATH.includes("/brand/") || 
-    URL_PATH.includes("/product-primary-categories/") ||
-    URL_PATH.includes("/subcategories/")
+    URL_PATH.includes("/product-primary-categories/") 
   );
 }
 function isProductCMSPage(URL_PATH) {
-  return /\/(product)\/.*/.test(URL_PATH) || URL_PATH.includes("/products-wholesale/");
+  return /\/(product)\/.*/.test(URL_PATH) || URL_PATH.includes("/products-wholesale/") ||
+    URL_PATH.includes("/subcategories/");
 }
 if (isProductCMSPage(URL_PATH) || isProductListPage()) {
   (function () {
