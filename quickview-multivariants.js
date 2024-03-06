@@ -11,7 +11,7 @@ function isProductListPage() {
   );
 }
 function isProductCMSPage(URL_PATH) {
-  return /\/(product)\/.*/.test(URL_PATH) || URL_PATH.includes("/products-wholesale/")
+  return /\/(product)\/.*/.test(URL_PATH) || URL_PATH.includes("/products-wholesale/");
 }
 if (isProductCMSPage(URL_PATH) || isProductListPage()) {
   (function () {
