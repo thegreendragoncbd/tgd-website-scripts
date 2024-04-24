@@ -218,7 +218,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const type = $(this).find(".foxy_variants_item-type").text();
         const allowBackorders = $(this).find(".foxy_variants_item-allow-backorders").text();
         const restrictedShipping = $(this).find(".foxy_variants_item-restricted-shipping").text();
-        const restrictedShippingCode = $(this).find(".foxy_variants_item-restricted-shipping-code").text();
         const itemCertification = $(this).find(".foxy_variants_item-certification-link").text();
         const wholesale = {
           available: $(this).find(".foxy_variants_item-wholesale-availability").text(),
@@ -248,7 +247,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
             price,
             allowBackorders,
             restrictedShipping,
-            restrictedShippingCode,
             itemCertification,
             wholesale,
           })
@@ -274,7 +272,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         let sku = $(this).find(".foxy_product_item_sku").text();
         let allowBackorders = $(this).find(".foxy_product_item_allow-backorders").text();
         const restrictedShipping = $(this).find(".foxy_variants_item-restricted-shipping").text();
-        const restrictedShippingCode = $(this).find(".foxy_variants_item-restricted-shipping-code").text();
+        const restrictedShippingCode = $(this).find(".foxy_product_item_restricted-shipping-code").text();
         const itemCertification = $(this).find(".foxy_variants_item-certification-link").text()
           ? $(this).find(".foxy_variants_item-certification-link").text()
           : "none";
@@ -635,7 +633,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         let type = $(this).find(".foxy_variants_item-type").text();
         let allowBackorders = $(this).find(".foxy_variants_item-allow-backorders").text();
         const restrictedShipping = $(this).find(".foxy_variants_item-restricted-shipping").text();
-        const restrictedShippingCode = $(this).find(".foxy_variants_item-restricted-shipping-code").text();
         const itemCertification = $(this).find(".foxy_variants_item-certification-link").text()
           ? $(this).find(".foxy_variants_item-certification-link").text()
           : "none";
@@ -665,7 +662,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           price,
           allowBackorders,
           restrictedShipping,
-          restrictedShippingCode,
           itemCertification,
           wholesale,
         ];
@@ -687,7 +683,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
               price: price,
               allowBackorders: allowBackorders,
               restrictedShipping: restrictedShipping,
-              restrictedShippingCode: restrictedShippingCode,
               itemCertification: itemCertification,
               wholesale,
             })
@@ -888,10 +883,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
               break;
             case "restrictedShipping":
               element.querySelector("input[name=Restricted_Shipping]").value =
-                selectedProductVariantInfo[key];
-              break;
-            case "restrictedShippingCode":
-              element.querySelector("input[name=Restricted_Shipping_Code]").value =
                 selectedProductVariantInfo[key];
               break;
             case "itemCertification":
