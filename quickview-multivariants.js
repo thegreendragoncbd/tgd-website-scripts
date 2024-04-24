@@ -262,17 +262,14 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         let name = $(this).find(".foxy_product_item_name").text();
         let price = $(this).find(".foxy_product_item_price").text();
         let salePrice = $(this).find(".foxy_product_item_sale-price").text();
-        let lowestSalePrice = $(this).find(".product-price_lowest-sale-price").text();
-        let lowPrice = $(this).find(".product-price_low-price").text();
-        let highPrice = $(this).find(".product-price_high-price").text();
         let weight = $(this).find(".foxy_product_item_weight").text();
         let inventory = $(this).find(".foxy_product_item_inventory").text()
           ? $(this).find(".foxy_product_item_inventory").text()
           : "0";
         let sku = $(this).find(".foxy_product_item_sku").text();
         let allowBackorders = $(this).find(".foxy_product_item_allow-backorders").text();
+        let restrictedShippingCode = $(this).find(".foxy_product_item_restricted-shipping-code").text();
         const restrictedShipping = $(this).find(".foxy_variants_item-restricted-shipping").text();
-        const restrictedShippingCode = $(this).find(".foxy_product_item_restricted-shipping-code").text();
         const itemCertification = $(this).find(".foxy_variants_item-certification-link").text()
           ? $(this).find(".foxy_variants_item-certification-link").text()
           : "none";
@@ -294,9 +291,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           inventory: inventory,
           weight: weight,
           salePrice: salePrice,
-          lowestSalePrice: lowestSalePrice,
-          highPrice: highPrice,
-          lowPrice: lowPrice,
           price: price,
           allowBackorders: allowBackorders,
           restrictedShipping,
@@ -334,41 +328,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
 
       //--- Product has variants---
       if (variantItems.length > 0) {
-        if (isProductListPage()){
-          // Variants that affect price
-          if(productItemObject.lowestSalePrice > 0 && productItemObject.highPrice == productItemObject.lowPrice){
-            //product variants have sale price and we should show strike-through
-            beforeSalePriceElement.textContent = hasMembership()
-              ? productItemObject.lowestSalePrice
-              : productItemObject.lowPrice;
-            beforeSalePriceElement.parentElement.style.display = "inline-block";
-            activePriceElement.textContent = getMembershipSpecialPrice(productItemObject.lowestSalePrice);
-            activePriceElement.parentElement.style.display = "inline-block";
-
-          } else if (productItemObject.lowestSalePrice > 0){
-            //no strike through, use low sale for low price and display range
-            priceLowElement.textContent = getMembershipSpecialPrice(productItemObject.lowestSalePrice);
-            priceHighElement.textContent = getMembershipSpecialPrice(productItemObject.highPrice);
-            priceLowElement.parentElement.style.display = "block";
-            beforeSalePriceElement.parentElement.style.display = "none";
-            activePriceElement.parentElement.style.display = "none";
-          } else if(productItemObject.highPrice > productItemObject.lowPrice){
-            //no sale price, show price range
-            priceLowElement.textContent = getMembershipSpecialPrice(productItemObject.lowPrice);
-            priceHighElement.textContent = getMembershipSpecialPrice(productItemObject.highPrice);
-            priceLowElement.parentElement.style.display = "block";
-            beforeSalePriceElement.parentElement.style.display = "none";
-            activePriceElement.parentElement.style.display = "none";
-
-          } else {
-            //no sale price and no Range, just display low as there is one price for all variants
-            activePriceElement.textContent = getMembershipSpecialPrice(productItemObject.lowPrice);
-            activePriceElement.parentElement.style.display = "inline-block";
-          }
-          return;
-        }
-
-
+        // Variants that affect price
         let allProductVariantsHaveSalePrices = [];
         const sortedPrices = variantItems
           .map(variant => {
@@ -883,6 +843,10 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
               break;
             case "restrictedShipping":
               element.querySelector("input[name=Restricted_Shipping]").value =
+                selectedProductVariantInfo[key];
+              break;
+            case "restrictedShippingCode":
+              element.querySelector("input[name=Restricted_Shipping_Code]").value =
                 selectedProductVariantInfo[key];
               break;
             case "itemCertification":
