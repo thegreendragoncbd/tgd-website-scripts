@@ -218,7 +218,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const type = $(this).find(".foxy_variants_item-type").text();
         const allowBackorders = $(this).find(".foxy_variants_item-allow-backorders").text();
         const restrictedShipping = $(this).find(".foxy_variants_item-restricted-shipping").text();
-        const itemCertification = $(this).find(".foxy_variants_item-certification-link").text();
+        const itemCertification = $(this).find(".foxy_variants_item-certification-link").href();
         const wholesale = {
           available: $(this).find(".foxy_variants_item-wholesale-availability").text(),
           tier1: $(this).find(".foxy_variants_item-wholesale-tier1").text(),
@@ -270,8 +270,8 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         let allowBackorders = $(this).find(".foxy_product_item_allow-backorders").text();
         let restrictedShippingCode = $(this).find(".foxy_product_item_restricted-shipping-code").text();
         const restrictedShipping = $(this).find(".foxy_variants_item-restricted-shipping").text();
-        const itemCertification = $(this).find(".foxy_variants_item-certification-link").text()
-          ? $(this).find(".foxy_variants_item-certification-link").text()
+        const itemCertification = $(this).find(".foxy_variants_item-certification-link").href()
+          ? $(this).find(".foxy_variants_item-certification-link").href()
           : "none";
         const wholesale = {
           available: $(this).find(".foxy_product_item_wholesale-availability").text(),
@@ -593,8 +593,8 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         let type = $(this).find(".foxy_variants_item-type").text();
         let allowBackorders = $(this).find(".foxy_variants_item-allow-backorders").text();
         const restrictedShipping = $(this).find(".foxy_variants_item-restricted-shipping").text();
-        const itemCertification = $(this).find(".foxy_variants_item-certification-link").text()
-          ? $(this).find(".foxy_variants_item-certification-link").text()
+        const itemCertification = $(this).find(".foxy_variants_item-certification-link").href()
+          ? $(this).find(".foxy_variants_item-certification-link").href()
           : "none";
         const wholesale = {
           available: $(this).find(".foxy_variants_item-wholesale-availability").text(),
