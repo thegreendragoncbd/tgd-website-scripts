@@ -921,9 +921,8 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           var lcVariantGroupName=variant.toLowerCase();
           selectDropdown.id=`variant-${lcVariantGroupName}-select-dropdown`;
           selectDropdown.innerHTML="Please Select<div id='select-arrow' style='-ms-transform: rotate(270deg);-webkit-transform: rotate(270deg); transform: rotate(270deg);display: inline-block;padding-right: 10px;float:right;font-style: normal;'>&#x276E;</div>";
-          
-          const ddContent=$(`#variants-${lcVariantGroupName}`);
-          const ddParent=$('#'+lcVariantGroupName+"-wrapper"); 
+          const ddContent=document.getElementById("variants-"+lcVariantGroupName);
+          const ddParent=document.getElementById(lcVariantGroupName+"-wrapper");
           ddParent.insertBefore(selectDropdown, ddContent);
           ddParent.style.position='relative';
           ddContent.style.position='absolute';
