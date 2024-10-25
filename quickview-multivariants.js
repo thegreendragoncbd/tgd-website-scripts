@@ -528,12 +528,21 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         let flavor = $(this).find(".foxy_variants_item-flavor").text();
         let strength = $(this).find(".foxy_variants_item-strength").text();
         let type = $(this).find(".foxy_variants_item-type").text();
-
-        variantDropdownDisplay(strain, STRAIN_DIV_ID);
-        variantDropdownDisplay(size, SIZE_DIV_ID);
-        variantDropdownDisplay(flavor, FLAVOR_DIV_ID);
-        variantDropdownDisplay(strength, STRENGTH_DIV_ID);
-        variantDropdownDisplay(type, TYPE_DIV_ID);
+        if(strain){
+          variantDropdownDisplay(strain, STRAIN_DIV_ID);
+        }
+        if(size){
+          variantDropdownDisplay(size, SIZE_DIV_ID);
+        }
+        if(flavor){
+          variantDropdownDisplay(flavor, FLAVOR_DIV_ID);
+        }
+        if(strength){
+          variantDropdownDisplay(strength, STRENGTH_DIV_ID);
+        }
+        if(type){
+          variantDropdownDisplay(type, TYPE_DIV_ID);
+        }
       });
     }
 
