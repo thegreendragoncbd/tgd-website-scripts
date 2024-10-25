@@ -554,44 +554,44 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         });
         //addition for drop down appearance if there are more than 6 options
         if($(`${variant_container} .w-radio`).length > 6){
+          console.log(variant_container +".w-radio.length is over 6, looking for "+variantGroupName+"-wrapper");
           /* create "Please Select" dropdown html, add onclick to it, and onclick to the options so when you select them the dropdown closes and writes the value name to the "Please Select"*/
-          $( document ).ready(function() {
-          var selectDropdown = document.createElement("div");
-          selectDropdown.id=`variant-${variantGroupName}-select-dropdown`;
-          selectDropdown.innerHTML="Please Select<div id='select-arrow' style='-ms-transform: rotate(270deg);-webkit-transform: rotate(270deg); transform: rotate(270deg);display: inline-block;padding-right: 10px;float:right;font-style: normal;'>&#x276E;</div>";
-          const ddContent=$(`variants-${variantGroupName}`);
-          const ddParent=$(`${variantGroupName}-wrapper`); // - this is breaking, it must not be in the dom yet
-          ddParent.insertBefore(selectDropdown, ddContent);
-          ddContent.style.position='absolute';
-          ddContent.style.display='none';
-          ddContent.style.background='white';
-          ddContent.style.marginTop='0';
-          ddContent.style.border='1px solid lightgray';
-          ddContent.style.zIndex="1";
-          ddContent.style.padding='10px';
-          ddContent.style.width='100%';
-          selectDropdown.style.display='block';
-          selectDropdown.style.border='1px solid lightgray';
-          selectDropdown.style.padding='10px';
-          selectDropdown.style.radius='5px';
-          ddParent.style.position='relative';
-          $("label.radio-button-field.w-radio").style.margin="0";
+            var selectDropdown = document.createElement("div");
+            selectDropdown.id=`variant-${variantGroupName}-select-dropdown`;
+            selectDropdown.innerHTML="Please Select<div id='select-arrow' style='-ms-transform: rotate(270deg);-webkit-transform: rotate(270deg); transform: rotate(270deg);display: inline-block;padding-right: 10px;float:right;font-style: normal;'>&#x276E;</div>";
+            const ddContent=$(`variants-${variantGroupName}`);
+            const ddParent=$(`${variantGroupName}-wrapper`); // - this is breaking, it must not be in the dom yet
+            ddParent.insertBefore(selectDropdown, ddContent);
+            ddContent.style.position='absolute';
+            ddContent.style.display='none';
+            ddContent.style.background='white';
+            ddContent.style.marginTop='0';
+            ddContent.style.border='1px solid lightgray';
+            ddContent.style.zIndex="1";
+            ddContent.style.padding='10px';
+            ddContent.style.width='100%';
+            selectDropdown.style.display='block';
+            selectDropdown.style.border='1px solid lightgray';
+            selectDropdown.style.padding='10px';
+            selectDropdown.style.radius='5px';
+            ddParent.style.position='relative';
+            $("label.radio-button-field.w-radio").style.margin="0";
 
-          $(`#variant-${variantGroupName}-select-dropdown`).on("click",function(){$(`#variants-${variantGroupName}`).toggle();});
-          $(`#variants-${variantGroupName} .radio-button-field.w-radio`).on("click",function(){
-              setTimeout(function() {
-              $("#variants-strain").hide();
-              selectDropdown.innerHTML=$(`#variants-${variantGroupName} .radio-button-field.w-radio.is-active-inputactive span.radio-btn.w-form-label`).text()+"<div id='select-arrow' style='-ms-transform: rotate(270deg);-webkit-transform: rotate(270deg); transform: rotate(270deg);display: inline-block;padding-right: 10px;float:right;font-style: normal;'>&#x276E;</div>";
-            }, 100);
-          });
+            $(`#variant-${variantGroupName}-select-dropdown`).on("click",function(){$(`#variants-${variantGroupName}`).toggle();});
+            $(`#variants-${variantGroupName} .radio-button-field.w-radio`).on("click",function(){
+                setTimeout(function() {
+                $("#variants-strain").hide();
+                selectDropdown.innerHTML=$(`#variants-${variantGroupName} .radio-button-field.w-radio.is-active-inputactive span.radio-btn.w-form-label`).text()+"<div id='select-arrow' style='-ms-transform: rotate(270deg);-webkit-transform: rotate(270deg); transform: rotate(270deg);display: inline-block;padding-right: 10px;float:right;font-style: normal;'>&#x276E;</div>";
+              }, 100);
+            });
 
-          // on submit, check to be sure an option is selected and highlight field if not
-          $('#addtocartbtn').on("click",function(){
-              if($("#foxy-form [required]:invalid").length > 0){
-                  selectDropdown.style.border='1px solid red';
-              }
-          });
-          });
+            // on submit, check to be sure an option is selected and highlight field if not
+            $('#addtocartbtn').on("click",function(){
+                if($("#foxy-form [required]:invalid").length > 0){
+                    selectDropdown.style.border='1px solid red';
+                }
+            });
+
         }
         //end drop down appearance
       } else {
