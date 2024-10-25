@@ -918,6 +918,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
     }
     function variantDropdownDisplay(variant_container,variantGroupName){         
         /* create "Please Select" dropdown html, add onclick to it, and onclick to the options so when you select them the dropdown closes and writes the value name to the "Please Select"*/
+        console.log('Container: '+variant_container+', Group: '+variantGroupName);
         if($(`${variant_container} .w-radio`).length > 6){
           var selectDropdown = document.createElement("div");
           var lcVariantGroupName=variantGroupName.toLowerCase();
