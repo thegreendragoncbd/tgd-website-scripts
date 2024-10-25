@@ -554,14 +554,17 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         });
         //addition for drop down appearance if there are more than 6 options
         if($(`${variant_container} .w-radio`).length > 6){
-          console.log(variant_container +".w-radio.length is over 6, looking for "+variantGroupName+"-wrapper");
+          
           /* create "Please Select" dropdown html, add onclick to it, and onclick to the options so when you select them the dropdown closes and writes the value name to the "Please Select"*/
             var selectDropdown = document.createElement("div");
             var lcVariantGroupName=variantGroupName.toLowerCase();
+            console.log(variant_container +".w-radio.length is over 6, looking for "+lcVariantGroupName+"-wrapper");
             selectDropdown.id=`variant-${lcVariantGroupName}-select-dropdown`;
             selectDropdown.innerHTML="Please Select<div id='select-arrow' style='-ms-transform: rotate(270deg);-webkit-transform: rotate(270deg); transform: rotate(270deg);display: inline-block;padding-right: 10px;float:right;font-style: normal;'>&#x276E;</div>";
             const ddContent=$(`variants-${lcVariantGroupName}`);
-            const ddParent=$(lcVariantGroupName+"-wrapper"); // - this is breaking, it must not be in the dom yet
+            const ddParent=$(lcVariantGroupName+"-wrapper"); 
+            console.log(ddContent);
+            console.log(ddParent);
             ddParent.insertBefore(selectDropdown, ddContent);
             ddContent.style.position='absolute';
             ddContent.style.display='none';
