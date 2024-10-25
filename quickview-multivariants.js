@@ -147,7 +147,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
 
       // Build variant/radio options
       buildVariants();
-
+      
       //Add Price according to product
       isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
       if (isWholesale && isWholesalePage) {
@@ -522,6 +522,19 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         addVariantGroup(strength, STRENGTH_DIV_ID, index);
         addVariantGroup(type, TYPE_DIV_ID, index);
       });
+      
+      let strain = $(this).find(".foxy_variants_item-strain").text();
+      let size = $(this).find(".foxy_variants_item-size").text();
+      let flavor = $(this).find(".foxy_variants_item-flavor").text();
+      let strength = $(this).find(".foxy_variants_item-strength").text();
+      let type = $(this).find(".foxy_variants_item-type").text();
+
+      variantDropdownDisplay(strain, STRAIN_DIV_ID);
+      variantDropdownDisplay(size, SIZE_DIV_ID);
+      variantDropdownDisplay(flavor, FLAVOR_DIV_ID);
+      variantDropdownDisplay(strength, STRENGTH_DIV_ID);
+      variantDropdownDisplay(type, TYPE_DIV_ID);
+      
     }
 
     function addVariantGroup(variantInfo, VariantContainer, index) {
@@ -552,11 +565,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
             $(this).remove();
           }
         });
-        //call dropdown display function if there are more than 6 variants
-        
-        if($(`${variant_container} .w-radio`).length > 6){
-          variantDropdownDisplay(variantGroupName);
-        }
+
       } else {
         $(variant_container).parent().remove();
       }
@@ -907,8 +916,9 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       certification.href = productItemObject["itemCertification"];
       certification.style.display = "block";
     }
-    function variantDropdownDisplay(variantGroupName){         
+    function variantDropdownDisplay(variant_container,variantGroupName){         
         /* create "Please Select" dropdown html, add onclick to it, and onclick to the options so when you select them the dropdown closes and writes the value name to the "Please Select"*/
+        if($(`${variant_container} .w-radio`).length > 6){
           var selectDropdown = document.createElement("div");
           var lcVariantGroupName=variantGroupName.toLowerCase();
           selectDropdown.id=`variant-${lcVariantGroupName}-select-dropdown`;
@@ -963,7 +973,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
                   selectDropdown.style.border='1px solid red';
               }
           });
-
+        }
       
       //end drop down appearance
     }
