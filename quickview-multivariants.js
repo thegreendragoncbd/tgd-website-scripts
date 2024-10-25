@@ -522,28 +522,14 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         addVariantGroup(strength, STRENGTH_DIV_ID, index);
         addVariantGroup(type, TYPE_DIV_ID, index);
       });
-      $(variants_item).each(function (index) {
-        let strain = $(this).find(".foxy_variants_item-strain").text();
-        let size = $(this).find(".foxy_variants_item-size").text();
-        let flavor = $(this).find(".foxy_variants_item-flavor").text();
-        let strength = $(this).find(".foxy_variants_item-strength").text();
-        let type = $(this).find(".foxy_variants_item-type").text();
-        if(strain){
-          variantDropdownDisplay(strain, STRAIN_DIV_ID);
-        }
-        if(size){
-          variantDropdownDisplay(size, SIZE_DIV_ID);
-        }
-        if(flavor){
-          variantDropdownDisplay(flavor, FLAVOR_DIV_ID);
-        }
-        if(strength){
-          variantDropdownDisplay(strength, STRENGTH_DIV_ID);
-        }
-        if(type){
-          variantDropdownDisplay(type, TYPE_DIV_ID);
-        }
-      });
+
+        variantDropdownDisplay(STRAIN_DIV_ID);
+        variantDropdownDisplay(SIZE_DIV_ID);
+        variantDropdownDisplay(FLAVOR_DIV_ID);
+        variantDropdownDisplay(STRENGTH_DIV_ID);
+        variantDropdownDisplay(TYPE_DIV_ID);
+        
+      
     }
 
     function addVariantGroup(variantInfo, VariantContainer, index) {
@@ -925,10 +911,10 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       certification.href = productItemObject["itemCertification"];
       certification.style.display = "block";
     }
-    function variantDropdownDisplay(variant_container,variantGroupName){         
+    function variantDropdownDisplay(variantGroupName){         
         /* create "Please Select" dropdown html, add onclick to it, and onclick to the options so when you select them the dropdown closes and writes the value name to the "Please Select"*/
-        console.log('Container: '+variant_container+', Group: '+variantGroupName);
-        if($(`${variant_container} .w-radio`).length > 6){
+        console.log('Group: '+variantGroupName);
+        if($(`${variantGroupName} .w-radio`).length > 6){
           var selectDropdown = document.createElement("div");
           var lcVariantGroupName=variantGroupName.toLowerCase();
           selectDropdown.id=`variant-${lcVariantGroupName}-select-dropdown`;
