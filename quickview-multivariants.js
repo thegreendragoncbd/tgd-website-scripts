@@ -915,41 +915,25 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       //variantGroupName is #variant-strain for example
       var variant=variantGroupName.split('-')[1];    
         /* create "Please Select" dropdown html, add onclick to it, and onclick to the options so when you select them the dropdown closes and writes the value name to the "Please Select"*/
-        console.log('Group: '+variantGroupName+", variant: "+variant);
+
         if($(`${variantGroupName} .w-radio`).length > 6){
           var selectDropdown = document.createElement("div");
           var lcVariantGroupName=variant.toLowerCase();
           selectDropdown.id=`variant-${lcVariantGroupName}-select-dropdown`;
           selectDropdown.innerHTML="Please Select<div id='select-arrow' style='-ms-transform: rotate(270deg);-webkit-transform: rotate(270deg); transform: rotate(270deg);display: inline-block;padding-right: 10px;float:right;font-style: normal;'>&#x276E;</div>";
-          if(!$(`variants-${lcVariantGroupName}`) || !$(lcVariantGroupName+"-wrapper")){
-            setTimeout(function() {
-              const ddContent=$(`variants-${lcVariantGroupName}`);
-              const ddParent=$(lcVariantGroupName+"-wrapper"); 
-              ddParent.insertBefore(selectDropdown, ddContent);
-              ddParent.style.position='relative';
-              ddContent.style.position='absolute';
-              ddContent.style.display='none';
-              ddContent.style.background='white';
-              ddContent.style.marginTop='0';
-              ddContent.style.border='1px solid lightgray';
-              ddContent.style.zIndex="1";
-              ddContent.style.padding='10px';
-              ddContent.style.width='100%';
-            },100);
-          } else {
-            const ddContent=$(`variants-${lcVariantGroupName}`);
-            const ddParent=$(lcVariantGroupName+"-wrapper"); 
-            ddParent.insertBefore(selectDropdown, ddContent);
-            ddParent.style.position='relative';
-            ddContent.style.position='absolute';
-            ddContent.style.display='none';
-            ddContent.style.background='white';
-            ddContent.style.marginTop='0';
-            ddContent.style.border='1px solid lightgray';
-            ddContent.style.zIndex="1";
-            ddContent.style.padding='10px';
-            ddContent.style.width='100%';
-          }
+          
+          const ddContent=$(`#variants-${lcVariantGroupName}`);
+          const ddParent=$('#'+lcVariantGroupName+"-wrapper"); 
+          ddParent.insertBefore(selectDropdown, ddContent);
+          ddParent.style.position='relative';
+          ddContent.style.position='absolute';
+          ddContent.style.display='none';
+          ddContent.style.background='white';
+          ddContent.style.marginTop='0';
+          ddContent.style.border='1px solid lightgray';
+          ddContent.style.zIndex="1";
+          ddContent.style.padding='10px';
+          ddContent.style.width='100%';
           selectDropdown.style.display='block';
           selectDropdown.style.border='1px solid lightgray';
           selectDropdown.style.padding='10px';
