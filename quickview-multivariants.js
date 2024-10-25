@@ -947,7 +947,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
               selectDropdown.innerHTML=$(`#variants-${lcVariantGroupName} .radio-button-field.w-radio.is-active-inputactive span.radio-btn.w-form-label`).text()+"<div id='select-arrow' style='-ms-transform: rotate(270deg);-webkit-transform: rotate(270deg); transform: rotate(270deg);display: inline-block;padding-right: 10px;float:right;font-style: normal;'>&#x276E;</div>";
             }, 100);
           });
-          ucVariant=variant.toUpperCase();
+          let ucVariant=capitalizeFirstLetter(variant);
           console.log(ucVariant);
           // on submit, check to be sure an option is selected and highlight field if not
           $('#addtocartbtn').on("click",function(){
