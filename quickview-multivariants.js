@@ -938,7 +938,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           selectDropdown.style.padding='10px';
           selectDropdown.style.radius='5px';
           
-          $("label.radio-button-field.w-radio").style.margin="0";
+          //$("label.radio-button-field.w-radio").style.margin="0";
 
           $(`#variant-${lcVariantGroupName}-select-dropdown`).on("click",function(){$(`#variants-${lcVariantGroupName}`).toggle();});
           $(`#variants-${lcVariantGroupName} .radio-button-field.w-radio`).on("click",function(){
