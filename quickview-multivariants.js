@@ -911,12 +911,14 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       certification.href = productItemObject["itemCertification"];
       certification.style.display = "block";
     }
-    function variantDropdownDisplay(variantGroupName){         
+    function variantDropdownDisplay(variantGroupName){     
+      //variantGroupName is #variant-strain for example
+      var variant=variantGroupName.split('-')[1];    
         /* create "Please Select" dropdown html, add onclick to it, and onclick to the options so when you select them the dropdown closes and writes the value name to the "Please Select"*/
-        console.log('Group: '+variantGroupName);
+        console.log('Group: '+variantGroupName+", variant: "+variant);
         if($(`${variantGroupName} .w-radio`).length > 6){
           var selectDropdown = document.createElement("div");
-          var lcVariantGroupName=variantGroupName.toLowerCase();
+          var lcVariantGroupName=variant.toLowerCase();
           selectDropdown.id=`variant-${lcVariantGroupName}-select-dropdown`;
           selectDropdown.innerHTML="Please Select<div id='select-arrow' style='-ms-transform: rotate(270deg);-webkit-transform: rotate(270deg); transform: rotate(270deg);display: inline-block;padding-right: 10px;float:right;font-style: normal;'>&#x276E;</div>";
           if(!$(`variants-${lcVariantGroupName}`) || !$(lcVariantGroupName+"-wrapper")){
