@@ -522,19 +522,19 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         addVariantGroup(strength, STRENGTH_DIV_ID, index);
         addVariantGroup(type, TYPE_DIV_ID, index);
       });
-      
-      let strain = $(this).find(".foxy_variants_item-strain").text();
-      let size = $(this).find(".foxy_variants_item-size").text();
-      let flavor = $(this).find(".foxy_variants_item-flavor").text();
-      let strength = $(this).find(".foxy_variants_item-strength").text();
-      let type = $(this).find(".foxy_variants_item-type").text();
+      $(variants_item).each(function (index) {
+        let strain = $(this).find(".foxy_variants_item-strain").text();
+        let size = $(this).find(".foxy_variants_item-size").text();
+        let flavor = $(this).find(".foxy_variants_item-flavor").text();
+        let strength = $(this).find(".foxy_variants_item-strength").text();
+        let type = $(this).find(".foxy_variants_item-type").text();
 
-      variantDropdownDisplay(strain, STRAIN_DIV_ID);
-      variantDropdownDisplay(size, SIZE_DIV_ID);
-      variantDropdownDisplay(flavor, FLAVOR_DIV_ID);
-      variantDropdownDisplay(strength, STRENGTH_DIV_ID);
-      variantDropdownDisplay(type, TYPE_DIV_ID);
-      
+        variantDropdownDisplay(strain, STRAIN_DIV_ID);
+        variantDropdownDisplay(size, SIZE_DIV_ID);
+        variantDropdownDisplay(flavor, FLAVOR_DIV_ID);
+        variantDropdownDisplay(strength, STRENGTH_DIV_ID);
+        variantDropdownDisplay(type, TYPE_DIV_ID);
+      });
     }
 
     function addVariantGroup(variantInfo, VariantContainer, index) {
