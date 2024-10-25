@@ -914,6 +914,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           selectDropdown.id=`variant-${lcVariantGroupName}-select-dropdown`;
           selectDropdown.innerHTML="Please Select<div id='select-arrow' style='-ms-transform: rotate(270deg);-webkit-transform: rotate(270deg); transform: rotate(270deg);display: inline-block;padding-right: 10px;float:right;font-style: normal;'>&#x276E;</div>";
           const ddContent=$(`variants-${lcVariantGroupName}`);
+          console.log(lcVariantGroupName+"-wrapper");
           const ddParent=$(lcVariantGroupName+"-wrapper"); 
           ddParent.insertBefore(selectDropdown, ddContent);
           ddContent.style.position='absolute';
