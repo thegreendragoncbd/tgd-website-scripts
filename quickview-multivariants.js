@@ -952,7 +952,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           // on submit, check to be sure an option is selected and highlight field if not
           $('#addtocartbtn').on("click",function(){
               if($("#foxy-form input[name='"+ucVariant+"'][required]:invalid").length > 0){
-                  selectDropdown.style.border='1px solid red';
+                  selectDropdown.style.border='2px solid red';
               }
           });
         }
