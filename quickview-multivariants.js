@@ -943,7 +943,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           $(`#variant-${lcVariantGroupName}-select-dropdown`).on("click touchstart",function(){$(`#variants-${lcVariantGroupName}`).toggle();});
           $(`#variants-${lcVariantGroupName} .radio-button-field.w-radio`).on("click touchstart",function(){
               setTimeout(function() {
-              $("#variants-strain").hide();
+              $(`#variants-${lcVariantGroupName}`).hide();
               selectDropdown.innerHTML=$(`#variants-${lcVariantGroupName} .radio-button-field.w-radio.is-active-inputactive span.radio-btn.w-form-label`).text()+"<div id='select-arrow' style='-ms-transform: rotate(270deg);-webkit-transform: rotate(270deg); transform: rotate(270deg);display: inline-block;padding-right: 10px;float:right;font-style: normal;'>&#x276E;</div>";
             }, 100);
           });
