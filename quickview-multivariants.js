@@ -924,6 +924,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           const ddContent=document.getElementById("variants-"+lcVariantGroupName);
           const ddParent=document.getElementById(lcVariantGroupName+"-wrapper");
           ddParent.insertBefore(selectDropdown, ddContent);
+          $(`#variants-${lcVariantGroupName}.radio-group`).css("display","block");
           ddParent.style.position='relative';
           ddContent.style.position='absolute';
           ddContent.style.display='none';
@@ -938,7 +939,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           selectDropdown.style.padding='10px';
           selectDropdown.style.radius='5px';
           selectDropdown.style.display="block";
-          $(`#variants-${lcVariantGroupName}.radio-group`).css("display","block");
+          
           let ddItems = $(`#variants-${lcVariantGroupName} label.radio-button-field.w-radio`);
           ddItems.css("border","0");
           ddItems.css("margin","0");
