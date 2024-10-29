@@ -938,7 +938,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           selectDropdown.style.padding='10px';
           selectDropdown.style.radius='5px';
           selectDropdown.style.display="block";
-          selectDropdown.css("display","block");
+          
           let ddItems = $(`#variants-${lcVariantGroupName} label.radio-button-field.w-radio`);
           ddItems.css("border","0");
           ddItems.css("margin","0");
