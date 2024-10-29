@@ -940,8 +940,8 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           
           $("label.radio-button-field.w-radio").css("margin","0");
 
-          $(`#variant-${lcVariantGroupName}-select-dropdown`).on("click tap touchstart",function(){$(`#variants-${lcVariantGroupName}`).toggle();});
-          $(`#variants-${lcVariantGroupName} .radio-button-field.w-radio`).on("click tap touchstart",function(){
+          $(`#variant-${lcVariantGroupName}-select-dropdown`).on("click touchstart",function(){$(`#variants-${lcVariantGroupName}`).toggle();});
+          $(`#variants-${lcVariantGroupName} .radio-button-field.w-radio`).on("click touchstart",function(){
               setTimeout(function() {
               $("#variants-strain").hide();
               selectDropdown.innerHTML=$(`#variants-${lcVariantGroupName} .radio-button-field.w-radio.is-active-inputactive span.radio-btn.w-form-label`).text()+"<div id='select-arrow' style='-ms-transform: rotate(270deg);-webkit-transform: rotate(270deg); transform: rotate(270deg);display: inline-block;padding-right: 10px;float:right;font-style: normal;'>&#x276E;</div>";
@@ -950,7 +950,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           let ucVariant=capitalizeFirstLetter(variant);
           console.log(ucVariant);
           // on submit, check to be sure an option is selected and highlight field if not
-          $('#addtocartbtn').on("click tap touchstart",function(){
+          $('#addtocartbtn').on("click touchstart",function(){
               if($("#foxy-form input[name='"+ucVariant+"'][required]:invalid").length > 0){
                   selectDropdown.style.border='2px solid red';
               }
