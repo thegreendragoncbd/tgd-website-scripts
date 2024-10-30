@@ -936,7 +936,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           ddContent.style.width='100%';
           selectDropdown.style.display='block';
           selectDropdown.style.border='1px solid lightgray';
-          selectDropdown.style.padding='10px';
+          selectDropdown.style.padding='5px';
           selectDropdown.style.radius='5px';
           selectDropdown.style.display="block";
           
@@ -952,7 +952,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           $(`#variants-${lcVariantGroupName} .radio-button-field.w-radio`).on("click",function(){
               setTimeout(function() {
               $(`#variants-${lcVariantGroupName}`).hide();
-              $(this).css("background-color","1#c1e9d4");
+              $(this).style.backgroundColor="1#c1e9d4";
               selectDropdown.innerHTML=$(`#variants-${lcVariantGroupName} .radio-button-field.w-radio.is-active-inputactive span.radio-btn.w-form-label`).text()+"<div id='select-arrow' style='-ms-transform: rotate(270deg);-webkit-transform: rotate(270deg); transform: rotate(270deg);display: inline-block;padding-right: 10px;float:right;font-style: normal;'>&#x276E;</div>";
               $("label .w-form-formradioinput.w-form-formradioinput--inputType-custom.radio-button.w-radio-input.w--redirected-checked").css("background-color","#c1e9d4");
             }, 100);
