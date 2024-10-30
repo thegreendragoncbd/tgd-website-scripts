@@ -952,9 +952,10 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           $(`#variants-${lcVariantGroupName} .radio-button-field.w-radio`).on("click",function(){
               setTimeout(function() {
               $(`#variants-${lcVariantGroupName}`).hide();
-              //this.css("border","1 px solid gray");
+              $(this).css("background-color","1#c1e9d4");
               selectDropdown.innerHTML=$(`#variants-${lcVariantGroupName} .radio-button-field.w-radio.is-active-inputactive span.radio-btn.w-form-label`).text()+"<div id='select-arrow' style='-ms-transform: rotate(270deg);-webkit-transform: rotate(270deg); transform: rotate(270deg);display: inline-block;padding-right: 10px;float:right;font-style: normal;'>&#x276E;</div>";
             }, 100);
+            
           });
           let ucVariant=capitalizeFirstLetter(variant);
           console.log(ucVariant);
