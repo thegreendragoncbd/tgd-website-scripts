@@ -949,6 +949,8 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           ddItems.css("border-bottom","1px solid lightgray");
           ddItems.css("justify-content","left");
 
+         $(`#variants-${lcVariantGroupName} label.radio-button-field.w-radio.radio-disabled`).css("text-decoration","line-through");
+
           $(`#variant-${lcVariantGroupName}-select-dropdown`).on("click",function(){$(`#variants-${lcVariantGroupName}`).toggle();});
           $(`#variants-${lcVariantGroupName} .radio-button-field.w-radio`).on("click",function(){
               setTimeout(function() {
