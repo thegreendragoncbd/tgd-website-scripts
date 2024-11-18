@@ -955,6 +955,8 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
               $(`#variants-${lcVariantGroupName}`).hide();
               selectDropdown.innerHTML=$(`#variants-${lcVariantGroupName} .radio-button-field.w-radio.is-active-inputactive span.radio-btn.w-form-label`).text()+"<div id='select-arrow' style='-ms-transform: rotate(270deg);-webkit-transform: rotate(270deg); transform: rotate(270deg);display: inline-block;padding-right: 10px;float:right;font-style: normal;'>&#x276E;</div>";
               $("label.is-active-inputactive").css("background-color","#c1e9d4");
+              $('div[class^="first-"]').not('.first-bar');
+              $(`#variants-${lcVariantGroupName} label`).not('.is-active-inputactive').css("background-color","white");
             }, 100);
             
           });
