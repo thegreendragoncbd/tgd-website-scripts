@@ -751,10 +751,11 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           element
             .querySelector(`input[value="${option}"]`)
             .parentElement.classList.add(RADIO_DISABLED);
-            //;add strikethrough
-
+            //add strikethrough
+            var myId=element
+            .querySelector(`input[value="${option}"]`).id;
           element
-            .querySelector(`label[for='input[value="${option}"]']`)
+            .querySelector(`label[for='${myId}']`)
             .style.textDecoration = "line-through";
         });
 
