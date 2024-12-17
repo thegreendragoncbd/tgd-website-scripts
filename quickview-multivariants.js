@@ -754,7 +754,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
             //;add strikethrough
 
           element
-            .querySelector(`input[value="${option}"]`)
+            .querySelector(`label[for='input[value="${option}"]']`)
             .style.textDecoration = "line-through";
         });
 
