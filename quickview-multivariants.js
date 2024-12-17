@@ -147,7 +147,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
 
       // Build variant/radio options
       buildVariants();
-      
+
       //Add Price according to product
       isWholesale = isWholesaler() !== false && isWholesaler() !== "none";
       if (isWholesale && isWholesalePage) {
@@ -522,14 +522,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         addVariantGroup(strength, STRENGTH_DIV_ID, index);
         addVariantGroup(type, TYPE_DIV_ID, index);
       });
-
-        variantDropdownDisplay(STRAIN_DIV_ID);
-        variantDropdownDisplay(SIZE_DIV_ID);
-        variantDropdownDisplay(FLAVOR_DIV_ID);
-        variantDropdownDisplay(STRENGTH_DIV_ID);
-        variantDropdownDisplay(TYPE_DIV_ID);
-        
-      
     }
 
     function addVariantGroup(variantInfo, VariantContainer, index) {
@@ -560,7 +552,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
             $(this).remove();
           }
         });
-
       } else {
         $(variant_container).parent().remove();
       }
@@ -760,6 +751,11 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           element
             .querySelector(`input[value="${option}"]`)
             .parentElement.classList.add(RADIO_DISABLED);
+            //;add strikethrough
+
+          element
+            .querySelector(`input[value="${option}"]`)
+            .style.textDecoration = "line-through";
         });
 
         if (hasSelection && unavailableOptions.length !== 0) {
@@ -910,69 +906,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       }
       certification.href = productItemObject["itemCertification"];
       certification.style.display = "block";
-    }
-    function variantDropdownDisplay(variantGroupName){     
-      //variantGroupName is #variant-strain for example
-      var variant=variantGroupName.split('-')[1];    
-        /* create "Please Select" dropdown html, add onclick to it, and onclick to the options so when you select them the dropdown closes and writes the value name to the "Please Select"*/
-
-        if($(`${variantGroupName} .w-radio`).length > 6){
-          var selectDropdown = document.createElement("div");
-          var lcVariantGroupName=variant.toLowerCase();
-          selectDropdown.id=`variant-${lcVariantGroupName}-select-dropdown`;
-          selectDropdown.innerHTML="Please Select<div id='select-arrow' style='-ms-transform: rotate(270deg);-webkit-transform: rotate(270deg); transform: rotate(270deg);display: inline-block;padding-right: 10px;float:right;font-style: normal;'>&#x276E;</div>";
-          const ddContent=document.getElementById("variants-"+lcVariantGroupName);
-          const ddParent=document.getElementById(lcVariantGroupName+"-wrapper");
-          ddParent.insertBefore(selectDropdown, ddContent);
-          $(`#variants-${lcVariantGroupName}.radio-group`).css("display","block");
-          ddParent.style.position='relative';
-          ddContent.style.position='absolute';
-          ddContent.style.display='none';
-          ddContent.style.background='white';
-          ddContent.style.marginTop='0';
-          ddContent.style.border='1px solid lightgray';
-          ddContent.style.zIndex="1";
-          ddContent.style.padding='10px';
-          ddContent.style.width='100%';
-          selectDropdown.style.display='block';
-          selectDropdown.style.border='1px solid lightgray';
-          selectDropdown.style.padding='10px';
-          selectDropdown.style.radius='5px';
-          selectDropdown.style.display="block";
-          
-          let ddItems = $(`#variants-${lcVariantGroupName} label.radio-button-field.w-radio`);
-          ddItems.css("border","0");
-          ddItems.css("margin","0");
-          ddItems.css("padding","0");
-          ddItems.css("border-radius","0");
-          ddItems.css("background-color","white");
-          ddItems.css("border-bottom","1px solid lightgray");
-          ddItems.css("justify-content","left");
-
-         $(`#variants-${lcVariantGroupName} label.radio-button-field.w-radio.radio-disabled`).css("text-decoration","line-through");
-
-          $(`#variant-${lcVariantGroupName}-select-dropdown`).on("click",function(){$(`#variants-${lcVariantGroupName}`).toggle();});
-          $(`#variants-${lcVariantGroupName} .radio-button-field.w-radio`).on("click",function(){
-              setTimeout(function() {
-              $(`#variants-${lcVariantGroupName}`).hide();
-              selectDropdown.innerHTML=$(`#variants-${lcVariantGroupName} .radio-button-field.w-radio.is-active-inputactive span.radio-btn.w-form-label`).text()+"<div id='select-arrow' style='-ms-transform: rotate(270deg);-webkit-transform: rotate(270deg); transform: rotate(270deg);display: inline-block;padding-right: 10px;float:right;font-style: normal;'>&#x276E;</div>";
-              $("label.is-active-inputactive").css("background-color","#c1e9d4");
-              $('div[class^="first-"]').not('.first-bar');
-              $(`#variants-${lcVariantGroupName} label`).not('.is-active-inputactive').css("background-color","white");
-            }, 100);
-            
-          });
-          let ucVariant=capitalizeFirstLetter(variant);
-          console.log(ucVariant);
-          // on submit, check to be sure an option is selected and highlight field if not
-          $('#addtocartbtn').on("click",function(){
-              if($("#foxy-form input[name='"+ucVariant+"'][required]:invalid").length > 0){
-                  selectDropdown.style.border='2px solid red';
-              }
-          });
-        }
-      
-      //end drop down appearance
     }
     // Utilities / helper functions --
 
