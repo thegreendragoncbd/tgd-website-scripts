@@ -551,6 +551,28 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           } else if (variantInfo == label && variantListed == 1) {
             $(this).remove();
           }
+            //strikethrough if its out of stock
+            let obj;
+            console.log(variantGroupName.toLowerCase());
+          switch(variantGroupName.toLowerCase()){
+              case "flavor":  
+                obj = variantItems.find(o => o.flavor == `${label}` );
+              break;
+              case "strain":
+                  obj = variantItems.find(o => o.strain == `${label}` );
+              break;
+              case "size":
+                  obj = variantItems.find(o => o.size == `${label}` );
+              break;
+              case "strength":
+                  obj = variantItems.find(o => o.strength == `${label}` );
+              case "type":
+                  obj = variantItems.find(o => o.type == `${label}` );
+              break;
+          }
+          if (Number(obj.inventory) === 0) {
+                $(this).find(".w-form-label")[0].style.textDecoration = "line-through";
+          }
         });
       } else {
         $(variant_container).parent().remove();
@@ -751,12 +773,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           element
             .querySelector(`input[value="${option}"]`)
             .parentElement.classList.add(RADIO_DISABLED);
-            //add strikethrough
-            var myId=element
-            .querySelector(`input[value="${option}"]`).id;
-          element
-            .querySelector(`label[for='${myId}']`)
-            .style.textDecoration = "line-through";
+            
         });
 
         if (hasSelection && unavailableOptions.length !== 0) {
