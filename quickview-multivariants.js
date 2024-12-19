@@ -5,6 +5,7 @@ function isProductListPage() {
     URL_PATH.includes("/product-categories/") ||
     URL_PATH.includes("/brands/") ||
     URL_PATH.includes("/shop-all-products") ||
+    URL_PATH.includes("/shop-all-thc-cbd-glass-products") ||
     URL_PATH.includes("/brand/") || 
     URL_PATH.includes("/product-primary-categories/") ||
     URL_PATH.includes("/subcategories/")
