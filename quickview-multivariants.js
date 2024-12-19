@@ -567,6 +567,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
               break;
               case "strength":
                   obj = variantItems.find(o => o.strength == `${label}` );
+              break;
               case "type":
                   obj = variantItems.find(o => o.type == `${label}` );
               break;
