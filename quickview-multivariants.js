@@ -553,6 +553,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
             $(this).remove();
           }
             //strikethrough if its out of stock
+            
             let obj;
             console.log(variantGroupName.toLowerCase());
           switch(variantGroupName.toLowerCase()){
@@ -572,7 +573,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
                   obj = variantItems.find(o => o.type == `${label}` );
               break;
           }
-          if (Number(obj.inventory) === 0) {
+          if (Number(obj.inventory) === 0 && !iswholesale) {
                 $(this).find(".w-form-label")[0].style.textDecoration = "line-through";
           }
         });
