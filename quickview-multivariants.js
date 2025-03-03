@@ -573,7 +573,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
                   obj = variantItems.find(o => o.type == `${label}` );
               break;
           }
-          if (Number(obj.inventory) === 0 && !isWholesale) {
+          if (Number(obj.inventory) === 0 && !isWholesalePage) {
                 $(this).find(".w-form-label")[0].style.textDecoration = "line-through";
           }
         });
