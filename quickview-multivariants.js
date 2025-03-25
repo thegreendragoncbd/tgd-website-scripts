@@ -73,6 +73,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const itemName = item
           .querySelector(".foxy_product_item_info .foxy_product_item_name")
           .innerText.split(" ")[0];
+          itemName = itemName.replace(/['"]/g, '\\$&');
         item.setAttribute("id", `${itemName}-${index}`);
       });
     }
