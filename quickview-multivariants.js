@@ -8,7 +8,18 @@ function isProductListPage() {
     URL_PATH.includes("/shop-all-thc-cbd-glass-products") ||
     URL_PATH.includes("/brand/") || 
     URL_PATH.includes("/product-primary-categories/") ||
-    URL_PATH.includes("/subcategories/")
+    URL_PATH.includes("/subcategories/") ||
+    URL_PATH.includes("/torch-gummies") ||
+    URL_PATH.includes("/digiflavor-vape") ||
+    URL_PATH.includes("/2-gram-carts") ||
+    URL_PATH.includes("/ghost-carts") ||
+    URL_PATH.includes("/ghost-vape") ||
+    URL_PATH.includes("/hhc-gummies") ||   
+    URL_PATH.includes("/hhc-vape") ||   
+    URL_PATH.includes("/thca-diamonds") || 
+    URL_PATH.includes("/thc-drinks") ||   
+    URL_PATH.includes("/thc-tinctures") ||   
+    URL_PATH.includes("/simple-brands")     
   );
 }
 function isProductCMSPage(URL_PATH) {
