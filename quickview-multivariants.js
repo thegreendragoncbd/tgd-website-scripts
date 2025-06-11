@@ -19,7 +19,8 @@ function isProductListPage() {
     URL_PATH.includes("/thca-diamonds") || 
     URL_PATH.includes("/thc-drinks") ||   
     URL_PATH.includes("/thc-tinctures") ||   
-    URL_PATH.includes("/simple-brands")     
+    URL_PATH.includes("/simple-brands")  ||
+    URL_PATH.includes("/disposable-thc-vape-pens-carts")
   );
 }
 function isProductCMSPage(URL_PATH) {
