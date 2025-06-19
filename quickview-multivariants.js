@@ -20,7 +20,8 @@ function isProductListPage() {
     URL_PATH.includes("/thc-drinks") ||   
     URL_PATH.includes("/thc-tinctures") ||   
     URL_PATH.includes("/simple-brands")  ||
-    URL_PATH.includes("/disposable-thc-vape-pens-carts")
+    URL_PATH.includes("/disposable-thc-vape-pens-carts") ||
+    URL_PATH.includes("/empire-brands")
   );
 }
 function isProductCMSPage(URL_PATH) {
