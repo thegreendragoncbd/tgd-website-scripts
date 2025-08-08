@@ -539,62 +539,122 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       });
     }
 
+    // function addVariantGroup(variantInfo, VariantContainer, index) {
+    //   const variantGroupName = capitalizeFirstLetter(VariantContainer.split("-")[1]);
+    //   if (variantGroupName) variantGroups.push(variantGroupName);
+    //   const variant_container = VariantContainer;
+
+    //   if (variantInfo != "") {
+    //     // Show variant container
+    //     element.querySelector(VariantContainer).parentElement.style.display = "block";
+    //     let variantListed = 0;
+
+    //     $(variant_container).append(
+    //       `<label class="radio-button-field w-radio">
+    //     <div class="w-form-formradioinput w-form-formradioinput--inputType-custom radio-button w-radio-input"></div>
+    //     <input type="radio" name="${variantGroupName}" id="${variantInfo}-${index}" class="${variantInfo
+    //         .split(/\s+/)
+    //         .join("")
+    //         .toLowerCase()}" value="${variantInfo}" style="opacity:0;position:absolute;z-index:-1" required>
+    //     <span class="radio-btn w-form-label" for="${variantInfo}-${index}">${variantInfo}</span>
+    //   </label>`
+    //     );
+    //     $(`${variant_container} .w-radio`).each(function () {
+    //       let label = $(this).find(".w-form-label").text();
+    //       if (variantInfo == label && variantListed == 0) {
+    //         variantListed = 1;
+    //       } else if (variantInfo == label && variantListed == 1) {
+    //         $(this).remove();
+    //       }
+    //         //strikethrough if its out of stock
+            
+    //         let obj;
+    //         console.log(variantGroupName.toLowerCase());
+    //       switch(variantGroupName.toLowerCase()){
+    //           case "flavor":  
+    //             obj = variantItems.find(o => o.flavor == `${label}` );
+    //           break;
+    //           case "strain":
+    //               obj = variantItems.find(o => o.strain == `${label}` );
+    //           break;
+    //           case "size":
+    //               obj = variantItems.find(o => o.size == `${label}` );
+    //           break;
+    //           case "strength":
+    //               obj = variantItems.find(o => o.strength == `${label}` );
+    //           break;
+    //           case "type":
+    //               obj = variantItems.find(o => o.type == `${label}` );
+    //           break;
+    //       }
+    //       if (Number(obj.inventory) === 0 && !isWholesalePage) {
+    //             $(this).find(".w-form-label")[0].style.textDecoration = "line-through";
+    //       }
+    //     });
+    //   } else {
+    //     $(variant_container).parent().remove();
+    //   }
+    // }
+
     function addVariantGroup(variantInfo, VariantContainer, index) {
       const variantGroupName = capitalizeFirstLetter(VariantContainer.split("-")[1]);
       if (variantGroupName) variantGroups.push(variantGroupName);
       const variant_container = VariantContainer;
 
-      if (variantInfo != "") {
+      if (variantInfo !== "") {
         // Show variant container
         element.querySelector(VariantContainer).parentElement.style.display = "block";
-        let variantListed = 0;
 
-        $(variant_container).append(
-          `<label class="radio-button-field w-radio">
-        <div class="w-form-formradioinput w-form-formradioinput--inputType-custom radio-button w-radio-input"></div>
-        <input type="radio" name="${variantGroupName}" id="${variantInfo}-${index}" class="${variantInfo
-            .split(/\s+/)
-            .join("")
-            .toLowerCase()}" value="${variantInfo}" style="opacity:0;position:absolute;z-index:-1" required>
-        <span class="radio-btn w-form-label" for="${variantInfo}-${index}">${variantInfo}</span>
-      </label>`
-        );
-        $(`${variant_container} .w-radio`).each(function () {
-          let label = $(this).find(".w-form-label").text();
-          if (variantInfo == label && variantListed == 0) {
-            variantListed = 1;
-          } else if (variantInfo == label && variantListed == 1) {
-            $(this).remove();
-          }
-            //strikethrough if its out of stock
-            
-            let obj;
-            console.log(variantGroupName.toLowerCase());
-          switch(variantGroupName.toLowerCase()){
-              case "flavor":  
-                obj = variantItems.find(o => o.flavor == `${label}` );
-              break;
-              case "strain":
-                  obj = variantItems.find(o => o.strain == `${label}` );
-              break;
-              case "size":
-                  obj = variantItems.find(o => o.size == `${label}` );
-              break;
-              case "strength":
-                  obj = variantItems.find(o => o.strength == `${label}` );
-              break;
-              case "type":
-                  obj = variantItems.find(o => o.type == `${label}` );
-              break;
-          }
-          if (Number(obj.inventory) === 0 && !isWholesalePage) {
-                $(this).find(".w-form-label")[0].style.textDecoration = "line-through";
+        // If the <select> hasn't been added yet, create and append it
+        if ($(variant_container).find("select").length === 0) {
+          $(variant_container).append(`
+            <label class="dropdown-label">${variantGroupName}</label>
+            <select name="${variantGroupName}" required class="variant-dropdown w-select"></select>
+          `);
+        }
+
+        const $select = $(`${variant_container} select`);
+        
+        // Check for duplicates
+        let alreadyExists = false;
+        $select.find("option").each(function () {
+          if ($(this).text() === variantInfo) {
+            alreadyExists = true;
           }
         });
+
+        if (!alreadyExists) {
+          let obj;
+          switch (variantGroupName.toLowerCase()) {
+            case "flavor":
+              obj = variantItems.find(o => o.flavor === variantInfo);
+              break;
+            case "strain":
+              obj = variantItems.find(o => o.strain === variantInfo);
+              break;
+            case "size":
+              obj = variantItems.find(o => o.size === variantInfo);
+              break;
+            case "strength":
+              obj = variantItems.find(o => o.strength === variantInfo);
+              break;
+            case "type":
+              obj = variantItems.find(o => o.type === variantInfo);
+              break;
+          }
+
+          const isOutOfStock = obj && Number(obj.inventory) === 0 && !isWholesalePage;
+          const displayText = isOutOfStock ? `${variantInfo} (Out of stock)` : variantInfo;
+
+          $select.append(`
+            <option value="${variantInfo}" ${isOutOfStock ? "disabled" : ""}>${displayText}</option>
+          `);
+        }
       } else {
         $(variant_container).parent().remove();
       }
     }
+
 
     function handleVariantSelection(e) {
       const variants_item = ".foxy_variant_item";
