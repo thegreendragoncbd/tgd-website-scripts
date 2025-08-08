@@ -29,6 +29,7 @@ function isProductCMSPage(URL_PATH) {
 }
 if (isProductCMSPage(URL_PATH) || isProductListPage()) {
   (function () {
+    console.log('hello?')
     // Constants and variables
     const STRAIN_DIV_ID = "#variants-strain";
     const SIZE_DIV_ID = "#variants-size";
@@ -597,6 +598,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
     // }
 
     function addVariantGroup(variantInfo, VariantContainer, index) {
+      console.log('testing...')
       const variantGroupName = capitalizeFirstLetter(VariantContainer.split("-")[1]);
       if (variantGroupName) variantGroups.push(variantGroupName);
       const variant_container = VariantContainer;
