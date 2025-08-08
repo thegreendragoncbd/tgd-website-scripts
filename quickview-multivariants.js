@@ -602,20 +602,20 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
   const variant_container = VariantContainer;
 
   if (variantInfo !== "") {
+    // Show variant container
     element.querySelector(VariantContainer).parentElement.style.display = "block";
 
-    // Only add the custom select once
-    if ($(variant_container).find("select").length === 0) {
-      $(variant_container).append(`
+    // Inject dropdown after #flavor-wrapper instead of inside variant_container
+    if ($('#flavor-wrapper').next('select').length === 0) {
+      $('#flavor-wrapper').after(`
         <label class="dropdown-label">${variantGroupName}</label>
         <select name="${variantGroupName}" class="variant-dropdown w-select" required></select>
       `);
     }
 
-    const $select = $(`${variant_container} select`);
+    const $select = $(`#flavor-wrapper`).next('select');
     let alreadyExists = false;
 
-    // Check if option already exists
     $select.find("option").each(function () {
       if ($(this).val() === variantInfo) {
         alreadyExists = true;
@@ -645,10 +645,9 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       const isOutOfStock = obj && Number(obj.inventory) === 0 && !isWholesalePage;
       const displayText = isOutOfStock ? `${variantInfo} (Out of stock)` : variantInfo;
 
-      // Add the option to the select
       $select.append(`<option value="${variantInfo}" ${isOutOfStock ? "disabled" : ""}>${displayText}</option>`);
 
-      // Append a hidden radio for FoxyCart
+      // Append hidden radios inside variant_container (keep radios where they were)
       $(variant_container).append(`
         <input
           type="radio"
@@ -663,7 +662,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       `);
     }
 
-    // Sync select changes to radio selection
+    // Sync select changes to radio buttons
     $select.off("change").on("change", function () {
       const selectedValue = $(this).val();
       $(`${variant_container} input[type=radio][value="${selectedValue}"]`).prop("checked", true);
@@ -672,6 +671,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
     $(variant_container).parent().remove();
   }
 }
+
 
 
 
