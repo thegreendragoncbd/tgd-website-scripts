@@ -533,13 +533,13 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         let strength = $(this).find(".foxy_variants_item-strength").text();
         let type = $(this).find(".foxy_variants_item-type").text();
 
-        console.log('flavor: ', flavor)
+        // console.log('flavor: ', flavor)
 
         addVariantGroup(strain, STRAIN_DIV_ID, index);
-        addVariantGroup(size, SIZE_DIV_ID, index);
-        addVariantGroup(flavor, FLAVOR_DIV_ID, index);
-        addVariantGroup(strength, STRENGTH_DIV_ID, index);
-        addVariantGroup(type, TYPE_DIV_ID, index);
+        // addVariantGroup(size, SIZE_DIV_ID, index);
+        // addVariantGroup(flavor, FLAVOR_DIV_ID, index);
+        // addVariantGroup(strength, STRENGTH_DIV_ID, index);
+        // addVariantGroup(type, TYPE_DIV_ID, index);
       });
     }
 
