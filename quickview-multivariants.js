@@ -602,6 +602,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
 // version working with dropdown
 
     function addVariantGroup(variantInfo, VariantContainer, index) {
+      console.log('in addVariantGroup')
       const variantGroupName = capitalizeFirstLetter(VariantContainer.split("-")[1]);
       if (variantGroupName) variantGroups.push(variantGroupName);
         const variant_container = VariantContainer;
