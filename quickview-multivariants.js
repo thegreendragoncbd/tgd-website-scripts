@@ -524,6 +524,11 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       let variants_item = isProductListPage()
         ? `#${elementID} .foxy_variant_item`
         : ".foxy_variant_item";
+
+
+let variantCount = $(variants_item).length;
+  console.log("Total variants found:", variantCount);
+
       $(variants_item).each(function (index) {
 
 
@@ -536,10 +541,10 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         // console.log('flavor: ', flavor)
 
         addVariantGroup(strain, STRAIN_DIV_ID, index);
-        // addVariantGroup(size, SIZE_DIV_ID, index);
-        // addVariantGroup(flavor, FLAVOR_DIV_ID, index);
-        // addVariantGroup(strength, STRENGTH_DIV_ID, index);
-        // addVariantGroup(type, TYPE_DIV_ID, index);
+        addVariantGroup(size, SIZE_DIV_ID, index);
+        addVariantGroup(flavor, FLAVOR_DIV_ID, index);
+        addVariantGroup(strength, STRENGTH_DIV_ID, index);
+        addVariantGroup(type, TYPE_DIV_ID, index);
       });
     }
 
