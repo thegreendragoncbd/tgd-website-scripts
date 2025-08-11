@@ -529,10 +529,14 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
 let variantCount = $(variants_item).length;
   console.log("Total variants found:", variantCount);
 
+  let dropdown = false;
+
   if (variantCount <= 4) {
     console.log('4 or less, use legacy selector')
+    dropdown = false;
   } else {
     console.log('use new selector')
+    dropdown = true;
   }
 
       $(variants_item).each(function (index) {
@@ -546,11 +550,20 @@ let variantCount = $(variants_item).length;
 
         // console.log('flavor: ', flavor)
 
-        addVariantGroup(strain, STRAIN_DIV_ID, index);
-        addVariantGroup(size, SIZE_DIV_ID, index);
-        addVariantGroup(flavor, FLAVOR_DIV_ID, index);
-        addVariantGroup(strength, STRENGTH_DIV_ID, index);
-        addVariantGroup(type, TYPE_DIV_ID, index);
+        if (dropdown) {
+          addVariantGroup(strain, STRAIN_DIV_ID, index);
+          addVariantGroup(size, SIZE_DIV_ID, index);
+          addVariantGroup(flavor, FLAVOR_DIV_ID, index);
+          addVariantGroup(strength, STRENGTH_DIV_ID, index);
+          addVariantGroup(type, TYPE_DIV_ID, index);
+        } else {
+          addVariantGroupLegacy(strain, STRAIN_DIV_ID, index);
+          addVariantGroupLegacy(size, SIZE_DIV_ID, index);
+          addVariantGroupLegacy(flavor, FLAVOR_DIV_ID, index);
+          addVariantGroupLegacy(strength, STRENGTH_DIV_ID, index);
+          addVariantGroupLegacy(type, TYPE_DIV_ID, index);
+        }
+        
       });
     }
 
