@@ -526,18 +526,18 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         : ".foxy_variant_item";
 
 
-let variantCount = $(variants_item).length;
-  console.log("Total variants found:", variantCount);
+      let variantCount = $(variants_item).length;
+      console.log("Total variants found:", variantCount);
 
-  let dropdown = false;
+      let dropdown = false;
 
-  if (variantCount <= 4) {
-    console.log('4 or less, use legacy selector')
-    dropdown = false;
-  } else {
-    console.log('use new selector')
-    dropdown = true;
-  }
+      if (variantCount <= 4) {
+        console.log('4 or less, use legacy selector')
+        dropdown = false;
+      } else {
+        console.log('use new selector')
+        dropdown = true;
+      }
 
       $(variants_item).each(function (index) {
 
@@ -579,15 +579,17 @@ let variantCount = $(variants_item).length;
         element.querySelector(VariantContainer).parentElement.style.display = "block";
         let variantListed = 0;
 
+        document.querySelector('#variants-flavor').style.display = "grid";
+
         $(variant_container).append(
           `<label class="radio-button-field w-radio">
-        <div class="w-form-formradioinput w-form-formradioinput--inputType-custom radio-button w-radio-input"></div>
-        <input type="radio" name="${variantGroupName}" id="${variantInfo}-${index}" class="${variantInfo
-            .split(/\s+/)
-            .join("")
-            .toLowerCase()}" value="${variantInfo}" style="opacity:0;position:absolute;z-index:-1" required>
-        <span class="radio-btn w-form-label" for="${variantInfo}-${index}">${variantInfo}</span>
-      </label>`
+            <div class="w-form-formradioinput w-form-formradioinput--inputType-custom radio-button w-radio-input"></div>
+            <input type="radio" name="${variantGroupName}" id="${variantInfo}-${index}" class="${variantInfo
+              .split(/\s+/)
+              .join("")
+              .toLowerCase()}" value="${variantInfo}" style="opacity:0;position:absolute;z-index:-1" required>
+            <span class="radio-btn w-form-label" for="${variantInfo}-${index}">${variantInfo}</span>
+          </label>`
         );
         $(`${variant_container} .w-radio`).each(function () {
           let label = $(this).find(".w-form-label").text();
