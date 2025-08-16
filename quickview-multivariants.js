@@ -1,5 +1,6 @@
 const URL_PATH = window.location.pathname;
 let anyInStock = false;
+let isLegacySelector = false;
 
 function isProductListPage() {
   return (
@@ -536,6 +537,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       if (variantCount <= 4) {
         console.log('4 or less, use legacy selector')
         dropdown = false;
+        isLegacySelector = true;
       } else {
         console.log('use new selector')
         dropdown = true;
@@ -568,12 +570,14 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         
       });
 
-      if (!anyInStock) {
-        // console.log('hide the thingg..')
-        // document.querySelector("#flavor-wrapper > #variants-flavor").style.display = "none";
-        // document.getElementById('variant-flavor-text').textContent = 'Currently out of stock';
-        // var qtySelector = document.querySelectorAll('#foxy-form > .product-description-basics')
-        // qtySelector[2].style.display = 'none';
+      if (!anyInStock && !isLegacySelector) {
+        
+        console.log('hide the selector')
+
+        document.querySelector("#flavor-wrapper > #variants-flavor").style.display = "none";
+        document.getElementById('variant-flavor-text').textContent = 'Currently out of stock';
+        var qtySelector = document.querySelectorAll('#foxy-form > .product-description-basics')
+        qtySelector[2].style.display = 'none';
 
 
       }
