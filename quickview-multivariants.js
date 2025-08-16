@@ -1,4 +1,6 @@
 const URL_PATH = window.location.pathname;
+let anyInStock = false;
+
 function isProductListPage() {
   return (
     URL_PATH.includes("/product-parent-categories/") ||
@@ -565,6 +567,10 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         }
         
       });
+
+      if (!anyInStock) {
+        console.log('hide the thingg..')
+      }
     }
 
     // original working version, no dropdown yet
@@ -631,7 +637,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
 
 // version working with dropdown
 
-let anyInStock = false;
+// let anyInStock = false;
 
     function addVariantGroup(variantInfo, VariantContainer, index) {
       console.log('in addVariantGroup')
