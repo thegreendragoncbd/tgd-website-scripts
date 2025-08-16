@@ -570,6 +570,9 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
 
       if (!anyInStock) {
         console.log('hide the thingg..')
+        document.querySelector("#flavor-wrapper > #variants-flavor").style.display = "none";
+        document.getElementById('variant-flavor-text').textContent = 'Currently out of stock';
+
       }
     }
 
