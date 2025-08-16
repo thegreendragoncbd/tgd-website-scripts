@@ -631,8 +631,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
 
 // version working with dropdown
 
-    let anyInStock = false;
-
+let anyInStock = false;
 
     function addVariantGroup(variantInfo, VariantContainer, index) {
       console.log('in addVariantGroup')
@@ -685,7 +684,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         const displayText = isOutOfStock ? `${variantInfo} (Out of stock)` : variantInfo;
 
         if (!isOutOfStock) {
-          anyInStock = true; // Track if any variant is in stock
+          anyInStock = true; // Set flag if any variant is in stock
         }
 
         // Add the option to the select
@@ -718,9 +717,10 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
     console.log('anyInStock:', anyInStock);
   }
 
-// new version of dropdown not rendering if oos
-//   function addVariantGroup(variantInfo, VariantContainer, index) {
-//   console.log('in addVariantGroup');
+
+
+
+// function addVariantGroup(variantInfo, VariantContainer, index) {
 //   const variantGroupName = capitalizeFirstLetter(VariantContainer.split("-")[1]);
 //   if (variantGroupName) variantGroups.push(variantGroupName);
 //   const variant_container = VariantContainer;
@@ -728,100 +728,85 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
 //   if (variantInfo !== "") {
 //     element.querySelector(VariantContainer).parentElement.style.display = "block";
 
-//     // Only add the custom select once
-//     if ($(variant_container).find("select").length === 0) {
-//       $(variant_container).append(`
-//         <label class="dropdown-label">${variantGroupName}</label>
-//         <select name="${variantGroupName}" class="variant-dropdown w-select" required></select>
-//       `);
-//     }
+//     // Count how many options we already have (before adding new one)
+//     let currentCount = $(`${variant_container} input[type=radio]`).length;
 
-//     const $select = $(`${variant_container} select`);
-//     let alreadyExists = false;
-
-//     // Check if option already exists
-//     $select.find("option").each(function () {
-//       if ($(this).val() === variantInfo) {
-//         alreadyExists = true;
+//     // If fewer than 4 after adding this one, just display message
+//     if (currentCount < 3) { // < 3 here because we're about to add 1 more
+//       if ($(variant_container).find(".variant-message").length === 0) {
+//         $(variant_container).append(`<div class="variant-message">less than 4 options</div>`);
 //       }
-//     });
-
-//     if (!alreadyExists) {
-//       let obj;
-//       switch (variantGroupName.toLowerCase()) {
-//         case "flavor":
-//           obj = variantItems.find(o => o.flavor === variantInfo);
-//           break;
-//         case "strain":
-//           obj = variantItems.find(o => o.strain === variantInfo);
-//           break;
-//         case "size":
-//           obj = variantItems.find(o => o.size === variantInfo);
-//           break;
-//         case "strength":
-//           obj = variantItems.find(o => o.strength === variantInfo);
-//           break;
-//         case "type":
-//           obj = variantItems.find(o => o.type === variantInfo);
-//           break;
+//     } else {
+//       // Only add the custom select once
+//       if ($(variant_container).find("select").length === 0) {
+//         $(variant_container).append(`
+//           <label class="dropdown-label">${variantGroupName}</label>
+//           <select name="${variantGroupName}" class="variant-dropdown w-select" required></select>
+//         `);
 //       }
 
-//       const isOutOfStock = obj && Number(obj.inventory) === 0 && !isWholesalePage;
-//       const displayText = isOutOfStock ? `${variantInfo} (Out of stock)` : variantInfo;
+//       const $select = $(`${variant_container} select`);
+//       let alreadyExists = false;
 
-//       // Add the option to the select
-//       $select.append(`<option value="${variantInfo}" ${isOutOfStock ? "disabled" : ""}>${displayText}</option>`);
+//       // Check if option already exists
+//       $select.find("option").each(function () {
+//         if ($(this).val() === variantInfo) {
+//           alreadyExists = true;
+//         }
+//       });
 
-//       // Append a hidden radio for FoxyCart
-//       $(variant_container).append(`
-//         <input
-//           type="radio"
-//           name="${variantGroupName}"
-//           id="${variantInfo}-${index}"
-//           value="${variantInfo}"
-//           class="fc-hidden-radio"
-//           style="display: none;"
-//           ${isOutOfStock ? "disabled" : ""}
-//           required
-//         >
-//       `);
+//       if (!alreadyExists) {
+//         let obj;
+//         switch (variantGroupName.toLowerCase()) {
+//           case "flavor":
+//             obj = variantItems.find(o => o.flavor === variantInfo);
+//             break;
+//           case "strain":
+//             obj = variantItems.find(o => o.strain === variantInfo);
+//             break;
+//           case "size":
+//             obj = variantItems.find(o => o.size === variantInfo);
+//             break;
+//           case "strength":
+//             obj = variantItems.find(o => o.strength === variantInfo);
+//             break;
+//           case "type":
+//             obj = variantItems.find(o => o.type === variantInfo);
+//             break;
+//         }
 
-//       // --- Check after adding option ---
-//       const allDisabled = $select.find("option").length > 0 &&
-//                           $select.find("option:enabled").length === 0;
+//         const isOutOfStock = obj && Number(obj.inventory) === 0 && !isWholesalePage;
+//         const displayText = isOutOfStock ? `${variantInfo} (Out of stock)` : variantInfo;
 
-//       if (allDisabled) {
-//         // Remove dropdown and radios, show out-of-stock message
-//         $(variant_container).empty().append(`<p class="out-of-stock-message">Currently out of stock</p>`);
-//       } else {
-//         // Make first enabled option selected by default
-//         $select.find("option:enabled").first().prop("selected", true).trigger("change");
+//         // Add the option to the select
+//         $select.append(`<option value="${variantInfo}" ${isOutOfStock ? "disabled" : ""}>${displayText}</option>`);
+
+//         // Append a hidden radio for FoxyCart
+//         $(variant_container).append(`
+//           <input
+//             type="radio"
+//             name="${variantGroupName}"
+//             id="${variantInfo}-${index}"
+//             value="${variantInfo}"
+//             class="fc-hidden-radio"
+//             style="display: none;"
+//             ${isOutOfStock ? "disabled" : ""}
+//             required
+//           >
+//         `);
 //       }
+
+//       // Sync select changes to radio selection
+//       $select.off("change").on("change", function () {
+//         const selectedValue = $(this).val();
+//         $(`${variant_container} input[type=radio][value="${selectedValue}"]`).prop("checked", true);
+//       });
 //     }
 //   } else {
 //     $(variant_container).parent().remove();
 //   }
 // }
 
-
-    // Check if *all* options are disabled → replace dropdown with "Currently out of stock"
-    const allDisabled = $select.find("option").length > 0 && $select.find("option:enabled").length === 0;
-    if (allDisabled) {
-      $select.closest(variant_container).html(`<p class="out-of-stock-message">Currently out of stock</p>`);
-    } else {
-      // Make first available option selected by default
-      $select.find("option:enabled").first().prop("selected", true).trigger("change");
-    }
-
-    // Sync select changes to radio selection
-    $select.off("change").on("change", function () {
-      const selectedValue = $(this).val();
-      $(`${variant_container} input[type=radio][value="${selectedValue}"]`).prop("checked", true);
-    });
-  } else {
-    $(variant_container).parent().remove();
-  }
-}
 
 
 
