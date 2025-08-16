@@ -776,7 +776,24 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           required
         >
       `);
+
+      // --- Check after adding option ---
+      const allDisabled = $select.find("option").length > 0 &&
+                          $select.find("option:enabled").length === 0;
+
+      if (allDisabled) {
+        // Remove dropdown and radios, show out-of-stock message
+        $(variant_container).empty().append(`<p class="out-of-stock-message">Currently out of stock</p>`);
+      } else {
+        // Make first enabled option selected by default
+        $select.find("option:enabled").first().prop("selected", true).trigger("change");
+      }
     }
+  } else {
+    $(variant_container).parent().remove();
+  }
+}
+
 
     // Check if *all* options are disabled → replace dropdown with "Currently out of stock"
     const allDisabled = $select.find("option").length > 0 && $select.find("option:enabled").length === 0;
