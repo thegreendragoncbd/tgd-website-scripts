@@ -631,168 +631,177 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
 
 // version working with dropdown
 
-  //   function addVariantGroup(variantInfo, VariantContainer, index) {
-  //     console.log('in addVariantGroup')
-  //     const variantGroupName = capitalizeFirstLetter(VariantContainer.split("-")[1]);
-  //     if (variantGroupName) variantGroups.push(variantGroupName);
-  //       const variant_container = VariantContainer;
+    let anyInStock = false;
 
-  //     if (variantInfo !== "") {
-  //       element.querySelector(VariantContainer).parentElement.style.display = "block";
 
-  //     // Only add the custom select once
-  //     if ($(variant_container).find("select").length === 0) {
-  //       $(variant_container).append(`
-  //         <label class="dropdown-label">${variantGroupName}</label>
-  //         <select name="${variantGroupName}" class="variant-dropdown w-select" required></select>
-  //       `);
-  //     }
+    function addVariantGroup(variantInfo, VariantContainer, index) {
+      console.log('in addVariantGroup')
+      const variantGroupName = capitalizeFirstLetter(VariantContainer.split("-")[1]);
+      if (variantGroupName) variantGroups.push(variantGroupName);
+        const variant_container = VariantContainer;
 
-  //     const $select = $(`${variant_container} select`);
-  //     let alreadyExists = false;
+      if (variantInfo !== "") {
+        element.querySelector(VariantContainer).parentElement.style.display = "block";
 
-  //     // Check if option already exists
-  //     $select.find("option").each(function () {
-  //       if ($(this).val() === variantInfo) {
-  //         alreadyExists = true;
-  //       }
-  //     });
+      // Only add the custom select once
+      if ($(variant_container).find("select").length === 0) {
+        $(variant_container).append(`
+          <label class="dropdown-label">${variantGroupName}</label>
+          <select name="${variantGroupName}" class="variant-dropdown w-select" required></select>
+        `);
+      }
 
-  //     if (!alreadyExists) {
-  //       let obj;
-  //       switch (variantGroupName.toLowerCase()) {
-  //         case "flavor":
-  //           obj = variantItems.find(o => o.flavor === variantInfo);
-  //           break;
-  //         case "strain":
-  //           obj = variantItems.find(o => o.strain === variantInfo);
-  //           break;
-  //         case "size":
-  //           obj = variantItems.find(o => o.size === variantInfo);
-  //           break;
-  //         case "strength":
-  //           obj = variantItems.find(o => o.strength === variantInfo);
-  //           break;
-  //         case "type":
-  //           obj = variantItems.find(o => o.type === variantInfo);
-  //           break;
-  //       }
+      const $select = $(`${variant_container} select`);
+      let alreadyExists = false;
 
-  //       const isOutOfStock = obj && Number(obj.inventory) === 0 && !isWholesalePage;
-  //       const displayText = isOutOfStock ? `${variantInfo} (Out of stock)` : variantInfo;
+      // Check if option already exists
+      $select.find("option").each(function () {
+        if ($(this).val() === variantInfo) {
+          alreadyExists = true;
+        }
+      });
 
-  //       // Add the option to the select
-  //       $select.append(`<option value="${variantInfo}" ${isOutOfStock ? "disabled" : ""}>${displayText}</option>`);
+      if (!alreadyExists) {
+        let obj;
+        switch (variantGroupName.toLowerCase()) {
+          case "flavor":
+            obj = variantItems.find(o => o.flavor === variantInfo);
+            break;
+          case "strain":
+            obj = variantItems.find(o => o.strain === variantInfo);
+            break;
+          case "size":
+            obj = variantItems.find(o => o.size === variantInfo);
+            break;
+          case "strength":
+            obj = variantItems.find(o => o.strength === variantInfo);
+            break;
+          case "type":
+            obj = variantItems.find(o => o.type === variantInfo);
+            break;
+        }
 
-  //       // Append a hidden radio for FoxyCart
-  //       $(variant_container).append(`
-  //         <input
-  //           type="radio"
-  //           name="${variantGroupName}"
-  //           id="${variantInfo}-${index}"
-  //           value="${variantInfo}"
-  //           class="fc-hidden-radio"
-  //           style="display: none;"
-  //           ${isOutOfStock ? "disabled" : ""}
-  //           required
-  //         >
-  //       `);
-  //     }
+        const isOutOfStock = obj && Number(obj.inventory) === 0 && !isWholesalePage;
+        const displayText = isOutOfStock ? `${variantInfo} (Out of stock)` : variantInfo;
 
-  //     // Sync select changes to radio selection
-  //     $select.off("change").on("change", function () {
-  //       const selectedValue = $(this).val();
-  //       $(`${variant_container} input[type=radio][value="${selectedValue}"]`).prop("checked", true);
-  //     });
-  //   } else {
-  //     $(variant_container).parent().remove();
-  //   }
-  // }
+        if (!isOutOfStock) {
+          anyInStock = true; // Track if any variant is in stock
+        }
+
+        // Add the option to the select
+        $select.append(`<option value="${variantInfo}" ${isOutOfStock ? "disabled" : ""}>${displayText}</option>`);
+
+        // Append a hidden radio for FoxyCart
+        $(variant_container).append(`
+          <input
+            type="radio"
+            name="${variantGroupName}"
+            id="${variantInfo}-${index}"
+            value="${variantInfo}"
+            class="fc-hidden-radio"
+            style="display: none;"
+            ${isOutOfStock ? "disabled" : ""}
+            required
+          >
+        `);
+      }
+
+      // Sync select changes to radio selection
+      $select.off("change").on("change", function () {
+        const selectedValue = $(this).val();
+        $(`${variant_container} input[type=radio][value="${selectedValue}"]`).prop("checked", true);
+      });
+    } else {
+      $(variant_container).parent().remove();
+    }
+
+    console.log('anyInStock:', anyInStock);
+  }
 
 // new version of dropdown not rendering if oos
-  function addVariantGroup(variantInfo, VariantContainer, index) {
-  console.log('in addVariantGroup');
-  const variantGroupName = capitalizeFirstLetter(VariantContainer.split("-")[1]);
-  if (variantGroupName) variantGroups.push(variantGroupName);
-  const variant_container = VariantContainer;
+//   function addVariantGroup(variantInfo, VariantContainer, index) {
+//   console.log('in addVariantGroup');
+//   const variantGroupName = capitalizeFirstLetter(VariantContainer.split("-")[1]);
+//   if (variantGroupName) variantGroups.push(variantGroupName);
+//   const variant_container = VariantContainer;
 
-  if (variantInfo !== "") {
-    element.querySelector(VariantContainer).parentElement.style.display = "block";
+//   if (variantInfo !== "") {
+//     element.querySelector(VariantContainer).parentElement.style.display = "block";
 
-    // Only add the custom select once
-    if ($(variant_container).find("select").length === 0) {
-      $(variant_container).append(`
-        <label class="dropdown-label">${variantGroupName}</label>
-        <select name="${variantGroupName}" class="variant-dropdown w-select" required></select>
-      `);
-    }
+//     // Only add the custom select once
+//     if ($(variant_container).find("select").length === 0) {
+//       $(variant_container).append(`
+//         <label class="dropdown-label">${variantGroupName}</label>
+//         <select name="${variantGroupName}" class="variant-dropdown w-select" required></select>
+//       `);
+//     }
 
-    const $select = $(`${variant_container} select`);
-    let alreadyExists = false;
+//     const $select = $(`${variant_container} select`);
+//     let alreadyExists = false;
 
-    // Check if option already exists
-    $select.find("option").each(function () {
-      if ($(this).val() === variantInfo) {
-        alreadyExists = true;
-      }
-    });
+//     // Check if option already exists
+//     $select.find("option").each(function () {
+//       if ($(this).val() === variantInfo) {
+//         alreadyExists = true;
+//       }
+//     });
 
-    if (!alreadyExists) {
-      let obj;
-      switch (variantGroupName.toLowerCase()) {
-        case "flavor":
-          obj = variantItems.find(o => o.flavor === variantInfo);
-          break;
-        case "strain":
-          obj = variantItems.find(o => o.strain === variantInfo);
-          break;
-        case "size":
-          obj = variantItems.find(o => o.size === variantInfo);
-          break;
-        case "strength":
-          obj = variantItems.find(o => o.strength === variantInfo);
-          break;
-        case "type":
-          obj = variantItems.find(o => o.type === variantInfo);
-          break;
-      }
+//     if (!alreadyExists) {
+//       let obj;
+//       switch (variantGroupName.toLowerCase()) {
+//         case "flavor":
+//           obj = variantItems.find(o => o.flavor === variantInfo);
+//           break;
+//         case "strain":
+//           obj = variantItems.find(o => o.strain === variantInfo);
+//           break;
+//         case "size":
+//           obj = variantItems.find(o => o.size === variantInfo);
+//           break;
+//         case "strength":
+//           obj = variantItems.find(o => o.strength === variantInfo);
+//           break;
+//         case "type":
+//           obj = variantItems.find(o => o.type === variantInfo);
+//           break;
+//       }
 
-      const isOutOfStock = obj && Number(obj.inventory) === 0 && !isWholesalePage;
-      const displayText = isOutOfStock ? `${variantInfo} (Out of stock)` : variantInfo;
+//       const isOutOfStock = obj && Number(obj.inventory) === 0 && !isWholesalePage;
+//       const displayText = isOutOfStock ? `${variantInfo} (Out of stock)` : variantInfo;
 
-      // Add the option to the select
-      $select.append(`<option value="${variantInfo}" ${isOutOfStock ? "disabled" : ""}>${displayText}</option>`);
+//       // Add the option to the select
+//       $select.append(`<option value="${variantInfo}" ${isOutOfStock ? "disabled" : ""}>${displayText}</option>`);
 
-      // Append a hidden radio for FoxyCart
-      $(variant_container).append(`
-        <input
-          type="radio"
-          name="${variantGroupName}"
-          id="${variantInfo}-${index}"
-          value="${variantInfo}"
-          class="fc-hidden-radio"
-          style="display: none;"
-          ${isOutOfStock ? "disabled" : ""}
-          required
-        >
-      `);
+//       // Append a hidden radio for FoxyCart
+//       $(variant_container).append(`
+//         <input
+//           type="radio"
+//           name="${variantGroupName}"
+//           id="${variantInfo}-${index}"
+//           value="${variantInfo}"
+//           class="fc-hidden-radio"
+//           style="display: none;"
+//           ${isOutOfStock ? "disabled" : ""}
+//           required
+//         >
+//       `);
 
-      // --- Check after adding option ---
-      const allDisabled = $select.find("option").length > 0 &&
-                          $select.find("option:enabled").length === 0;
+//       // --- Check after adding option ---
+//       const allDisabled = $select.find("option").length > 0 &&
+//                           $select.find("option:enabled").length === 0;
 
-      if (allDisabled) {
-        // Remove dropdown and radios, show out-of-stock message
-        $(variant_container).empty().append(`<p class="out-of-stock-message">Currently out of stock</p>`);
-      } else {
-        // Make first enabled option selected by default
-        $select.find("option:enabled").first().prop("selected", true).trigger("change");
-      }
-    }
-  } else {
-    $(variant_container).parent().remove();
-  }
-}
+//       if (allDisabled) {
+//         // Remove dropdown and radios, show out-of-stock message
+//         $(variant_container).empty().append(`<p class="out-of-stock-message">Currently out of stock</p>`);
+//       } else {
+//         // Make first enabled option selected by default
+//         $select.find("option:enabled").first().prop("selected", true).trigger("change");
+//       }
+//     }
+//   } else {
+//     $(variant_container).parent().remove();
+//   }
+// }
 
 
     // Check if *all* options are disabled → replace dropdown with "Currently out of stock"
