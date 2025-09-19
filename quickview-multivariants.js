@@ -658,11 +658,13 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
   if (variantInfo !== "") {
     element.querySelector(VariantContainer).parentElement.style.display = "block";
 
-    // Only add the custom select once
+    // Only add the custom select once (with a placeholder top option)
     if ($(variant_container).find("select").length === 0) {
       $(variant_container).append(`
         <label class="dropdown-label">${variantGroupName}</label>
-        <select name="${variantGroupName}" class="variant-dropdown w-select" required></select>
+        <select name="${variantGroupName}" class="variant-dropdown w-select" required>
+          <option value="" disabled selected>Please select a ${variantGroupName}</option>
+        </select>
       `);
     }
 
@@ -703,10 +705,10 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         anyInStock = true; // Set flag if any variant is in stock
       }
 
-      // Add the option to the select
+      // Add the option to the select (disabled if OOS)
       $select.append(`<option value="${variantInfo}" ${isOutOfStock ? "disabled" : ""}>${displayText}</option>`);
 
-      // Append a hidden radio for FoxyCart
+      // Append a hidden radio for FoxyCart (remains required to enforce selection)
       $(variant_container).append(`
         <input
           type="radio"
@@ -719,23 +721,19 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           required
         >
       `);
-
-      // --- AUTO-SELECT FIRST AVAILABLE OPTION ---
-      if ($select.find("option:selected").length === 0) {
-        const $firstAvailable = $select.find("option:not([disabled])").first();
-        if ($firstAvailable.length) {
-          $firstAvailable.prop("selected", true);
-
-          // Sync to the hidden radio
-          const selectedValue = $firstAvailable.val();
-          $(`${variant_container} input[type=radio][value="${selectedValue}"]`).prop("checked", true);
-        }
-      }
     }
 
     // Sync select changes to radio selection
     $select.off("change").on("change", function () {
       const selectedValue = $(this).val();
+
+      // If placeholder (empty) is selected, ensure no radio is checked
+      if (!selectedValue) {
+        $(`${variant_container} input[type=radio][name="${variantGroupName}"]`).prop("checked", false);
+        return;
+      }
+
+      // Check the matched hidden radio
       $(`${variant_container} input[type=radio][value="${selectedValue}"]`).prop("checked", true);
     });
   } else {
