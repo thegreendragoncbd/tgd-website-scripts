@@ -595,7 +595,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         element.querySelector(VariantContainer).parentElement.style.display = "block";
         let variantListed = 0;
 
-        document.querySelector(t).style.display = "grid";
+        document.querySelector(VariantContainer).style.display = "grid";
 
         $(variant_container).append(
           `<label class="radio-button-field w-radio">
