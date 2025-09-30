@@ -649,7 +649,7 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
 
 // let anyInStock = false;
 
-   function addVariantGroup(variantInfo, VariantContainer, index) {
+function addVariantGroup(variantInfo, VariantContainer, index) {
   console.log('in addVariantGroup')
   const variantGroupName = capitalizeFirstLetter(VariantContainer.split("-")[1]);
   if (variantGroupName) variantGroups.push(variantGroupName);
@@ -722,6 +722,10 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         >
       `);
     }
+
+    // how about we do the selector right here?
+    var radioGroupElement = document.querySelector('.radio-group')
+    radioGroupElement.classList.add('radio-group-position')
 
     // Sync select changes to radio selection
     $select.off("change").on("change", function () {
