@@ -725,7 +725,11 @@ function addVariantGroup(variantInfo, VariantContainer, index) {
 
     // how about we do the selector right here?
     var radioGroupElement = document.querySelector('.radio-group')
-    radioGroupElement.classList.add('radio-group-position')
+    // radioGroupElement.classList.add('radio-group-position')
+    var radioGroupElement = document.querySelector('.radio-group');
+
+radioGroupElement.style.display = 'grid';
+radioGroupElement.style.gridTemplateColumns = 'minmax(0, 100px) minmax(0, 270px)';
 
     // Sync select changes to radio selection
     $select.off("change").on("change", function () {
