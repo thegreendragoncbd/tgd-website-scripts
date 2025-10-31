@@ -25,7 +25,8 @@ function isProductListPage() {
     URL_PATH.includes("/simple-brands")  ||
     URL_PATH.includes("/disposable-thc-vape-pens-carts") ||
     URL_PATH.includes("/empire-brands") || 
-    URL_PATH.includes("/bulk-thca-flower-pounds-online")
+    URL_PATH.includes("/bulk-thca-flower-pounds-online") ||
+    URL_PATH.includes("/pages/")
   );
 }
 function isProductCMSPage(URL_PATH) {
