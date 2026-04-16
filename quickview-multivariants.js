@@ -1089,6 +1089,13 @@ radioGroupElement.style.gridTemplateColumns = 'minmax(0, 100px) minmax(0, 270px)
           return isProduct.every(productCheck => productCheck === true);
         });
 
+        // Notify subscription widget — fires BEFORE price input is updated below
+        // so the widget reads the price from selectedProductVariantInfo directly
+        // via the event detail rather than input[name=price] (which hasn't changed yet).
+        document.dispatchEvent(new CustomEvent('dgc:variantSelected', {
+          detail: { variant: selectedProductVariantInfo }
+        }));
+
         // Update Hidden Add to Cart Inputs with Variant Data and
         //DOM customer facing elements with product info
         Object.keys(selectedProductVariantInfo).forEach(key => {
@@ -1188,6 +1195,9 @@ radioGroupElement.style.gridTemplateColumns = 'minmax(0, 100px) minmax(0, 270px)
         });
         return;
       }
+
+      // Selection is no longer complete — notify subscription widget to revert price
+      document.dispatchEvent(new CustomEvent('dgc:variantCleared'));
 
       if (isWholesale && isWholesalePage) {
         addPriceWholesale(isWholesaler());
