@@ -177,6 +177,21 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
         addPrice();
       }
 
+      // For non-variant products, notify the subscription widget of the effective
+      // price after addPrice() has resolved it. Variant products already dispatch
+      // dgc:variantSelected when the user picks a variant; this covers the
+      // non-variant case so the subscription widget gets the correct base price.
+      if (!variantItems.length) {
+        document.dispatchEvent(new CustomEvent('dgc:variantSelected', {
+          detail: {
+            variant: {
+              price:     productItemObject.salePrice || productItemObject.price || '',
+              salePrice: productItemObject.salePrice || ''
+            }
+          }
+        }));
+      }
+
       // Set Inventory according to product
       setInventory();
 
