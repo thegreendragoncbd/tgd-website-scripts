@@ -199,12 +199,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       element.querySelector("#foxy-form").addEventListener("change", handleVariantSelection);
       handleOnPageLoadVariantSelection();
       addImageChangeFunctionality();
-
-      // Broadcast product data for external listeners (e.g. GTM).
-      // Kept as a plain event so any error in the listener can't affect this script.
-      document.dispatchEvent(new CustomEvent('dgc:productPageReady', {
-        detail: { product: productItemObject, variants: variantItems }
-      }));
     }
 
     function addImageChangeFunctionality() {

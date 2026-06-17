@@ -1,77 +1,100 @@
 /**
  * gtm-product-push.js
  *
- * Listens for the dgc:productPageReady event dispatched by quickview-multivariants.js
- * and pushes a product_detail_view event to GTM's dataLayer.
+ * Pushes product data to GTM's dataLayer on product detail pages.
  *
- * Keep this script completely separate from quickview-multivariants.js so that
- * any error here cannot affect pricing, variant display, or cart functionality.
+ * Strategy: uses window.load (fires after ALL $(document).ready callbacks,
+ * including quickview-multivariants.js init()) to read prices from the DOM
+ * that quickview-multivariants.js has already set. Zero changes to that file.
  *
- * Load order: must be placed AFTER quickview-multivariants.js in Webflow's
- * custom code footer.
+ * Also listens for dgc:variantSelected (already dispatched by quickview-
+ * multivariants.js on variant selection) to push a variant_selected event.
  */
 
 (function () {
   'use strict';
 
-  document.addEventListener('dgc:productPageReady', function (e) {
+  var PATH = window.location.pathname;
+
+  function isProductPage() {
+    return /\/(product)\//.test(PATH) || PATH.includes('/products-wholesale/');
+  }
+
+  if (!isProductPage()) return;
+
+  // ── Initial page-view push ────────────────────────────────────────────────
+  // window.load guarantees $(document).ready() has fully run, so
+  // quickview-multivariants.js has already set all price/inventory values.
+
+  window.addEventListener('load', function () {
     try {
-      var product  = e.detail.product;   // productItemObject from quickview-multivariants
-      var variants = e.detail.variants;  // variantItems array
+      var hasVariants = document.querySelectorAll('.foxy_variant_item').length > 0;
 
       var price, oldPrice;
 
-      if (variants.length > 0) {
-        // Variant product: report the lowest effective price across all variants.
-        // The user hasn't selected a specific variant yet.
-        var effectivePrices = variants.map(function (v) {
-          return Number(v.salePrice) || Number(v.price);
-        });
-        price = Math.min.apply(null, effectivePrices);
-
-        var regularPrices = variants.map(function (v) { return Number(v.price); });
-        oldPrice = Math.min.apply(null, regularPrices);
-
-        if (oldPrice === price) oldPrice = undefined;
+      if (hasVariants) {
+        // Variant product: read the low-to-high price range shown at page load.
+        var lowEl  = document.querySelector('.product-price_low-to-high-wrapper')
+                       ?.firstChild?.nextSibling;
+        var highEl = document.querySelector('.product-price_low-to-high-wrapper')
+                       ?.lastChild;
+        price    = lowEl  ? parseFloat(lowEl.textContent)  : undefined;
+        oldPrice = highEl ? parseFloat(highEl.textContent) : undefined;
+        if (price === oldPrice) oldPrice = undefined; // single-price variant set
       } else {
-        // Non-variant product
-        price    = Number(product.salePrice || product.price);
-        oldPrice = product.salePrice ? Number(product.price) : undefined;
+        // Non-variant product: quickview-multivariants sets input[name=price]
+        // to the effective (sale) price and the before-sale wrapper to the original.
+        var priceInput = document.querySelector('input[name=price]');
+        price = priceInput ? parseFloat(priceInput.value) : undefined;
+
+        var beforeSaleWrapper = document.querySelector('.product-price_before-sale-wrapper');
+        if (beforeSaleWrapper && beforeSaleWrapper.style.display !== 'none') {
+          var beforeSaleEl = beforeSaleWrapper.lastChild;
+          oldPrice = beforeSaleEl ? parseFloat(beforeSaleEl.textContent) : undefined;
+        }
       }
 
-      // Derive availability status from inventory data
-      var inv    = Number(product.inventory);
-      var status = inv > 0
-        ? 'inStock'
-        : (product.allowBackorders === 'true' ? 'backorder' : 'outOfStock');
+      // Foxy hidden inputs carry name, code, weight — reliable source of truth.
+      var nameInput = document.querySelector('input[name=name]');
+      var codeInput = document.querySelector('input[name=code]');
+      var imageEl   = document.querySelector('#foxy-image');
+      var invEl     = document.querySelector('#foxy-inventory');
+
+      var invText = invEl ? invEl.textContent.trim() : '';
+      var status  = 'outOfStock';
+      if (/backorder/i.test(invText))           status = 'backorder';
+      else if (parseFloat(invText) > 0)         status = 'inStock';
 
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         event: 'product_detail_view',
         product: {
-          id:          product.sku   || '',
-          title:       product.name  || '',
+          id:          codeInput ? codeInput.value : '',
+          title:       nameInput ? nameInput.value : '',
           currency:    'USD',
           price:       price,
           oldPrice:    oldPrice,
-          imageUrl:    (document.querySelector('#foxy-image') || {}).src || '',
+          imageUrl:    imageEl  ? imageEl.src  : '',
           url:         window.location.href,
           status:      status,
-          hasVariants: variants.length > 0
+          hasVariants: hasVariants
         }
       });
 
     } catch (err) {
-      // Never let GTM errors surface to the user or affect other scripts
-      console.warn('[gtm-product-push] dataLayer push failed:', err);
+      console.warn('[gtm-product-push] product_detail_view push failed:', err);
     }
   });
 
-  // Also push when a specific variant is selected by the user.
+  // ── Variant-selected push ─────────────────────────────────────────────────
+  // dgc:variantSelected is already dispatched by quickview-multivariants.js
+  // when the user completes a variant selection. We just listen — no changes
+  // to that file needed.
+
   document.addEventListener('dgc:variantSelected', function (e) {
     try {
-      var v = e.detail.variant;
-      if (!v || !v.price) return;
+      var v = e.detail && e.detail.variant;
+      if (!v || (!v.price && !v.salePrice)) return;
 
       var variantPrice    = Number(v.salePrice || v.price);
       var variantOldPrice = v.salePrice ? Number(v.price) : undefined;
