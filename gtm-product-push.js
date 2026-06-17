@@ -56,9 +56,23 @@
       var invEl     = document.querySelector('#foxy-inventory');
 
       var invText = invEl ? invEl.textContent.trim() : '';
-      var status  = 'outOfStock';
-      if (/backorder/i.test(invText))   status = 'backorder';
-      else if (parseFloat(invText) > 0) status = 'inStock';
+      var status;
+      if (hasVariants) {
+        // Inventory shows "Please choose options." until a variant is selected.
+        // Determine in-stock status by checking if any variant option is selectable.
+        var anyEnabled = document.querySelector(
+          '.foxy_variant_item .foxy_variants_item-inventory'
+        );
+        var totalInv = 0;
+        document.querySelectorAll('.foxy_variants_item-inventory').forEach(function (el) {
+          totalInv += parseFloat(el.textContent) || 0;
+        });
+        status = totalInv > 0 ? 'inStock' : 'outOfStock';
+      } else {
+        status = 'outOfStock';
+        if (/backorder/i.test(invText))   status = 'backorder';
+        else if (parseFloat(invText) > 0) status = 'inStock';
+      }
 
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
