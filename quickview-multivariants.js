@@ -27,7 +27,8 @@ function isProductListPage() {
     URL_PATH.includes("/empire-brands") || 
     URL_PATH.includes("/bulk-thca-flower-pounds-online") ||
     URL_PATH.includes("/pages/") || 
-    URL_PATH.includes("/sales-deals")
+    URL_PATH.includes("/sales-deals") ||
+    URL_PATH.includes("/new-products") 
   );
 }
 function isProductCMSPage(URL_PATH) {
