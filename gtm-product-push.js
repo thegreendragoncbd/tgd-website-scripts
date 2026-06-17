@@ -3,12 +3,11 @@
  *
  * Pushes product data to GTM's dataLayer on product detail pages.
  *
- * Strategy: uses window.load (fires after ALL $(document).ready callbacks,
- * including quickview-multivariants.js init()) to read prices from the DOM
- * that quickview-multivariants.js has already set. Zero changes to that file.
+ * Reads prices from the DOM after quickview-multivariants.js has set them.
+ * Safe to load at any time — before or after window.load — because it checks
+ * document.readyState and either runs immediately or waits for the load event.
  *
- * Also listens for dgc:variantSelected (already dispatched by quickview-
- * multivariants.js on variant selection) to push a variant_selected event.
+ * Zero changes to quickview-multivariants.js required.
  */
 
 (function () {
@@ -23,27 +22,24 @@
   if (!isProductPage()) return;
 
   // ── Initial page-view push ────────────────────────────────────────────────
-  // window.load guarantees $(document).ready() has fully run, so
-  // quickview-multivariants.js has already set all price/inventory values.
 
-  window.addEventListener('load', function () {
+  function pushPageView() {
     try {
       var hasVariants = document.querySelectorAll('.foxy_variant_item').length > 0;
 
       var price, oldPrice;
 
       if (hasVariants) {
-        // Variant product: read the low-to-high price range shown at page load.
-        var lowEl  = document.querySelector('.product-price_low-to-high-wrapper')
-                       ?.firstChild?.nextSibling;
-        var highEl = document.querySelector('.product-price_low-to-high-wrapper')
-                       ?.lastChild;
+        // Variant product: read the price range quickview-multivariants.js rendered.
+        var wrapper = document.querySelector('.product-price_low-to-high-wrapper');
+        var lowEl   = wrapper && wrapper.firstChild && wrapper.firstChild.nextSibling;
+        var highEl  = wrapper && wrapper.lastChild;
         price    = lowEl  ? parseFloat(lowEl.textContent)  : undefined;
         oldPrice = highEl ? parseFloat(highEl.textContent) : undefined;
-        if (price === oldPrice) oldPrice = undefined; // single-price variant set
+        if (price === oldPrice) oldPrice = undefined;
       } else {
-        // Non-variant product: quickview-multivariants sets input[name=price]
-        // to the effective (sale) price and the before-sale wrapper to the original.
+        // Non-variant: quickview-multivariants.js sets input[name=price] to the
+        // effective (sale) price and the before-sale wrapper to the original.
         var priceInput = document.querySelector('input[name=price]');
         price = priceInput ? parseFloat(priceInput.value) : undefined;
 
@@ -54,7 +50,6 @@
         }
       }
 
-      // Foxy hidden inputs carry name, code, weight — reliable source of truth.
       var nameInput = document.querySelector('input[name=name]');
       var codeInput = document.querySelector('input[name=code]');
       var imageEl   = document.querySelector('#foxy-image');
@@ -62,8 +57,8 @@
 
       var invText = invEl ? invEl.textContent.trim() : '';
       var status  = 'outOfStock';
-      if (/backorder/i.test(invText))           status = 'backorder';
-      else if (parseFloat(invText) > 0)         status = 'inStock';
+      if (/backorder/i.test(invText))   status = 'backorder';
+      else if (parseFloat(invText) > 0) status = 'inStock';
 
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
@@ -74,7 +69,7 @@
           currency:    'USD',
           price:       price,
           oldPrice:    oldPrice,
-          imageUrl:    imageEl  ? imageEl.src  : '',
+          imageUrl:    imageEl ? imageEl.src : '',
           url:         window.location.href,
           status:      status,
           hasVariants: hasVariants
@@ -84,12 +79,21 @@
     } catch (err) {
       console.warn('[gtm-product-push] product_detail_view push failed:', err);
     }
-  });
+  }
+
+  // If window.load has already fired (readyState === 'complete'), run now.
+  // Otherwise wait for it. This handles loading via GTM, async tags, or
+  // standard <script> tags equally.
+  if (document.readyState === 'complete') {
+    pushPageView();
+  } else {
+    window.addEventListener('load', pushPageView);
+  }
 
   // ── Variant-selected push ─────────────────────────────────────────────────
-  // dgc:variantSelected is already dispatched by quickview-multivariants.js
-  // when the user completes a variant selection. We just listen — no changes
-  // to that file needed.
+  // dgc:variantSelected is dispatched by quickview-multivariants.js when the
+  // user completes a variant selection. We listen here — no changes to that
+  // file needed.
 
   document.addEventListener('dgc:variantSelected', function (e) {
     try {
