@@ -95,14 +95,16 @@
     }
   }
 
-  // If window.load has already fired (readyState === 'complete'), run now.
-  // Otherwise wait for it. This handles loading via GTM, async tags, or
-  // standard <script> tags equally.
-  if (document.readyState === 'complete') {
+  // Use jQuery's ready (DOMContentLoaded) rather than window.load so we don't
+  // wait for slow external resources like slick.js. Because this file is loaded
+  // as a <script src> in Webflow's footer after quickview-multivariants.js,
+  // jQuery queues our callback after quickview's — prices are already set
+  // by the time pushPageView() runs.
+  // If $(document).ready has already fired (e.g. loaded via GTM), jQuery
+  // calls the callback immediately.
+  $(function () {
     pushPageView();
-  } else {
-    window.addEventListener('load', pushPageView);
-  }
+  });
 
   // ── Variant-selected push ─────────────────────────────────────────────────
   // dgc:variantSelected is dispatched by quickview-multivariants.js when the
