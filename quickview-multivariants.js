@@ -199,7 +199,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
       element.querySelector("#foxy-form").addEventListener("change", handleVariantSelection);
       handleOnPageLoadVariantSelection();
       addImageChangeFunctionality();
-      pushProductPageView();
     }
 
     function addImageChangeFunctionality() {
@@ -335,56 +334,6 @@ if (isProductCMSPage(URL_PATH) || isProductListPage()) {
           itemCertification,
           wholesale,
         });
-      });
-    }
-
-    function pushProductPageView() {
-      // --- Prices ---
-      // For non-variant products, productItemObject has the price directly.
-      // For variant products, show the lowest effective price at page-view time
-      // (no variant selected yet). A separate push fires when a variant is picked.
-      let price, oldPrice;
-
-      if (variantItems.length > 0) {
-        const effectivePrices = variantItems.map(v =>
-          Number(v.salePrice) || Number(v.price)
-        );
-        price = Math.min(...effectivePrices);
-
-        // oldPrice: lowest regular (non-sale) price across variants
-        const regularPrices = variantItems.map(v => Number(v.price));
-        oldPrice = Math.min(...regularPrices);
-
-        // If sale === regular, there's no "old" price to report
-        if (oldPrice === price) oldPrice = undefined;
-      } else {
-        price    = Number(productItemObject.salePrice || productItemObject.price);
-        oldPrice = productItemObject.salePrice ? Number(productItemObject.price) : undefined;
-      }
-
-      // --- Status ---
-      // Derive from inventory; Dynamo's {{wf:Availability}} is a separate CMS field —
-      // if you have it rendered in a hidden element, read it there instead.
-      const inv = Number(productItemObject.inventory);
-      const status = inv > 0
-        ? 'inStock'
-        : (productItemObject.allowBackorders === 'true' ? 'backorder' : 'outOfStock');
-
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: 'product_detail_view',
-        product: {
-          id:          productItemObject.sku  || '',
-          title:       productItemObject.name || '',
-          description: document.querySelector('.foxy_product_item_desc')?.textContent.trim() || '',
-          currency:    'USD',
-          price:       price,
-          oldPrice:    oldPrice,
-          imageUrl:    document.querySelector('#foxy-image')?.src || '',
-          url:         window.location.href,
-          status:      status,
-          hasVariants: variantItems.length > 0,
-        }
       });
     }
 
@@ -1161,18 +1110,6 @@ radioGroupElement.style.gridTemplateColumns = 'minmax(0, 100px) minmax(0, 270px)
         document.dispatchEvent(new CustomEvent('dgc:variantSelected', {
           detail: { variant: selectedProductVariantInfo }
         }));
-
-        // Update GTM dataLayer with the specific variant price now that one is selected.
-        const variantPrice    = Number(selectedProductVariantInfo.salePrice || selectedProductVariantInfo.price);
-        const variantOldPrice = selectedProductVariantInfo.salePrice ? Number(selectedProductVariantInfo.price) : undefined;
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-          event:         'variant_selected',
-          variantName:   selectedProductVariantInfo.name   || '',
-          variantSku:    selectedProductVariantInfo.code   || '',
-          productPrice:  variantPrice,
-          productOldPrice: variantOldPrice,
-        });
 
         // Update Hidden Add to Cart Inputs with Variant Data and
         //DOM customer facing elements with product info
